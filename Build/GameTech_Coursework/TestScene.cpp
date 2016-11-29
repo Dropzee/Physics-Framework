@@ -97,7 +97,7 @@ void TestScene::OnInitializeScene()
 						pos,				// Position
 						ballsize,			// Half-Dimensions
 						false,				// Physics Enabled?
-						0.f,				// Physical Mass (must have physics enabled)
+						0.1f,				// Physical Mass (must have physics enabled)
 						false,				// Physically Collidable (has collision shape)
 						false,				// Dragable by user?
 						col);// Render colour
