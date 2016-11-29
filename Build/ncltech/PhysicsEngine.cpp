@@ -134,6 +134,33 @@ void PhysicsEngine::SolveConstraints()
 void PhysicsEngine::UpdatePhysicsObject(PhysicsObject* obj)
 {
 	/* TUTORIAL 2 */
+
+	//Gravity
+	if (obj->m_InvMass > 0.0f) {
+		obj->m_LinearVelocity += m_Gravity * m_UpdateTimestep;
+	}
+
+	//Semi-Implicit
+	obj->m_LinearVelocity += obj->m_Force * obj->m_InvMass * m_UpdateTimestep;
+
+	//Damping
+	obj->m_LinearVelocity = obj->m_LinearVelocity * m_DampingFactor;
+
+	//Update Pos
+	obj->m_Position += obj->m_LinearVelocity * m_UpdateTimestep;
+
+	//Angular Rot
+	obj->m_AngularVelocity += obj->m_InvInertia * obj->m_Torque * m_UpdateTimestep;
+
+	//Damping
+	obj->m_AngularVelocity = obj->m_AngularVelocity * m_DampingFactor;
+
+	//Orientation
+	obj->m_Orientation = obj->m_Orientation + obj->m_Orientation * (obj->m_AngularVelocity * m_UpdateTimestep * 0.5f);
+	obj->m_Orientation.Normalise();
+
+	//Invalidiate world transform
+	obj->m_wsTransformInvalidated = true;
 }
 
 

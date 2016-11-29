@@ -1,26 +1,8 @@
-﻿Build started 28/11/2016 11:17:10.
-     1>Project "D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\ncltech\ncltech.vcxproj" on node 3 (Build target(s)).
+﻿Build started 29/11/2016 11:07:15.
+     1>Project "D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\ncltech\ncltech.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX /sdl /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /openmp /Fo"Release\\" /Fd"Release\ncltech.pdb" /Gd /TP /analyze- /errorReport:prompt CollisionDetectionSAT.cpp CommonMeshes.cpp CommonUtils.cpp CuboidCollisionShape.cpp NetworkBase.cpp ObjectMeshDragable.cpp NCLDebug.cpp Object.cpp Hull.cpp Manifold.cpp PhysicsEngine.cpp PhysicsObject.cpp RenderList.cpp SceneManager.cpp SceneRenderer.cpp Scene.cpp ScreenPicker.cpp ObjectMesh.cpp SphereCollisionShape.cpp
-         CollisionDetectionSAT.cpp
-         CommonMeshes.cpp
-         CommonUtils.cpp
-         CuboidCollisionShape.cpp
-         NetworkBase.cpp
-         ObjectMeshDragable.cpp
-         NCLDebug.cpp
-         Object.cpp
-         Hull.cpp
-         Manifold.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX /sdl /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /openmp /Fo"Release\\" /Fd"Release\ncltech.pdb" /Gd /TP /analyze- /errorReport:prompt PhysicsEngine.cpp
          PhysicsEngine.cpp
-         PhysicsObject.cpp
-         RenderList.cpp
-         SceneManager.cpp
-         SceneRenderer.cpp
-         Scene.cpp
-         ScreenPicker.cpp
-         ObjectMesh.cpp
-         SphereCollisionShape.cpp
        Lib:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\Lib.exe /OUT:"D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\Release\ncltech.lib" /NOLOGO /LTCG Release\CollisionDetectionSAT.obj
          Release\CommonMeshes.obj
@@ -46,4 +28,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:12.74
+Time Elapsed 00:00:01.46
