@@ -26,19 +26,124 @@ void CollisionDetectionSAT::BeginNewPair(
 
 bool CollisionDetectionSAT::AreColliding(CollisionData* out_coldata)
 {
-	/* TUT 4 */
-	return false;
+	if (!m_pShape1 || !m_pShape2)
+		return false;
+
+
+	m_Colliding = false;
+
+	FindAllPossibleCollisionAxes();
+
+
+
+
+	// Seperating axis theorem says that if a single axis can be found
+	// where the two objects are not colliding , then they cannot be
+	// colliding . So we have to check each possible axis until we
+	// either return false , or return the best axis (one with the least
+	// penetration ) found .
+
+	CollisionData cur_colData;
+
+	m_BestColData._penetration = -FLT_MAX;
+	for (const Vector3 & axis : m_vPossibleCollisionAxes)
+	{
+		// If the collision axis does NOT intersect then return
+		// immediately as we know that atleast in one direction / axis the
+		// two objects do not intersect
+
+		if (!CheckCollisionAxis(axis, &cur_colData))
+			return false;
+
+		if (cur_colData._penetration >= m_BestColData._penetration)
+		{
+			m_BestColData = cur_colData;
+		}
+	}
+
+	if (out_coldata) * out_coldata = m_BestColData;
+
+	m_Colliding = true;
+	return true;
 }
 
 void CollisionDetectionSAT::FindAllPossibleCollisionAxes()
 {
-	/* TUT 4 */
+	// <----- DEFAULT AXES ------->
+	m_pShape1->GetCollisionAxes(m_pObj1, &m_vPossibleCollisionAxes);
+	m_pShape2->GetCollisionAxes(m_pObj2, &m_vPossibleCollisionAxes);
+
+	std::vector < CollisionEdge > shape1_edges;
+	std::vector < CollisionEdge > shape2_edges;
+
+	m_pShape1->GetEdges(m_pObj1, &shape1_edges);
+	m_pShape2->GetEdges(m_pObj2, &shape2_edges);
+
+	// <------ CURVED - SURFACE CASES ----->
+	// Curved surfaces technically have infinite possible axis to test .
+	// However can also be simplified to only one that needs to be
+	// checked as they can be defined by a constant distance from the
+	// centre . This can be seen as the proof behind the sphere - sphere
+	// test performed earlier .
+
+	bool shape1_isSphere = shape1_edges.empty();
+	bool shape2_isSphere = shape2_edges.empty();
+
+	// If both are spheres then the only axes we have to check is
+	// between the two centre points
+
+	if (shape1_isSphere && shape2_isSphere)
+	{
+		Vector3 axis = m_pObj2->GetPosition() - m_pObj1->GetPosition();
+		axis.Normalise();
+		AddPossibleCollisionAxis(axis);
+	}
 }
 
 bool CollisionDetectionSAT::CheckCollisionAxis(const Vector3& axis, CollisionData* coldata)
 {
-	/* TUT 4 */
+	Vector3 min1, min2, max1, max2;
+
+	// Get the min /max vertices along the axis from shape1 and shape2
+	m_pShape1->GetMinMaxVertexOnAxis(m_pObj1, axis, &min1, &max1);
+	m_pShape2->GetMinMaxVertexOnAxis(m_pObj2, axis, &min2, &max2);
+
+	float minCorrelation1 = Vector3::Dot(axis, min1);
+	float maxCorrelation1 = Vector3::Dot(axis, max1);
+	float minCorrelation2 = Vector3::Dot(axis, min2);
+	float maxCorrelation2 = Vector3::Dot(axis, max2);
+
+
+	// Object 1 mostly overlapping Object 2
+	if (minCorrelation1 <= minCorrelation2
+		&& maxCorrelation1 >= minCorrelation2)
+	{
+		if (coldata != NULL)
+		{
+			coldata->_normal = axis;
+			coldata->_penetration = minCorrelation2 - maxCorrelation1;
+			coldata->_pointOnPlane =
+				max1 + coldata->_normal * coldata->_penetration;
+		}
+
+		return true;
+	}
+
+	// Object 2 mostly overlapping Object 1
+	if (minCorrelation2 <= minCorrelation1
+		&& maxCorrelation2 >= minCorrelation1)
+	{
+		if (coldata != NULL)
+		{
+			coldata->_normal = -axis;
+			coldata->_penetration = minCorrelation1 - maxCorrelation2;
+			coldata->_pointOnPlane =
+				min1 + coldata->_normal * coldata->_penetration;
+		}
+		return true;
+	}
 	return false;
+
 }
 
 bool CollisionDetectionSAT::AddPossibleCollisionAxis(Vector3 axis)
@@ -78,11 +183,11 @@ Vector3 CollisionDetectionSAT::GetClosestPoint(const Vector3& pos, std::vector<C
 
 
 		//Distance along the line of point 'pos' in world distance 
-		float ABAPproduct = Vector3::Dot(a_p, a_b);   
+		float ABAPproduct = Vector3::Dot(a_p, a_b);
 		float magnitudeAB = Vector3::Dot(a_b, a_b);
 
 		//Distance along the line of point 'pos' between 0-1 where 0 is edgeA and 1 is edgeB
-		float distance = ABAPproduct / magnitudeAB;	  
+		float distance = ABAPproduct / magnitudeAB;
 
 		//Clamp distance so it cant go beyond edgeA or edgeB in either direction
 		distance = max(min(distance, 1.0f), 0.0f);

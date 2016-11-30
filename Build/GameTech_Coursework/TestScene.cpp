@@ -177,6 +177,23 @@ void TestScene::OnUpdateScene(float dt)
 				Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 1.0f, 0.0f), -rot_speed));
 		}
 
+		if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_F)) {
+			Object* sphere = BuildSphereObject(
+				"",																	// Optional: Name
+				SceneManager::Instance()->GetCamera()->GetPosition(),				// Position
+				1.0f,																// Half-Dimensions
+				true,																// Physics Enabled?
+				0.1f,																// Physical Mass (must have physics enabled)
+				false,																// Physically Collidable (has collision shape)
+				false,																// Dragable by user?
+				Vector4(1,1,1,1));													// Render colour
+
+			Matrix3 view = Matrix3(SceneManager::Instance()->GetCamera()->BuildViewMatrix());
+			Vector3 forward = Vector3(-view._13, -view._23, -view._33);
+
+			sphere->Physics()->SetLinearVelocity(forward*20.0f);
+			this->AddGameObject(sphere);
+		}
 
 		// Also (and importantly), as the projMatrix/viewMatrix is all abstracted away
 		//  we can now use debug draw tools to render geometry in world-space from anywhere
