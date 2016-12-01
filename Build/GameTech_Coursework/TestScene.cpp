@@ -12,6 +12,9 @@ TestScene::TestScene(const std::string& friendly_name)
 	, m_AccumTime(0.0f)
 	, m_pPlayer(NULL)
 {
+	speed = 0.5f;
+	size = 0.5f;
+	projectile = SPHERE;
 }
 
 TestScene::~TestScene()
@@ -177,22 +180,57 @@ void TestScene::OnUpdateScene(float dt)
 				Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 1.0f, 0.0f), -rot_speed));
 		}
 
+		//Projectile
+		if (Window::GetMouse()->GetWheelMovement() > 0 && speed <= 1) {
+			speed += 0.05;
+		}
+		else if (Window::GetMouse()->GetWheelMovement() < 0 && speed >= 0.2) {
+			speed -= 0.05;
+		}
+		if (Window::GetKeyboard()->KeyHeld(KEYBOARD_PLUS) && size <= 1) {
+			size += 0.01;
+		}
+		else if (Window::GetKeyboard()->KeyHeld(KEYBOARD_MINUS) && size >= 0.2) {
+			size -= 0.01;
+		}
+		if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_1)) {
+			projectile = SPHERE;
+		}
+		else if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_2)) {
+			projectile = CUBE;
+		}
+
 		if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_F)) {
-			Object* sphere = BuildSphereObject(
-				"",																	// Optional: Name
-				SceneManager::Instance()->GetCamera()->GetPosition(),				// Position
-				1.0f,																// Half-Dimensions
-				true,																// Physics Enabled?
-				0.1f,																// Physical Mass (must have physics enabled)
-				false,																// Physically Collidable (has collision shape)
-				false,																// Dragable by user?
-				Vector4(1,1,1,1));													// Render colour
+			Object* obj;
+			if (projectile == SPHERE) {
+				obj = BuildSphereObject(
+					"",																	// Optional: Name
+					SceneManager::Instance()->GetCamera()->GetPosition(),				// Position
+					1.0f * size,														// Half-Dimensions
+					true,																// Physics Enabled?
+					0.1f,																// Physical Mass (must have physics enabled)
+					false,																// Physically Collidable (has collision shape)
+					false,																// Dragable by user?
+					Vector4(1, 1, 1, 1));												// Render colour
+			}
+			else {
+				obj = BuildCuboidObject(
+					"",																	// Optional: Name
+					SceneManager::Instance()->GetCamera()->GetPosition(),				// Position
+					Vector3(1.0f * size, 1.0f * size, 1.0f * size),						// Half-Dimensions
+					true,																// Physics Enabled?
+					0.1f,																// Physical Mass (must have physics enabled)
+					false,																// Physically Collidable (has collision shape)
+					true,																// Dragable by user?
+					Vector4(1, 1, 1, 1));												// Render colour
+			}
 
 			Matrix3 view = Matrix3(SceneManager::Instance()->GetCamera()->BuildViewMatrix());
 			Vector3 forward = Vector3(-view._13, -view._23, -view._33);
 
-			sphere->Physics()->SetLinearVelocity(forward*30.0f);
-			this->AddGameObject(sphere);
+			obj->Physics()->SetLinearVelocity(forward * 50.0f * speed);
+			this->AddGameObject(obj);
+
 		}
 
 		// Also (and importantly), as the projMatrix/viewMatrix is all abstracted away

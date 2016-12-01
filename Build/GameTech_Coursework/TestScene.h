@@ -3,6 +3,11 @@
 #include <nclgl\Mesh.h>
 #include <ncltech\Scene.h>
 
+enum SHAPE {
+	SPHERE,
+	CUBE
+};
+
 class TestScene : public Scene
 {
 public:
@@ -16,4 +21,9 @@ public:
 protected:
 	float m_AccumTime;
 	Object* m_pPlayer;
+
+	//Projecticle Settings
+	SHAPE projectile;
+	float size;
+	float speed;
 };
