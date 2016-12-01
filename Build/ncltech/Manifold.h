@@ -25,6 +25,8 @@ additional energy to the system or negate existing velocity.
 
 #include "PhysicsObject.h"
 #include <nclgl\Vector3.h>
+#include <list>
+#include "Constraint.h"
 
 /* A contact constraint is actually the summation of a normal distance constraint
    along with two friction constraints going along the axes perpendicular to the collision
@@ -42,6 +44,12 @@ struct ContactPoint
 
 	Vector3 relPosA;			//Position relative to objectA
 	Vector3 relPosB;			//Position relative to objectB
+
+	//Constraint normal;
+	//Constraint friction1;
+	//Constraint friction2;
+
+	//Vector3 pos;
 };
 
 
@@ -49,6 +57,8 @@ struct ContactPoint
 class Manifold
 {
 public:
+	//Manifold(PhysicsObject * nodeA, PhysicsObject * nodeB);
+
 	Manifold();
 	~Manifold();
 
@@ -61,6 +71,8 @@ public:
 	//Sequentially solves each contact constraint
 	void ApplyImpulse();
 	void PreSolverStep(float dt);
+
+	//void ApplyConstraints();
 	
 
 	//Debug draws the manifold surface area

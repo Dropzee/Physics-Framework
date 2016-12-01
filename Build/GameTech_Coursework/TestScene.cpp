@@ -191,7 +191,7 @@ void TestScene::OnUpdateScene(float dt)
 			Matrix3 view = Matrix3(SceneManager::Instance()->GetCamera()->BuildViewMatrix());
 			Vector3 forward = Vector3(-view._13, -view._23, -view._33);
 
-			sphere->Physics()->SetLinearVelocity(forward*20.0f);
+			sphere->Physics()->SetLinearVelocity(forward*30.0f);
 			this->AddGameObject(sphere);
 		}
 

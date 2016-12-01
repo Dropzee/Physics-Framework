@@ -214,6 +214,176 @@ Vector3 CollisionDetectionSAT::GetClosestPoint(const Vector3& pos, std::vector<C
 void CollisionDetectionSAT::GenContactPoints(Manifold* out_manifold)
 {
 	/* TUT 5 CODE */
+	if (!out_manifold || !m_Colliding)
+		return;
+
+	// Get the required face information for the two shapes around the
+	// collision normal
+	std::list < Vector3 > polygon1, polygon2;
+	Vector3 normal1, normal2;
+	std::vector < Plane > adjPlanes1, adjPlanes2;
+
+	m_pShape1->GetIncidentReferencePolygon(m_pObj1,
+		m_BestColData._normal, &polygon1, &normal1, &adjPlanes1);
+	m_pShape2->GetIncidentReferencePolygon(m_pObj2,
+		-m_BestColData._normal, &polygon2, &normal2, &adjPlanes2);
+
+	// If either shape1 or shape2 returned a single point , then it must
+	// be on a curve and thus the only contact point to generate is
+	// already availble
+	if (polygon1.size() == 0 || polygon2.size() == 0)
+	{
+		return; // No points returned , resulting in no possible
+				// contact points
+	}
+	else if (polygon1.size() == 1)
+	{
+		out_manifold->AddContact(polygon1.front(), polygon1.front()
+			- m_BestColData._normal * m_BestColData._penetration,
+			m_BestColData._normal, m_BestColData._penetration);
+	}
+	else if (polygon2.size() == 1)
+	{
+		out_manifold->AddContact(polygon2.front()
+			- m_BestColData._normal * m_BestColData._penetration,
+			polygon2.front(), m_BestColData._normal,
+			m_BestColData._penetration);
+	}
+	else
+	{
+		// Otherwise use clipping to cut down the incident face to
+		// fit inside the reference planes using the surrounding face
+		// planes
+
+		bool flipped;
+		std::list < Vector3 > * incPolygon;
+		Vector3 * incNormal;
+		std::vector < Plane > * refAdjPlanes;
+		Plane refPlane;
+		float penetration_offset;
+
+		// Get the incident and reference polygons
+		if (fabs(Vector3::Dot(m_BestColData._normal, normal1)) >
+			fabs(Vector3::Dot(m_BestColData._normal, normal2)))
+		{
+			// Set up with shape2 becoming incident face and shape1
+			// being the reference
+
+			float planeDist = -Vector3::Dot(-normal1, polygon1.front());
+
+			refPlane = Plane(-normal1, planeDist);
+			refAdjPlanes = &adjPlanes1;
+
+			incPolygon = &polygon2;
+			incNormal = &normal2;
+
+			// Compute furthest point along the reference face along the
+			// collision normal - For computing new penetration_depth
+			// estimate for each contact point
+
+			penetration_offset = -FLT_MAX;
+			for (Vector3 & v : polygon1)
+			{
+				float poffset = Vector3::Dot(v, m_BestColData._normal);
+
+				if (poffset > penetration_offset)
+				{
+					penetration_offset = poffset;
+				}
+			};
+
+			flipped = false;
+		}
+		else
+		{
+			// Set up with shape1 becoming incident face and shape2
+			// being the reference
+
+			float planeDist = -Vector3::Dot(-normal2, polygon2.front());
+			refPlane = Plane(-normal2, planeDist);
+			refAdjPlanes = &adjPlanes2;
+
+			incPolygon = &polygon1;
+			incNormal = &normal1;
+
+			// Compute furthest point along the reference face along the
+			// collision normal - For computing new penetration_depth
+			// estimate for each contact point
+
+			penetration_offset = FLT_MAX;
+			for (Vector3 & v : polygon2)
+			{
+				float poffset = Vector3::Dot(v, m_BestColData._normal);
+				if (poffset < penetration_offset)
+				{
+					penetration_offset = poffset;
+				}
+			};
+
+			flipped = true;
+		}
+
+		// Clip the incident face to the adjacent edges of the reference
+		// face
+
+		SutherlandHodgmanClipping(*incPolygon, refAdjPlanes->size(),
+			&(*refAdjPlanes)[0], incPolygon, false);
+
+		// Finally clip (and remove ) any contact points that are above
+		// the reference face
+
+		SutherlandHodgmanClipping(*incPolygon, 1, &refPlane,
+			incPolygon, true);
+
+		// Now we are left with a selection of valid contact points to
+		// be used for the manifold
+
+		if (incPolygon->size() > 0)
+		{
+			Vector3 startPoint = incPolygon->back();
+			for (const Vector3 & endPoint : *incPolygon)
+			{
+				float contact_penetration;
+				Vector3 globalOnA, globalOnB;
+
+				if (flipped)
+				{
+					// Calculate distance to ref plane / face
+
+					contact_penetration = -(Vector3::Dot(endPoint,
+						m_BestColData._normal) - penetration_offset);
+
+					globalOnA = endPoint
+						+ m_BestColData._normal * contact_penetration;
+					globalOnB = endPoint;
+				}
+				else
+				{
+					// Calculate distance to ref plane / face
+					contact_penetration = Vector3::Dot(endPoint,
+						m_BestColData._normal) - penetration_offset;
+
+					globalOnA = endPoint;
+					globalOnB = endPoint
+						- m_BestColData._normal * contact_penetration;
+				}
+
+				// Just make a final sanity check that the contact point
+				// is actual a point of contact , not just a clipping bug
+
+				if (contact_penetration < 0.0f)
+				{
+					out_manifold->AddContact(
+						globalOnA,
+						globalOnB,
+						m_BestColData._normal,
+						contact_penetration);
+				}
+
+				startPoint = endPoint;
+			}
+		}
+	}
 }
 
 

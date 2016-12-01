@@ -2,6 +2,7 @@
 #include <nclgl\Matrix3.h>
 #include "NCLDebug.h"
 #include "PhysicsEngine.h"
+#include "Object.h"
 
 #define persistentThresholdSq 0.025f
 
