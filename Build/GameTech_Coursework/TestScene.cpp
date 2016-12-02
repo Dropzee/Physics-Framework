@@ -43,7 +43,18 @@ void TestScene::OnInitializeScene()
 
 //<--- SCENE CREATION --->
 	//Create Ground
-	this->AddGameObject(BuildCuboidObject("Ground", Vector3(0.0f, -1.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), false, 0.0f, true, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
+	//this->AddGameObject(BuildCuboidObject("Ground", Vector3(0.0f, -1.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), true, 0.0f, true, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
+
+	//Create Ground
+	this->AddGameObject(BuildCuboidObject(
+		"Ground",
+		Vector3(0.0f, -1.0f, 0.0f),
+		Vector3(20.0f, 1.0f, 20.0f),
+		true,
+		0.0f,
+		true,
+		false,
+		Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
 
 	//Create Player (See OnUpdateScene)
 	m_pPlayer = BuildCuboidObject(
@@ -51,8 +62,8 @@ void TestScene::OnInitializeScene()
 		Vector3(5.f, 0.5f, 0.0f),	// Position
 		Vector3(0.5f, 0.5f, 1.0f),  // Half-Dimensions
 		true,						// Physics Enabled?
-		0.f,						// Physical Mass (must have physics enabled)
-		false,						// Physically Collidable (has collision shape)
+		0.1f,						// Physical Mass (must have physics enabled)
+		true,						// Physically Collidable (has collision shape)
 		false,						// Dragable by user?
 		Vector4(0.1f, 0.1f, 0.1f, 1.0f)); // Render colour
 	this->AddGameObject(m_pPlayer);
@@ -73,9 +84,9 @@ void TestScene::OnInitializeScene()
 					"",						// Optional: Name
 					pos,					// Position
 					halfdims,				// Half-Dimensions
-					false,					// Physics Enabled?
-					0.f,					// Physical Mass (must have physics enabled)
-					false,					// Physically Collidable (has collision shape)
+					true,					// Physics Enabled?
+					0.1f,					// Physical Mass (must have physics enabled)
+					true,					// Physically Collidable (has collision shape)
 					true,					// Dragable by user?
 					colour);				// Render colour
 				this->AddGameObject(cube);
@@ -99,7 +110,7 @@ void TestScene::OnInitializeScene()
 						"",					// Optional: Name
 						pos,				// Position
 						ballsize,			// Half-Dimensions
-						false,				// Physics Enabled?
+						true,				// Physics Enabled?
 						0.1f,				// Physical Mass (must have physics enabled)
 						false,				// Physically Collidable (has collision shape)
 						false,				// Dragable by user?
@@ -115,9 +126,9 @@ void TestScene::OnInitializeScene()
 	create_cube_tower(Vector3(-3.0f, 0.5f, -3.0f), 1.0f);
 
 	//Create Test Ball Pit
-	create_ball_cube(Vector3(-8.0f, 0.5f, 12.0f), Vector3(0.5f, 0.5f, 0.5f), 0.1f);
-	create_ball_cube(Vector3(8.0f, 0.5f, 12.0f), Vector3(0.3f, 0.3f, 0.3f), 0.1f);
-	create_ball_cube(Vector3(-8.0f, 0.5f, -12.0f), Vector3(0.2f, 0.2f, 0.2f), 0.1f);
+	//create_ball_cube(Vector3(-8.0f, 0.5f, 12.0f), Vector3(0.5f, 0.5f, 0.5f), 0.1f);
+	//create_ball_cube(Vector3(8.0f, 0.5f, 12.0f), Vector3(0.3f, 0.3f, 0.3f), 0.1f);
+	//create_ball_cube(Vector3(-8.0f, 0.5f, -12.0f), Vector3(0.2f, 0.2f, 0.2f), 0.1f);
 	create_ball_cube(Vector3(8.0f, 0.5f, -12.0f), Vector3(0.5f, 0.5f, 0.5f), 0.1f);
 }
 
@@ -209,7 +220,7 @@ void TestScene::OnUpdateScene(float dt)
 					1.0f * size,														// Half-Dimensions
 					true,																// Physics Enabled?
 					0.1f,																// Physical Mass (must have physics enabled)
-					false,																// Physically Collidable (has collision shape)
+					true,																// Physically Collidable (has collision shape)
 					false,																// Dragable by user?
 					Vector4(1, 1, 1, 1));												// Render colour
 			}
@@ -220,8 +231,8 @@ void TestScene::OnUpdateScene(float dt)
 					Vector3(1.0f * size, 1.0f * size, 1.0f * size),						// Half-Dimensions
 					true,																// Physics Enabled?
 					0.1f,																// Physical Mass (must have physics enabled)
-					false,																// Physically Collidable (has collision shape)
-					true,																// Dragable by user?
+					true,																// Physically Collidable (has collision shape)
+					false,																// Dragable by user?
 					Vector4(1, 1, 1, 1));												// Render colour
 			}
 
