@@ -29,12 +29,9 @@ bool CollisionDetectionSAT::AreColliding(CollisionData* out_coldata)
 	if (!m_pShape1 || !m_pShape2)
 		return false;
 
-
 	m_Colliding = false;
 
 	FindAllPossibleCollisionAxes();
-
-
 
 
 	// Seperating axis theorem says that if a single axis can be found

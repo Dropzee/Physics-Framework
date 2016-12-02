@@ -126,8 +126,19 @@ void PhysicsEngine::SolveConstraints()
 	for (Constraint* c : m_vpConstraints)	c->PreSolverStep(m_UpdateTimestep);
 
 	// Solve all Constraints and Collision Manifolds
-	for (Manifold* m : m_vpManifolds)		m->ApplyImpulse();
-	for (Constraint* c : m_vpConstraints)	c->ApplyImpulse();
+	/*for (Manifold* m : m_vpManifolds)		m->ApplyImpulse();
+	for (Constraint* c : m_vpConstraints)	c->ApplyImpulse();*/
+	for (size_t i = 0; i < SOLVER_ITERATIONS; ++i)
+	{
+		for (Manifold * m : m_vpManifolds)
+		{
+			m->ApplyImpulse();
+		}
+		for (Constraint * c : m_vpConstraints)
+		{
+			c->ApplyImpulse();
+		}
+	}
 }
 
 
@@ -186,10 +197,43 @@ void PhysicsEngine::BroadPhaseCollisions()
 				m_pObj1 = m_PhysicsObjects[i];
 				m_pObj2 = m_PhysicsObjects[j];
 
+				if (!m_pObj1 || !m_pObj2) {
+					break;
+				}
+
 				//Check they both atleast have collision shapes
 				if (m_pObj1->GetCollisionShape() != NULL
 					&& m_pObj2->GetCollisionShape() != NULL)
 				{
+					/*---------------------BROADPHASE CHECK---------------------*/
+					Vector3 minP, maxP, v1, v2, vT1, vD1, vT2, vD2, vT3, vD3;
+
+					m_pObj1->GetCollisionShape()->GetMinMaxVertexOnAxis(m_pObj1, Vector3(1, 0, 0), &minP, &maxP);
+					v1 = maxP - minP;
+					m_pObj2->GetCollisionShape()->GetMinMaxVertexOnAxis(m_pObj1, Vector3(1, 0, 0), &minP, &maxP);
+					v2 = maxP - minP;
+					vT1 = v1 + v2;
+					vD1 = m_pObj1->GetPosition() - m_pObj2->GetPosition();
+
+					/*m_pObj1->GetCollisionShape()->GetMinMaxVertexOnAxis(m_pObj1, Vector3(0, 1, 0), &minP, &maxP);
+					v1 = maxP - minP;
+					m_pObj2->GetCollisionShape()->GetMinMaxVertexOnAxis(m_pObj1, Vector3(0, 1, 0), &minP, &maxP);
+					v2 = maxP - minP;
+					vT2 = v1 + v2;
+					vD2 = m_pObj1->GetPosition() - m_pObj2->GetPosition();
+
+					m_pObj1->GetCollisionShape()->GetMinMaxVertexOnAxis(m_pObj1, Vector3(0, 0, 1), &minP, &maxP);
+					v1 = maxP - minP;
+					m_pObj2->GetCollisionShape()->GetMinMaxVertexOnAxis(m_pObj1, Vector3(0, 0, 1), &minP, &maxP);
+					v2 = maxP - minP;
+					vT3 = v1 + v2;
+					vD3 = m_pObj1->GetPosition() - m_pObj2->GetPosition();*/
+
+					if (vT1.Length() < vD1.Length()/* || vT2.Length() < vD2.Length() || vT3.Length() < vD3.Length()*/) {
+						continue;
+					}
+					/*---------------------------------------------------------*/
+
 					CollisionPair cp;
 					cp.pObjectA = m_pObj1;
 					cp.pObjectB = m_pObj2;

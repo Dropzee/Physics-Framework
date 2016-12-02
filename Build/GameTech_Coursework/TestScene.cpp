@@ -112,7 +112,7 @@ void TestScene::OnInitializeScene()
 						ballsize,			// Half-Dimensions
 						true,				// Physics Enabled?
 						0.1f,				// Physical Mass (must have physics enabled)
-						false,				// Physically Collidable (has collision shape)
+						true,				// Physically Collidable (has collision shape)
 						false,				// Dragable by user?
 						col);// Render colour
 					this->AddGameObject(sphere);
