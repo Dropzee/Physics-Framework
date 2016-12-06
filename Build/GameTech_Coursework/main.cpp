@@ -6,6 +6,7 @@
 
 #include "TestScene.h"
 #include "EmptyScene.h"
+#include "SolarSystem.h"
 
 const Vector4 status_colour = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 const Vector4 status_colour_header = Vector4(0.8f, 0.9f, 1.0f, 1.0f);
@@ -53,7 +54,7 @@ void Initialize()
 
 	//Enqueue All Scenes
 	SceneManager::Instance()->EnqueueScene(new TestScene("GameTech #1 - Framework Sandbox!"));
-	SceneManager::Instance()->EnqueueScene(new EmptyScene("GameTech #2 - Peace and quiet"));
+	SceneManager::Instance()->EnqueueScene(new SolarSystem("GameTech #2 - Solar System!"));
 	SceneManager::Instance()->EnqueueScene(new EmptyScene("GameTech #3 - More peace and quiet"));
 }
 

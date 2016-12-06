@@ -31,14 +31,24 @@ Object* CommonUtils::BuildSphereObject(
 	float inverse_mass,
 	bool collidable,
 	bool dragable,
-	const Vector4& color)
+	const Vector4& color,
+	int texID)
 {
 	ObjectMesh* pSphere = dragable
 		? new ObjectMeshDragable(name)
 		: new ObjectMesh(name);
 
 	pSphere->SetMesh(CommonMeshes::Sphere(), false);
-	pSphere->SetTexture(CommonMeshes::CheckerboardTex(), false);
+
+	switch (texID) {
+	default:
+		pSphere->SetTexture(CommonMeshes::CheckerboardTex(), false);
+		break;
+	case 0:
+		pSphere->SetTexture(CommonMeshes::CheckerboardTex(), false);
+		break;
+	}
+
 	pSphere->SetLocalTransform(Matrix4::Scale(Vector3(radius, radius, radius)));
 	pSphere->SetColour(color);
 	pSphere->SetBoundingRadius(radius);

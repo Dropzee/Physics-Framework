@@ -46,6 +46,7 @@ public:
 	static GLuint CheckerboardTex() { return m_CheckerboardTex; }
 
 
+
 protected:
 	//Called by SceneRenderer
 	static void InitializeMeshes();
@@ -56,6 +57,15 @@ protected:
 	static Mesh* m_pSphere;
 	static Mesh* m_pPlane;
 
-
 	static GLuint m_CheckerboardTex;
+
+	static GLuint m_earthTex;
+	static GLuint m_jupiterTex;
+	static GLuint m_marsTex;
+	static GLuint m_mercuryTex;
+	static GLuint m_neptuneTex;
+	static GLuint m_saturnTex;
+	static GLuint m_sunTex;
+	static GLuint m_uranusTex;
+	static GLuint m_venusTex;
 };

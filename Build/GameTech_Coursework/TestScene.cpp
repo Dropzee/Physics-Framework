@@ -5,6 +5,9 @@
 #include <ncltech\DistanceConstraint.h>
 #include <ncltech\SceneManager.h>
 #include <ncltech\CommonUtils.h>
+
+
+
 using namespace CommonUtils;
 
 TestScene::TestScene(const std::string& friendly_name)

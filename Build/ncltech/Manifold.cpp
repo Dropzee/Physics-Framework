@@ -34,7 +34,8 @@ void Manifold::ApplyImpulse()
 	for (ContactPoint & contact : m_vContacts)
 	{
 		SolveContactPoint(contact);
-	}
+	}
+
 }
 
 
@@ -94,7 +95,8 @@ void Manifold::SolveContactPoint(ContactPoint& c)
 
 		float oldSumImpulseContact = c.sumImpulseContact;
 		c.sumImpulseContact = min(c.sumImpulseContact + jn, 0.0f);
-		jn = c.sumImpulseContact - oldSumImpulseContact;
+		jn = c.sumImpulseContact - oldSumImpulseContact;
+
 
 		m_pNodeA->SetLinearVelocity(m_pNodeA->GetLinearVelocity()
 			+ normal *(jn * m_pNodeA->GetInverseMass()));
@@ -136,7 +138,8 @@ void Manifold::SolveContactPoint(ContactPoint& c)
 			float oldImpulseTangent = c.sumImpulseFriction;
 			float maxJt = frictionCoef * c.sumImpulseContact;
 			c.sumImpulseFriction = min(max(oldImpulseTangent + jt, maxJt), -maxJt);
-			jt = c.sumImpulseFriction - oldImpulseTangent;
+			jt = c.sumImpulseFriction - oldImpulseTangent;
+
 
 			m_pNodeA->SetLinearVelocity(m_pNodeA->GetLinearVelocity()
 				+ tangent *(jt * m_pNodeA->GetInverseMass()));

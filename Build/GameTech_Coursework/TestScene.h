@@ -2,12 +2,7 @@
 
 #include <nclgl\Mesh.h>
 #include <ncltech\Scene.h>
-
-enum SHAPE {
-	SPHERE,
-	CUBE
-};
-
+#include "SolarSystem.h"
 class TestScene : public Scene
 {
 public:

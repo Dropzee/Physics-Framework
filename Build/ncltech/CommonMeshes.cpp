@@ -7,10 +7,20 @@ Mesh* CommonMeshes::m_pSphere	= NULL;
 
 GLuint CommonMeshes::m_CheckerboardTex = 0;
 
+GLuint CommonMeshes::m_earthTex = 1;
+GLuint CommonMeshes::m_jupiterTex = 2;
+GLuint CommonMeshes::m_marsTex = 3;
+GLuint CommonMeshes::m_mercuryTex = 4;
+GLuint CommonMeshes::m_neptuneTex = 5;
+GLuint CommonMeshes::m_saturnTex = 6;
+GLuint CommonMeshes::m_sunTex = 7;
+GLuint CommonMeshes::m_uranusTex = 8;
+GLuint CommonMeshes::m_venusTex = 9;
+
 void CommonMeshes::InitializeMeshes()
 {
 	if (m_pPlane == NULL)
-	{
+	{ //Planets\\earth.jpg"
 		m_CheckerboardTex = SOIL_load_OGL_texture(TEXTUREDIR"checkerboard.tga", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
 		glBindTexture(GL_TEXTURE_2D, m_CheckerboardTex);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
