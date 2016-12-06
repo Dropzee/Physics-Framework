@@ -47,6 +47,33 @@ Object* CommonUtils::BuildSphereObject(
 	case 0:
 		pSphere->SetTexture(CommonMeshes::CheckerboardTex(), false);
 		break;
+	case 1:
+		pSphere->SetTexture(CommonMeshes::EarthTex(), false);
+		break;
+	case 2:
+		pSphere->SetTexture(CommonMeshes::JupiterTex(), false);
+		break;
+	case 3:
+		pSphere->SetTexture(CommonMeshes::MarsTex(), false);
+		break;
+	case 4:
+		pSphere->SetTexture(CommonMeshes::MercuryTex(), false);
+		break;
+	case 5:
+		pSphere->SetTexture(CommonMeshes::NeptuneTex(), false);
+		break;
+	case 6:
+		pSphere->SetTexture(CommonMeshes::SaturnTex(), false);
+		break;
+	case 7:
+		pSphere->SetTexture(CommonMeshes::SunTex(), false);
+		break;
+	case 8:
+		pSphere->SetTexture(CommonMeshes::UranusTex(), false);
+		break;
+	case 9:
+		pSphere->SetTexture(CommonMeshes::VenusTex(), false);
+		break;
 	}
 
 	pSphere->SetLocalTransform(Matrix4::Scale(Vector3(radius, radius, radius)));

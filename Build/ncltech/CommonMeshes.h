@@ -44,7 +44,15 @@ public:
 
 	//PhysicsEngine Checkerboard - Hidden here for reasons of laziness
 	static GLuint CheckerboardTex() { return m_CheckerboardTex; }
-
+	static GLuint EarthTex() { return m_earthTex; }
+	static GLuint JupiterTex() { return m_jupiterTex; }
+	static GLuint MarsTex() { return m_marsTex; }
+	static GLuint MercuryTex() { return m_mercuryTex; }
+	static GLuint NeptuneTex() { return m_neptuneTex; }
+	static GLuint SaturnTex() { return m_saturnTex; }
+	static GLuint SunTex() { return m_sunTex; }
+	static GLuint UranusTex() { return m_uranusTex; }
+	static GLuint VenusTex() { return m_venusTex; }
 
 
 protected:

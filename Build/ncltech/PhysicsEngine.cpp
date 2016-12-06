@@ -136,7 +136,8 @@ void PhysicsEngine::SolveConstraints()
 		}
 		for (Constraint * c : m_vpConstraints)
 		{
-			c->ApplyImpulse();
+			c->ApplyImpulse();
+
 		}
 	}
 }

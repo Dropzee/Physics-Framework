@@ -42,28 +42,24 @@ void SolarSystem::OnInitializeScene()
 	//<--- SCENE CREATION --->
 
 	Object* obj;
-	obj = BuildSphereObject(
-		"",																	// Optional: Name
-		SceneManager::Instance()->GetCamera()->GetPosition(),				// Position
-		1.0f * size,														// Half-Dimensions
-		true,																// Physics Enabled?
-		0.1f,																// Physical Mass (must have physics enabled)
-		true,																// Physically Collidable (has collision shape)
-		false,																// Dragable by user?
-		Vector4(1, 1, 1, 1),												// Render colour
-		0);																	// Texture
-
-	//Create Player (See OnUpdateScene)
-	m_pPlayer = BuildCuboidObject(
-		"Player1",					// Optional: Name
-		Vector3(5.f, 0.5f, 0.0f),	// Position
-		Vector3(0.5f, 0.5f, 1.0f),  // Half-Dimensions
-		true,						// Physics Enabled?
-		0.1f,						// Physical Mass (must have physics enabled)
-		true,						// Physically Collidable (has collision shape)
-		false,						// Dragable by user?
-		Vector4(0.1f, 0.1f, 0.1f, 1.0f)); // Render colour
-	this->AddGameObject(m_pPlayer);
+	obj = BuildSphereObject("SUN", Vector3(0.0f, 0.0f, 0.0f), 1.0f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 7);
+	this->AddGameObject(obj);
+	obj = BuildSphereObject("MERCURY", Vector3(5.0f, 0.0f, 0.0f), 1.0f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 4);
+	this->AddGameObject(obj);
+	obj = BuildSphereObject("VENUS", Vector3(10.0f, 0.0f, 0.0f), 1.0f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 9);
+	this->AddGameObject(obj);
+	obj = BuildSphereObject("EARTH", Vector3(15.0f, 0.0f, 0.0f), 1.0f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 1);
+	this->AddGameObject(obj);
+	obj = BuildSphereObject("MARS", Vector3(20.0f, 0.0f, 0.0f), 1.0f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 3);
+	this->AddGameObject(obj);
+	obj = BuildSphereObject("JUPITER", Vector3(25.0f, 0.0f, 0.0f), 1.0f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 2);
+	this->AddGameObject(obj);
+	obj = BuildSphereObject("SATURN", Vector3(30.0f, 0.0f, 0.0f), 1.0f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 6);
+	this->AddGameObject(obj);
+	obj = BuildSphereObject("URANUS", Vector3(35.0f, 0.0f, 0.0f), 1.0f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 8);
+	this->AddGameObject(obj);
+	obj = BuildSphereObject("NEPTUNE", Vector3(40.0f, 0.0f, 0.0f), 1.0f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 5);
+	this->AddGameObject(obj);
 
 }
 
@@ -97,34 +93,6 @@ void SolarSystem::OnUpdateScene(float dt)
 	{
 		const float mv_speed = 10.f * dt;			//Motion: Meters per second
 		const float rot_speed = 90.f * dt;			//Rotation: Degrees per second
-
-		bool boosted = false;
-
-		PhysicsObject* pobj = m_pPlayer->Physics();
-		if (Window::GetKeyboard()->KeyDown(KEYBOARD_UP))
-		{
-			pobj->SetPosition(pobj->GetPosition() +
-				pobj->GetOrientation().ToMatrix3() * Vector3(0.0f, 0.0f, -mv_speed));
-			boosted = true;
-		}
-
-		if (Window::GetKeyboard()->KeyDown(KEYBOARD_DOWN))
-		{
-			pobj->SetPosition(pobj->GetPosition() +
-				pobj->GetOrientation().ToMatrix3()* Vector3(0.0f, 0.0f, mv_speed / 2.f));
-		}
-
-		if (Window::GetKeyboard()->KeyDown(KEYBOARD_LEFT))
-		{
-			pobj->SetOrientation(pobj->GetOrientation() *
-				Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 1.0f, 0.0f), rot_speed));
-		}
-
-		if (Window::GetKeyboard()->KeyDown(KEYBOARD_RIGHT))
-		{
-			pobj->SetOrientation(pobj->GetOrientation() *
-				Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 1.0f, 0.0f), -rot_speed));
-		}
 
 		//Projectile
 		if (Window::GetMouse()->GetWheelMovement() > 0 && speed <= 1) {
@@ -177,19 +145,6 @@ void SolarSystem::OnUpdateScene(float dt)
 			obj->Physics()->SetLinearVelocity(forward * 50.0f * speed);
 			this->AddGameObject(obj);
 
-		}
-
-		// Also (and importantly), as the projMatrix/viewMatrix is all abstracted away
-		//  we can now use debug draw tools to render geometry in world-space from anywhere
-		//  in the program. Very useful for debugging!
-		if (boosted)
-		{
-			//Draw the rocket booster on the car using NCLDebug
-			Vector3 backward_dir = pobj->GetOrientation().ToMatrix3() * Vector3(0, 0, 1);
-			NCLDebug::DrawPoint(pobj->GetPosition() + backward_dir, 0.3f, Vector4(1.f, 0.7f, 0.0f, 1.0f));
-			NCLDebug::DrawPoint(pobj->GetPosition() + backward_dir * 1.333f, 0.26f, Vector4(0.9f, 0.5f, 0.0f, 1.0f));
-			NCLDebug::DrawPoint(pobj->GetPosition() + backward_dir * 1.666f, 0.23f, Vector4(0.8f, 0.3f, 0.0f, 1.0f));
-			NCLDebug::DrawPoint(pobj->GetPosition() + backward_dir * 2.f, 0.2f, Vector4(0.7f, 0.2f, 0.0f, 1.0f));
 		}
 	}
 }
