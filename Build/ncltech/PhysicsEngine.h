@@ -62,6 +62,8 @@ The general runtime consists of:
 #define DEBUGDRAW_FLAGS_COLLISIONVOLUMES		0x4
 #define DEBUGDRAW_FLAGS_COLLISIONNORMALS		0x8
 
+#define G 0.2f
+
 
 struct CollisionPair	//Forms the output of the broadphase collision detection
 {

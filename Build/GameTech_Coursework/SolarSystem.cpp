@@ -42,24 +42,33 @@ void SolarSystem::OnInitializeScene()
 	//<--- SCENE CREATION --->
 
 	Object* obj;
-	obj = BuildSphereObject("SUN", Vector3(0.0f, 0.0f, 0.0f), 1.0f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 7);
+	obj = BuildSphereObject("SUN", Vector3(0.0f, 0.0f, 0.0f), 5.0f, true, 0.00001f, true, false, Vector4(1, 1, 1, 1), 7);
 	this->AddGameObject(obj);
-	obj = BuildSphereObject("MERCURY", Vector3(5.0f, 0.0f, 0.0f), 1.0f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 4);
+	obj = BuildSphereObject("MERCURY", Vector3(10.0f, 0.0f, 0.0f), 0.5f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 4);
+	obj->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 32.0f));
 	this->AddGameObject(obj);
-	obj = BuildSphereObject("VENUS", Vector3(10.0f, 0.0f, 0.0f), 1.0f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 9);
+	obj = BuildSphereObject("VENUS", Vector3(20.0f, 0.0f, 0.0f), 1.0f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 9);
+	obj->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 21.0f));
 	this->AddGameObject(obj);
-	obj = BuildSphereObject("EARTH", Vector3(15.0f, 0.0f, 0.0f), 1.0f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 1);
+	obj = BuildSphereObject("EARTH", Vector3(30.0f, 0.0f, 0.0f), 1.0f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 1);
+	obj->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 18.0f));
 	this->AddGameObject(obj);
-	obj = BuildSphereObject("MARS", Vector3(20.0f, 0.0f, 0.0f), 1.0f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 3);
+	obj = BuildSphereObject("MARS", Vector3(40.0f, 0.0f, 0.0f), 0.7f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 3);
+	obj->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 30.0f));
 	this->AddGameObject(obj);
-	obj = BuildSphereObject("JUPITER", Vector3(25.0f, 0.0f, 0.0f), 1.0f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 2);
+	obj = BuildSphereObject("JUPITER", Vector3(50.0f, 0.0f, 0.0f), 2.0f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 2);
+	obj->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 30.0f));
 	this->AddGameObject(obj);
-	obj = BuildSphereObject("SATURN", Vector3(30.0f, 0.0f, 0.0f), 1.0f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 6);
+	obj = BuildSphereObject("SATURN", Vector3(60.0f, 0.0f, 0.0f), 1.8f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 6);
+	obj->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 30.0f));
 	this->AddGameObject(obj);
-	obj = BuildSphereObject("URANUS", Vector3(35.0f, 0.0f, 0.0f), 1.0f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 8);
+	obj = BuildSphereObject("URANUS", Vector3(70.0f, 0.0f, 0.0f), 1.2f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 8);
+	obj->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 30.0f));
 	this->AddGameObject(obj);
-	obj = BuildSphereObject("NEPTUNE", Vector3(40.0f, 0.0f, 0.0f), 1.0f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 5);
+	obj = BuildSphereObject("NEPTUNE", Vector3(80.0f, 0.0f, 0.0f), 1.2f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 5);
+	obj->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 30.0f));
 	this->AddGameObject(obj);
+
 
 }
 
