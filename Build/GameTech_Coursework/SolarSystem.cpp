@@ -29,9 +29,9 @@ void SolarSystem::OnInitializeScene()
 	PhysicsEngine::Instance()->SetPaused(true);
 
 	//Set the camera position
-	SceneManager::Instance()->GetCamera()->SetPosition(Vector3(15.0f, 10.0f, -15.0f));
+	SceneManager::Instance()->GetCamera()->SetPosition(Vector3(50.0f, 10.0f, -50.0f));
 	SceneManager::Instance()->GetCamera()->SetYaw(140.f);
-	SceneManager::Instance()->GetCamera()->SetPitch(-20.f);
+	SceneManager::Instance()->GetCamera()->SetPitch(-5.f);
 
 	m_AccumTime = 0.0f;
 

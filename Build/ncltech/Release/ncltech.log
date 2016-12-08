@@ -1,4 +1,4 @@
-﻿Build started 08/12/2016 12:42:45.
+﻿Build started 08/12/2016 12:45:27.
      1>Project "D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\ncltech\ncltech.vcxproj" on node 3 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX /sdl /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /openmp /Fo"Release\\" /Fd"Release\ncltech.pdb" /Gd /TP /analyze- /errorReport:prompt SceneManager.cpp SceneRenderer.cpp
@@ -29,4 +29,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.96
+Time Elapsed 00:00:02.10

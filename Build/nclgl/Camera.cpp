@@ -29,7 +29,7 @@ void Camera::HandleMouse(float dt)
 
 void Camera::HandleKeyboard(float dt)
 {
-	float speed = 3.5f * dt;	//3.5m per second
+	float speed = 10.f * dt;
 
 
 	//Bounds check the pitch, to be between straight up and straight down ;)
