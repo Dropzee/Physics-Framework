@@ -29,9 +29,14 @@ void SolarSystem::OnInitializeScene()
 	PhysicsEngine::Instance()->SetPaused(true);
 
 	//Set the camera position
-	SceneManager::Instance()->GetCamera()->SetPosition(Vector3(15.0f, 10.0f, -15.0f));
+	SceneManager::Instance()->GetCamera()->SetPosition(Vector3(50.0f, 10.0f, -50.0f));
 	SceneManager::Instance()->GetCamera()->SetYaw(140.f);
-	SceneManager::Instance()->GetCamera()->SetPitch(-20.f);
+	SceneManager::Instance()->GetCamera()->SetPitch(-5.f);
+
+	//Testing camera (top down)
+	/*SceneManager::Instance()->GetCamera()->SetPosition(Vector3(0.0f, 50.0f, 0.0f));
+	SceneManager::Instance()->GetCamera()->SetYaw(0.f);
+	SceneManager::Instance()->GetCamera()->SetPitch(-90.f);*/
 
 	m_AccumTime = 0.0f;
 
@@ -41,34 +46,46 @@ void SolarSystem::OnInitializeScene()
 
 	//<--- SCENE CREATION --->
 
+	//Planets!!!!!!!
 	Object* obj;
 	obj = BuildSphereObject("SUN", Vector3(0.0f, 0.0f, 0.0f), 5.0f, true, 0.00001f, true, false, Vector4(1, 1, 1, 1), 7);
+	obj->Physics()->SetAngularVelocity(Vector3(0.0f, -0.5f, 0.0f));
 	this->AddGameObject(obj);
 	obj = BuildSphereObject("MERCURY", Vector3(10.0f, 0.0f, 0.0f), 0.5f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 4);
 	obj->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 32.0f));
+	obj->Physics()->SetAngularVelocity(Vector3(0.0f, -0.5f, 0.2f));
 	this->AddGameObject(obj);
 	obj = BuildSphereObject("VENUS", Vector3(20.0f, 0.0f, 0.0f), 1.0f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 9);
 	obj->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 21.0f));
+	obj->Physics()->SetAngularVelocity(Vector3(0.0f, -0.5f, 0.2f));
 	this->AddGameObject(obj);
 	obj = BuildSphereObject("EARTH", Vector3(30.0f, 0.0f, 0.0f), 1.0f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 1);
 	obj->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 18.0f));
+	obj->Physics()->SetAngularVelocity(Vector3(0.0f, -0.5f, 0.2f));
 	this->AddGameObject(obj);
 	obj = BuildSphereObject("MARS", Vector3(40.0f, 0.0f, 0.0f), 0.7f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 3);
-	obj->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 30.0f));
+	obj->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 16.0f));
+	obj->Physics()->SetAngularVelocity(Vector3(0.0f, -0.5f, 0.2f));
 	this->AddGameObject(obj);
 	obj = BuildSphereObject("JUPITER", Vector3(50.0f, 0.0f, 0.0f), 2.0f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 2);
-	obj->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 30.0f));
+	obj->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 15.0f));
+	obj->Physics()->SetAngularVelocity(Vector3(0.0f, -0.5f, 0.2f));
 	this->AddGameObject(obj);
 	obj = BuildSphereObject("SATURN", Vector3(60.0f, 0.0f, 0.0f), 1.8f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 6);
-	obj->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 30.0f));
+	obj->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 14.5f));
+	obj->Physics()->SetAngularVelocity(Vector3(0.0f, -0.5f, 0.2f));
 	this->AddGameObject(obj);
 	obj = BuildSphereObject("URANUS", Vector3(70.0f, 0.0f, 0.0f), 1.2f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 8);
-	obj->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 30.0f));
+	obj->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 14.2f));
+	obj->Physics()->SetAngularVelocity(Vector3(0.0f, -0.5f, 0.2f));
 	this->AddGameObject(obj);
 	obj = BuildSphereObject("NEPTUNE", Vector3(80.0f, 0.0f, 0.0f), 1.2f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 5);
-	obj->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 30.0f));
+	obj->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 14.0f));
+	obj->Physics()->SetAngularVelocity(Vector3(0.0f, -0.5f, 0.2f));
 	this->AddGameObject(obj);
 
+	//Target
+	
 
 }
 
@@ -82,16 +99,6 @@ void SolarSystem::OnCleanupScene()
 void SolarSystem::OnUpdateScene(float dt)
 {
 	m_AccumTime += dt;
-
-
-	// You can add status entries to the top left from anywhere in the program
-	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.2f, 0.2f, 1.0f), "Welcome to the Game Tech Framework!");
-	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.4f, 0.4f, 1.0f), "   \x01 You can move the black car with the arrow keys");
-
-	// You can print text using 'printf' formatting
-	bool donkeys = false;
-	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.4f, 0.4f, 1.0f), "   \x01 The %s in this scene are dragable", donkeys ? "donkeys" : "cubes");
-
 
 	// Lets sun a little bit...
 	Vector3 invLightDir = Matrix4::Rotation(15.f * dt, Vector3(0.0f, 1.0f, 0.0f)) * SceneManager::Instance()->GetInverseLightDirection();
