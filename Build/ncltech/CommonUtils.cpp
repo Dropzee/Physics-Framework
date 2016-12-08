@@ -92,7 +92,7 @@ Object* CommonUtils::BuildSphereObject(
 
 		pSphere->Physics()->SetPosition(pos);
 		pSphere->Physics()->SetInverseMass(inverse_mass);
-
+		
 		if (!collidable)
 		{
 			//Even without a collision shape, the inertia matrix for rotation has to be derived from the objects shape
@@ -103,7 +103,7 @@ Object* CommonUtils::BuildSphereObject(
 			CollisionShape* pColshape = new SphereCollisionShape(radius);
 			pSphere->Physics()->SetCollisionShape(pColshape);
 			pSphere->Physics()->SetInverseInertia(pColshape->BuildInverseInertia(inverse_mass));
-		}
+		}			
 	}
 
 	return pSphere;
@@ -117,22 +117,14 @@ Object* CommonUtils::BuildCuboidObject(
 	float inverse_mass,
 	bool collidable,
 	bool dragable,
-	const Vector4& color,
-	int texID)
+	const Vector4& color)
 {
 	ObjectMesh* pCuboid = dragable
 		? new ObjectMeshDragable(name)
 		: new ObjectMesh(name);
 
-	switch (texID) {
-	default:
-		pCuboid->SetTexture(CommonMeshes::CheckerboardTex(), false);
-		break;
-	case 0:
-		pCuboid->SetTexture(CommonMeshes::CheckerboardTex(), false);
-		break;
-	}
 	pCuboid->SetMesh(CommonMeshes::Cube(), false);
+	pCuboid->SetTexture(CommonMeshes::CheckerboardTex(), false);
 	pCuboid->SetLocalTransform(Matrix4::Scale(halfdims));
 	pCuboid->SetColour(color);
 	pCuboid->SetBoundingRadius(halfdims.Length());

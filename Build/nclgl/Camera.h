@@ -59,5 +59,4 @@ protected:
 	float	yaw;
 	float	pitch;
 	Vector3 position;
-	float sensitivity = 3;
 };

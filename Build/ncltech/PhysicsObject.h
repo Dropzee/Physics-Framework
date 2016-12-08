@@ -127,6 +127,4 @@ protected:
 	//<----------COLLISION------------>
 	CollisionShape*				m_pColShape;
 	PhysicsCollisionCallback	m_OnCollisionCallback;
-
-	bool inSpace;
 };

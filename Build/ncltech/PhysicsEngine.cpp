@@ -147,24 +147,21 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject* obj)
 {
 	/* TUTORIAL 2 */
 
-	//if (obj->inSpace) {
-	//	//Gravity
-	//	if (obj->m_InvMass > 0.0f) {
-	//		obj->m_LinearVelocity += m_Gravity * m_UpdateTimestep;
-	//	}
-	//}
-	//else {
-		//Planet Gravity
+	//Gravity
+	//if (obj->m_InvMass > 0.0f) {
+		//obj->m_LinearVelocity += m_Gravity * m_UpdateTimestep;
+
 		Vector3 dist, nDist, force;
 		for each (PhysicsObject* obj2 in m_PhysicsObjects) {
 			if (obj != obj2) {
 				dist = obj2->GetPosition() - obj->GetPosition();
 				nDist = dist;
 				nDist.Normalise();
-				force += nDist * G / (obj->GetInverseMass() * obj2->GetInverseMass() * Vector3::Dot(dist, dist));
+				force += nDist * G / (obj->GetInverseMass() * obj2->GetInverseMass() * Vector3::Dot(dist,dist)) ;
 				obj->SetForce(force);
 			}
 		}
+
 	//}
 
 	//Semi-Implicit

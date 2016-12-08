@@ -29,7 +29,7 @@ void Camera::HandleMouse(float dt)
 
 void Camera::HandleKeyboard(float dt)
 {
-	float speed = 3.5f * dt * sensitivity;	//3.5m per second
+	float speed = 3.5f * dt;	//3.5m per second
 
 
 	//Bounds check the pitch, to be between straight up and straight down ;)
@@ -60,12 +60,6 @@ void Camera::HandleKeyboard(float dt)
 	}
 	if (Window::GetKeyboard()->KeyDown(KEYBOARD_SPACE)) {
 		position.y -= speed;
-	}
-	if (Window::GetMouse()->GetWheelMovement() > 0 && sensitivity < 5) {
-		sensitivity += 0.05;
-	}
-	else if (Window::GetMouse()->GetWheelMovement() < 0 && sensitivity > 1) {
-		sensitivity -= 0.05;
 	}
 }
 
