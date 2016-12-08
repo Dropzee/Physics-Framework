@@ -79,7 +79,8 @@ void SolarSystem::OnInitializeScene()
 	obj->Physics()->SetAngularVelocity(Vector3(0.0f, -0.5f, 0.2f));
 	this->AddGameObject(obj);
 
-	obj = BuildCuboidObject("TARGET", Vector3(3.f, 0.0f, 0.0f), Vector3(2.f,2.f,2.f), false, 0.1f, true, false, Vector4(1, 1, 1, 1));
+	//Target
+	obj = BuildCuboidObject("TARGET", Vector3(5.f, 0.0f, 0.0f), Vector3(0.01f,2.5f,2.5f), true, 0.1f, true, false, Vector4(1, 1, 1, 1));
 	this->AddGameObject(obj);
 }
 
