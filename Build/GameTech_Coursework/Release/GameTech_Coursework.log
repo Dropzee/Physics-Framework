@@ -1,19 +1,19 @@
-﻿Build started 09/12/2016 11:13:32.
+﻿Build started 09/12/2016 12:10:33.
      1>Project "D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\GameTech_Coursework\GameTech_Coursework.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt SolarSystem.cpp
-         SolarSystem.cpp
-     1>SolarSystem.cpp(120): warning C4305: '+=': truncation from 'double' to 'float'
-     1>SolarSystem.cpp(123): warning C4305: '-=': truncation from 'double' to 'float'
-     1>SolarSystem.cpp(126): warning C4305: '+=': truncation from 'double' to 'float'
-     1>SolarSystem.cpp(129): warning C4305: '-=': truncation from 'double' to 'float'
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt TestScene.cpp
+         TestScene.cpp
+     1>TestScene.cpp(149): warning C4305: '+=': truncation from 'double' to 'float'
+     1>TestScene.cpp(152): warning C4305: '-=': truncation from 'double' to 'float'
+     1>TestScene.cpp(155): warning C4305: '+=': truncation from 'double' to 'float'
+     1>TestScene.cpp(158): warning C4305: '-=': truncation from 'double' to 'float'
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\Release\GameTech_Coursework.exe" /NOLOGO nclgl.lib ncltech.lib enet.lib ws2_32.lib Winmm.lib glew32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\Release\GameTech_Coursework.pdb" /OPT:REF /OPT:ICF /LTCG:incremental /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\Release\GameTech_Coursework.lib" /MACHINE:X86 /SAFESEH Release\main.obj
          Release\SolarSystem.obj
          Release\TestScene.obj
          Generating code
-         2 of 3315 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
-           1 functions were new in current compilation
+         1 of 3311 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+           0 functions were new in current compilation
            0 functions had inline decision re-evaluated but remain unchanged
          Finished generating code
          GameTech_Coursework.vcxproj -> D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\Release\GameTech_Coursework.exe
@@ -21,4 +21,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.93
+Time Elapsed 00:00:01.81

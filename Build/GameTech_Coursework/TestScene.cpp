@@ -30,6 +30,7 @@ void TestScene::OnInitializeScene()
 {
 	//Disable the physics engine (We will be starting this later!)
 	PhysicsEngine::Instance()->SetPaused(true);
+	PhysicsEngine::Instance()->setSpace(false);
 
 	//Set the camera position
 	SceneManager::Instance()->GetCamera()->SetPosition(Vector3(15.0f, 10.0f, -15.0f));
@@ -48,29 +49,10 @@ void TestScene::OnInitializeScene()
 	//Create Ground
 	//this->AddGameObject(BuildCuboidObject("Ground", Vector3(0.0f, -1.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), true, 0.0f, true, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
 
-	//Create Ground
-	this->AddGameObject(BuildCuboidObject(
-		"Ground",
-		Vector3(0.0f, -1.0f, 0.0f),
-		Vector3(20.0f, 1.0f, 20.0f),
-		true,
-		0.0f,
-		true,
-		false,
-		Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
-
-	//Create Player (See OnUpdateScene)
-	m_pPlayer = BuildCuboidObject(
-		"Player1",					// Optional: Name
-		Vector3(5.f, 0.5f, 0.0f),	// Position
-		Vector3(0.5f, 0.5f, 1.0f),  // Half-Dimensions
-		true,						// Physics Enabled?
-		0.1f,						// Physical Mass (must have physics enabled)
-		true,						// Physically Collidable (has collision shape)
-		false,						// Dragable by user?
-		Vector4(0.1f, 0.1f, 0.1f, 1.0f)); // Render colour
-	this->AddGameObject(m_pPlayer);
-
+	//Create Environment
+	this->AddGameObject(BuildCuboidObject("Ground", Vector3(0.0f, -1.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), true, 0.0f, true, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
+	this->AddGameObject(BuildCuboidObject("Wall1", Vector3(-21.0f, 10.0f, 0.0f), Vector3(1.0f, 10.0f, 20.0f), true, 0.0f, true, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
+	this->AddGameObject(BuildCuboidObject("Wall2", Vector3(0.0f, 10.0f, 21.0f), Vector3(20.0f, 10.0f, 1.0f), true, 0.0f, true, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
 
 	auto create_cube_tower = [&](const Vector3& offset, float cubewidth)
 	{
@@ -99,7 +81,7 @@ void TestScene::OnInitializeScene()
 
 	auto create_ball_cube = [&](const Vector3& offset, const Vector3& scale, float ballsize)
 	{
-		const int dims = 10;
+		const int dims = 5;
 		const Vector4 col = Vector4(1.0f, 0.5f, 0.2f, 1.0f);
 
 		for (int x = 0; x < dims; ++x)
@@ -114,7 +96,7 @@ void TestScene::OnInitializeScene()
 						pos,				// Position
 						ballsize,			// Half-Dimensions
 						true,				// Physics Enabled?
-						0.1f,				// Physical Mass (must have physics enabled)
+						1.0f,				// Physical Mass (must have physics enabled)
 						true,				// Physically Collidable (has collision shape)
 						false,				// Dragable by user?
 						col);// Render colour
@@ -126,12 +108,8 @@ void TestScene::OnInitializeScene()
 
 	//Create Cube Towers
 	create_cube_tower(Vector3(3.0f, 0.5f, 3.0f), 1.0f);
-	create_cube_tower(Vector3(-3.0f, 0.5f, -3.0f), 1.0f);
 
 	//Create Test Ball Pit
-	//create_ball_cube(Vector3(-8.0f, 0.5f, 12.0f), Vector3(0.5f, 0.5f, 0.5f), 0.1f);
-	//create_ball_cube(Vector3(8.0f, 0.5f, 12.0f), Vector3(0.3f, 0.3f, 0.3f), 0.1f);
-	//create_ball_cube(Vector3(-8.0f, 0.5f, -12.0f), Vector3(0.2f, 0.2f, 0.2f), 0.1f);
 	create_ball_cube(Vector3(8.0f, 0.5f, -12.0f), Vector3(0.5f, 0.5f, 0.5f), 0.1f);
 }
 
@@ -166,34 +144,6 @@ void TestScene::OnUpdateScene(float dt)
 		const float mv_speed = 10.f * dt;			//Motion: Meters per second
 		const float rot_speed = 90.f * dt;			//Rotation: Degrees per second
 
-		bool boosted = false;
-
-		PhysicsObject* pobj = m_pPlayer->Physics();
-		if (Window::GetKeyboard()->KeyDown(KEYBOARD_UP))
-		{
-			pobj->SetPosition(pobj->GetPosition() +
-				pobj->GetOrientation().ToMatrix3() * Vector3(0.0f, 0.0f, -mv_speed));
-			boosted = true;
-		}
-
-		if (Window::GetKeyboard()->KeyDown(KEYBOARD_DOWN))
-		{
-			pobj->SetPosition(pobj->GetPosition() +
-				pobj->GetOrientation().ToMatrix3()* Vector3(0.0f, 0.0f, mv_speed / 2.f));
-		}
-
-		if (Window::GetKeyboard()->KeyDown(KEYBOARD_LEFT))
-		{
-			pobj->SetOrientation(pobj->GetOrientation() *
-				Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 1.0f, 0.0f), rot_speed));
-		}
-
-		if (Window::GetKeyboard()->KeyDown(KEYBOARD_RIGHT))
-		{
-			pobj->SetOrientation(pobj->GetOrientation() *
-				Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 1.0f, 0.0f), -rot_speed));
-		}
-
 		//Projectile
 		if (Window::GetMouse()->GetWheelMovement() > 0 && speed <= 1) {
 			speed += 0.05;
@@ -217,26 +167,10 @@ void TestScene::OnUpdateScene(float dt)
 		if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_F)) {
 			Object* obj;
 			if (projectile == SPHERE) {
-				obj = BuildSphereObject(
-					"",																	// Optional: Name
-					SceneManager::Instance()->GetCamera()->GetPosition(),				// Position
-					1.0f * size,														// Half-Dimensions
-					true,																// Physics Enabled?
-					0.1f,																// Physical Mass (must have physics enabled)
-					true,																// Physically Collidable (has collision shape)
-					false,																// Dragable by user?
-					Vector4(1, 1, 1, 1));												// Render colour
+				obj = BuildSphereObject("", SceneManager::Instance()->GetCamera()->GetPosition(), 1.0f * size, true, 0.05f, true, false, Vector4(1, 1, 1, 1));
 			}
-			else {
-				obj = BuildCuboidObject(
-					"",																	// Optional: Name
-					SceneManager::Instance()->GetCamera()->GetPosition(),				// Position
-					Vector3(1.0f * size, 1.0f * size, 1.0f * size),						// Half-Dimensions
-					true,																// Physics Enabled?
-					0.1f,																// Physical Mass (must have physics enabled)
-					true,																// Physically Collidable (has collision shape)
-					false,																// Dragable by user?
-					Vector4(1, 1, 1, 1));												// Render colour
+			else{
+				obj = BuildCuboidObject("",	SceneManager::Instance()->GetCamera()->GetPosition(), Vector3(1.0f * size, 1.0f * size, 1.0f * size), true, 0.1f, true, false, Vector4(1, 1, 1, 1));
 			}
 
 			Matrix3 view = Matrix3(SceneManager::Instance()->GetCamera()->BuildViewMatrix());
@@ -245,19 +179,6 @@ void TestScene::OnUpdateScene(float dt)
 			obj->Physics()->SetLinearVelocity(forward * 50.0f * speed);
 			this->AddGameObject(obj);
 
-		}
-
-		// Also (and importantly), as the projMatrix/viewMatrix is all abstracted away
-		//  we can now use debug draw tools to render geometry in world-space from anywhere
-		//  in the program. Very useful for debugging!
-		if (boosted)
-		{
-			//Draw the rocket booster on the car using NCLDebug
-			Vector3 backward_dir = pobj->GetOrientation().ToMatrix3() * Vector3(0, 0, 1);
-			NCLDebug::DrawPoint(pobj->GetPosition() + backward_dir, 0.3f, Vector4(1.f, 0.7f, 0.0f, 1.0f));
-			NCLDebug::DrawPoint(pobj->GetPosition() + backward_dir * 1.333f, 0.26f, Vector4(0.9f, 0.5f, 0.0f, 1.0f));
-			NCLDebug::DrawPoint(pobj->GetPosition() + backward_dir * 1.666f, 0.23f, Vector4(0.8f, 0.3f, 0.0f, 1.0f));
-			NCLDebug::DrawPoint(pobj->GetPosition() + backward_dir * 2.f, 0.2f, Vector4(0.7f, 0.2f, 0.0f, 1.0f));
 		}
 	}
 }
