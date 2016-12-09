@@ -32,7 +32,8 @@ Object* CommonUtils::BuildSphereObject(
 	bool collidable,
 	bool dragable,
 	const Vector4& color,
-	int texID)
+	int texID,
+	bool space)
 {
 	ObjectMesh* pSphere = dragable
 		? new ObjectMeshDragable(name)
@@ -103,8 +104,11 @@ Object* CommonUtils::BuildSphereObject(
 			CollisionShape* pColshape = new SphereCollisionShape(radius);
 			pSphere->Physics()->SetCollisionShape(pColshape);
 			pSphere->Physics()->SetInverseInertia(pColshape->BuildInverseInertia(inverse_mass));
-		}			
+		}	
+		pSphere->Physics()->setSpace(space);		
 	}
+	
+	
 
 	return pSphere;
 }
@@ -117,7 +121,8 @@ Object* CommonUtils::BuildCuboidObject(
 	float inverse_mass,
 	bool collidable,
 	bool dragable,
-	const Vector4& color)
+	const Vector4& color,
+	bool space)
 {
 	ObjectMesh* pCuboid = dragable
 		? new ObjectMeshDragable(name)

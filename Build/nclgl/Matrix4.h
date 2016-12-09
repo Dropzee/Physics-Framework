@@ -95,7 +95,6 @@ public:
 		Vector3 vec;
 
 		float temp;
-
 		vec.x = v.x*values[0] + v.y*values[4] + v.z*values[8]  + values[12];
 		vec.y = v.x*values[1] + v.y*values[5] + v.z*values[9]  + values[13];
 		vec.z = v.x*values[2] + v.y*values[6] + v.z*values[10] + values[14];

@@ -112,6 +112,7 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectMesh.h" />
     <ClInclude Include="ObjectMeshDragable.h" />
+    <ClInclude Include="OriginConstraint.h" />
     <ClInclude Include="PhysicsEngine.h" />
     <ClInclude Include="PhysicsObject.h" />
     <ClInclude Include="RenderList.h" />

@@ -102,9 +102,13 @@ public:
 		return (m_OnCollisionCallback) ? m_OnCollisionCallback(obj_a, obj_b) : true;
 	}
 
+	void setSpace(bool b) { hasGravity = b; }
+
 protected:
 	Object*				m_pParent;			//Optional: Attached GameObject or NULL if none set
 	bool				m_Enabled;
+
+	bool hasGravity;
 
 	mutable bool		m_wsTransformInvalidated;
 	mutable Matrix4		m_wsTransform;
@@ -127,4 +131,5 @@ protected:
 	//<----------COLLISION------------>
 	CollisionShape*				m_pColShape;
 	PhysicsCollisionCallback	m_OnCollisionCallback;
+
 };

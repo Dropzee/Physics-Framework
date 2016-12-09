@@ -151,7 +151,10 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject* obj)
 	if(inSpace){
 		Vector3 dist, nDist, force;
 		for each (PhysicsObject* obj2 in m_PhysicsObjects) {
-			if (obj != obj2) {
+			if (!obj2->hasGravity) {
+				cout << "fuckyou";
+			}
+			if (obj != obj2 && obj2->hasGravity) {
 				dist = obj2->GetPosition() - obj->GetPosition();
 				nDist = dist;
 				nDist.Normalise();

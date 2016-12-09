@@ -3,6 +3,7 @@
 #include <nclgl\Vector4.h>
 #include <ncltech\PhysicsEngine.h>
 #include <ncltech\DistanceConstraint.h>
+#include <ncltech\OriginConstraint.h>
 #include <ncltech\SceneManager.h>
 #include <ncltech\CommonUtils.h>
 using namespace CommonUtils;
@@ -42,46 +43,56 @@ void SolarSystem::OnInitializeScene()
 	//<--- SCENE CREATION --->
 
 	//Planets!!!!!!!
-	Object* planet1 = BuildSphereObject("SUN", Vector3(0.0f, 0.0f, 0.0f), 5.0f, true, 0.00001f, true, false, Vector4(1, 1, 1, 1), 7);
+	Object* planet1 = BuildSphereObject("SUN", Vector3(0.0f, 0.0f, 0.0f), 5.0f, true, 0.00001f, true, false, Vector4(1, 1, 1, 1), 7, true);
 	planet1->Physics()->SetAngularVelocity(Vector3(0.0f, -0.5f, 0.0f));
 	planet1->Physics()->SetElasticity(0.0f);
 	this->AddGameObject(planet1);
-	Object* planet2 = BuildSphereObject("MERCURY", Vector3(10.0f, 0.0f, 0.0f), 0.5f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 4);
-	planet2->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 32.0f));
+	Object* planet2 = BuildSphereObject("MERCURY", Vector3(10.0f, 0.0f, 0.0f), 0.5f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 4, true);
+	planet2->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 42.0f));
 	planet2->Physics()->SetAngularVelocity(Vector3(0.0f, -0.5f, 0.2f));
 	this->AddGameObject(planet2);
-	Object* planet3 = BuildSphereObject("VENUS", Vector3(20.0f, 0.0f, 0.0f), 1.0f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 9);
-	planet3->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 21.0f));
+	Object* planet3 = BuildSphereObject("VENUS", Vector3(20.0f, 0.0f, 0.0f), 1.0f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 9, true);
+	planet3->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 30.0f));
 	planet3->Physics()->SetAngularVelocity(Vector3(0.0f, -0.5f, 0.2f));
 	this->AddGameObject(planet3);
-	Object* planet4 = BuildSphereObject("EARTH", Vector3(30.0f, 0.0f, 0.0f), 1.0f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 1);
-	planet4->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 18.0f));
-	planet4->Physics()->SetAngularVelocity(Vector3(0.0f, -0.5f, 0.2f));
-	this->AddGameObject(planet4);
-	Object* planet5 = BuildSphereObject("MARS", Vector3(40.0f, 0.0f, 0.0f), 0.7f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 3);
-	planet5->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 16.0f));
-	planet5->Physics()->SetAngularVelocity(Vector3(0.0f, -0.5f, 0.2f));
-	this->AddGameObject(planet5);
-	Object* planet6 = BuildSphereObject("JUPITER", Vector3(50.0f, 0.0f, 0.0f), 2.0f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 2);
-	planet6->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 15.0f));
-	planet6->Physics()->SetAngularVelocity(Vector3(0.0f, -0.5f, 0.2f));
-	this->AddGameObject(planet6);
-	Object* planet7 = BuildSphereObject("SATURN", Vector3(60.0f, 0.0f, 0.0f), 1.8f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 6);
-	planet7->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 14.5f));
-	planet7->Physics()->SetAngularVelocity(Vector3(0.0f, -0.5f, 0.2f));
-	this->AddGameObject(planet7);
-	Object* planet8 = BuildSphereObject("URANUS", Vector3(70.0f, 0.0f, 0.0f), 1.2f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 8);
-	planet8->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 14.2f));
-	planet8->Physics()->SetAngularVelocity(Vector3(0.0f, -0.5f, 0.2f));
-	this->AddGameObject(planet8);
-	Object* planet9 = BuildSphereObject("NEPTUNE", Vector3(80.0f, 0.0f, 0.0f), 1.2f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 5);
-	planet9->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 14.0f));
-	planet9->Physics()->SetAngularVelocity(Vector3(0.0f, -0.5f, 0.2f));
-	this->AddGameObject(planet9);
+	//Object* planet4 = BuildSphereObject("EARTH", Vector3(30.0f, 0.0f, 0.0f), 1.0f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 1, true);
+	//planet4->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 18.0f));
+	//planet4->Physics()->SetAngularVelocity(Vector3(0.0f, -0.5f, 0.2f));
+	//this->AddGameObject(planet4);
+	//Object* planet5 = BuildSphereObject("MARS", Vector3(40.0f, 0.0f, 0.0f), 0.7f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 3, true);
+	//planet5->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 16.0f));
+	//planet5->Physics()->SetAngularVelocity(Vector3(0.0f, -0.5f, 0.2f));
+	//this->AddGameObject(planet5);
+	//Object* planet6 = BuildSphereObject("JUPITER", Vector3(50.0f, 0.0f, 0.0f), 2.0f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 2, true);
+	//planet6->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 15.0f));
+	//planet6->Physics()->SetAngularVelocity(Vector3(0.0f, -0.5f, 0.2f));
+	//this->AddGameObject(planet6);
+	//Object* planet7 = BuildSphereObject("SATURN", Vector3(60.0f, 0.0f, 0.0f), 1.8f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 6, true);
+	//planet7->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 14.5f));
+	//planet7->Physics()->SetAngularVelocity(Vector3(0.0f, -0.5f, 0.2f));
+	//this->AddGameObject(planet7);
+	//Object* planet8 = BuildSphereObject("URANUS", Vector3(70.0f, 0.0f, 0.0f), 1.2f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 8, true);
+	//planet8->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 14.2f));
+	//planet8->Physics()->SetAngularVelocity(Vector3(0.0f, -0.5f, 0.2f));
+	//this->AddGameObject(planet8);
+	//Object* planet9 = BuildSphereObject("NEPTUNE", Vector3(80.0f, 0.0f, 0.0f), 1.2f, true, 0.1f, true, false, Vector4(1, 1, 1, 1), 5, true);
+	//planet9->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 14.0f));
+	//planet9->Physics()->SetAngularVelocity(Vector3(0.0f, -0.5f, 0.2f));
+	//this->AddGameObject(planet9);
 
 	//Target
-	Object* target = BuildCuboidObject("TARGET", Vector3(5.f, 0.0f, 0.0f), Vector3(0.01f,2.5f,2.5f), true, 0.1f, true, false, Vector4(1, 1, 1, 1));
+	Object* target = BuildCuboidObject("TARGET", Vector3(5.0f, 0.0f, 0.0f), Vector3(0.01f,2.5f,2.5f), true, 0.1f, true, false, Vector4(1, 1, 1, 1), false);
 	this->AddGameObject(target);
+
+	//PhysicsEngine::Instance()->AddConstraint(new DistanceConstraint(
+	//	planet1->Physics(),													//Physics Object A
+	//	target->Physics(),													//Physics Object B
+	//	planet1->Physics()->GetPosition(),									//Attachment Position on Object A	-> Currently the far right edge
+	//	target->Physics()->GetPosition()));	//Attachment Position on Object B	-> Currently the far left edge 
+
+	/*PhysicsEngine::Instance()->AddConstraint(new OriginConstraint(
+		planet1->Physics(),
+		planet1->Physics()->GetPosition()));*/
 }
 
 void SolarSystem::OnCleanupScene()
@@ -125,7 +136,9 @@ void SolarSystem::OnUpdateScene(float dt)
 				0.1f,																// Physical Mass (must have physics enabled)
 				true,																// Physically Collidable (has collision shape)
 				false,																// Dragable by user?
-				Vector4(1, 1, 1, 1));												// Render colour
+				Vector4(1, 1, 1, 1),												// Render colour
+				0,
+				true);
 
 			Matrix3 view = Matrix3(SceneManager::Instance()->GetCamera()->BuildViewMatrix());
 			Vector3 forward = Vector3(-view._13, -view._23, -view._33);

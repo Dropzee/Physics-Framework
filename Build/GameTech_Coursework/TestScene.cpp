@@ -54,41 +54,67 @@ void TestScene::OnInitializeScene()
 	this->AddGameObject(BuildCuboidObject("Wall1", Vector3(-21.0f, 10.0f, 0.0f), Vector3(1.0f, 10.0f, 20.0f), true, 0.0f, true, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
 	this->AddGameObject(BuildCuboidObject("Wall2", Vector3(0.0f, 10.0f, 21.0f), Vector3(20.0f, 10.0f, 1.0f), true, 0.0f, true, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
 
-	auto create_cube_tower = [&](const Vector3& offset, float cubewidth)
+	//Create Bouncing Spheres
+	for (int i = 0; i < 3; ++i)
 	{
-		const Vector3 halfdims = Vector3(cubewidth, cubewidth, cubewidth) * 0.5f;
-		for (int x = 0; x < 2; ++x)
-		{
-			for (int y = 0; y < 6; ++y)
-			{
-				uint idx = x * 5 + y;
-				Vector4 colour = GenColour(idx / 10.f, 0.5f);
-				Vector3 pos = offset + Vector3(x * cubewidth, 1e-3f + y * cubewidth, cubewidth * (idx % 2 == 0) ? 0.5f : -0.5f);
+		Vector4 colour = CommonUtils::GenColour(0.7f + i * 0.05f, 1.0f);
+		Object* obj = CommonUtils::BuildSphereObject(
+			"",
+			Vector3(5.0f + i * 5.0f, 5.0f, 15.0f),
+			1.0f,
+			true,
+			0.1f,
+			true,
+			true,
+			colour);
+		obj->Physics()->SetFriction(0.1f);
+		obj->Physics()->SetElasticity(i * 0.2f + 0.5f);
+		this->AddGameObject(obj);
+	}
 
-				Object* cube = BuildCuboidObject(
-					"",						// Optional: Name
-					pos,					// Position
-					halfdims,				// Half-Dimensions
-					true,					// Physics Enabled?
-					0.1f,					// Physical Mass (must have physics enabled)
-					true,					// Physically Collidable (has collision shape)
-					true,					// Dragable by user?
-					colour);				// Render colour
-				this->AddGameObject(cube);
-			}
-		}
-	};
+	//Create Bouncing Cubes
+	for (int i = 0; i < 3; ++i)
+	{
+		Vector4 colour = CommonUtils::GenColour(0.7f + i * 0.05f, 1.0f);
+		Object* obj = CommonUtils::BuildCuboidObject(
+			"",
+			Vector3(5.0f + i * 5.0f, 5.0f, 5.0f),
+			Vector3(1.f, 1.f, 1.f),
+			true,
+			0.1f,
+			true,
+			true,
+			colour);
+		obj->Physics()->SetFriction(0.1f);
+		obj->Physics()->SetElasticity(i * 0.2f + 0.5f);
+		this->AddGameObject(obj);
+	}
+
+	//Create Ramp
+	Object* ramp = CommonUtils::BuildCuboidObject(
+		"Ramp",
+		Vector3(-15.0f, 3.5f, -10.0f),
+		Vector3(4.0f, 0.5f, 8.0f),
+		true,
+		0.0f,
+		true,
+		false,
+		Vector4(1.0f, 0.7f, 1.0f, 1.0f));
+	ramp->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 0.0f, 1.0f), -20.0f));
+	ramp->Physics()->SetFriction(1.0f);
+	this->AddGameObject(ramp);
+
 
 	auto create_ball_cube = [&](const Vector3& offset, const Vector3& scale, float ballsize)
 	{
 		const int dims = 5;
 		const Vector4 col = Vector4(1.0f, 0.5f, 0.2f, 1.0f);
 
-		for (int x = 0; x < dims; ++x)
+		for (int x = 0; x < 1; ++x)
 		{
 			for (int y = 0; y < dims; ++y)
 			{
-				for (int z = 0; z < dims; ++z)
+				for (int z = 0; z < dims * 5; ++z)
 				{
 					Vector3 pos = offset + Vector3(scale.x *x, scale.y * y, scale.z * z);
 					Object* sphere = BuildSphereObject(
@@ -106,11 +132,8 @@ void TestScene::OnInitializeScene()
 		}
 	};
 
-	//Create Cube Towers
-	create_cube_tower(Vector3(3.0f, 0.5f, 3.0f), 1.0f);
-
 	//Create Test Ball Pit
-	create_ball_cube(Vector3(8.0f, 0.5f, -12.0f), Vector3(0.5f, 0.5f, 0.5f), 0.1f);
+	create_ball_cube(Vector3(0.0f, 0.5f, -16.0f), Vector3(0.5f, 0.5f, 0.5f), 0.1f);
 }
 
 void TestScene::OnCleanupScene()
