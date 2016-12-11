@@ -30,7 +30,7 @@ void TestScene::OnInitializeScene()
 {
 	//Disable the physics engine (We will be starting this later!)
 	PhysicsEngine::Instance()->SetPaused(true);
-	PhysicsEngine::Instance()->setSpace(false);
+	PhysicsEngine::Instance()->setDamping(0.999f);
 
 	//Set the camera position
 	SceneManager::Instance()->GetCamera()->SetPosition(Vector3(15.0f, 10.0f, -15.0f));

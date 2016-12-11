@@ -16,7 +16,7 @@ PhysicsObject::PhysicsObject()
 	, m_Friction(0.5f)
 	, m_Elasticity(0.9f)
 	, m_OnCollisionCallback(nullptr)
-	, hasGravity(false)
+	, objType(ORBIT)
 {
 }
 

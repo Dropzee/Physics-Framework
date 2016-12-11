@@ -37,7 +37,11 @@ class Object;
 //			  > This can be useful for AI to see if a player/agent is inside an area/collision volume
 typedef std::function<bool(PhysicsObject* this_obj, PhysicsObject* colliding_obj)> PhysicsCollisionCallback;
 
-
+enum TYPE {
+	TEST,
+	ORBIT,
+	TARGET
+};
 
 class PhysicsObject
 {
@@ -102,13 +106,12 @@ public:
 		return (m_OnCollisionCallback) ? m_OnCollisionCallback(obj_a, obj_b) : true;
 	}
 
-	void setSpace(bool b) { hasGravity = b; }
+	TYPE getObjType() { return objType; }
+	void setObjType(TYPE t) { objType = t; }
 
 protected:
 	Object*				m_pParent;			//Optional: Attached GameObject or NULL if none set
 	bool				m_Enabled;
-
-	bool hasGravity;
 
 	mutable bool		m_wsTransformInvalidated;
 	mutable Matrix4		m_wsTransform;
@@ -131,5 +134,7 @@ protected:
 	//<----------COLLISION------------>
 	CollisionShape*				m_pColShape;
 	PhysicsCollisionCallback	m_OnCollisionCallback;
+
+	TYPE objType;
 
 };

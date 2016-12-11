@@ -5,6 +5,7 @@
 #include "SphereCollisionShape.h"
 #include "CuboidCollisionShape.h"
 #include "CommonMeshes.h"
+#include "PhysicsObject.h"
 
 Vector4 CommonUtils::GenColour(float scalar, float alpha)
 {
@@ -33,7 +34,7 @@ Object* CommonUtils::BuildSphereObject(
 	bool dragable,
 	const Vector4& color,
 	int texID,
-	bool space)
+	TYPE type)
 {
 	ObjectMesh* pSphere = dragable
 		? new ObjectMeshDragable(name)
@@ -105,7 +106,7 @@ Object* CommonUtils::BuildSphereObject(
 			pSphere->Physics()->SetCollisionShape(pColshape);
 			pSphere->Physics()->SetInverseInertia(pColshape->BuildInverseInertia(inverse_mass));
 		}	
-		pSphere->Physics()->setSpace(space);		
+		pSphere->Physics()->setObjType(type);
 	}
 	
 	
@@ -122,14 +123,23 @@ Object* CommonUtils::BuildCuboidObject(
 	bool collidable,
 	bool dragable,
 	const Vector4& color,
-	bool space)
+	int texID,
+	TYPE type)
 {
 	ObjectMesh* pCuboid = dragable
 		? new ObjectMeshDragable(name)
 		: new ObjectMesh(name);
 
+	switch (texID) {
+	default:
+		pCuboid->SetTexture(CommonMeshes::CheckerboardTex(), false);
+		break;
+	case 0:
+		pCuboid->SetTexture(CommonMeshes::CheckerboardTex(), false);
+		break;
+	}
+
 	pCuboid->SetMesh(CommonMeshes::Cube(), false);
-	pCuboid->SetTexture(CommonMeshes::CheckerboardTex(), false);
 	pCuboid->SetLocalTransform(Matrix4::Scale(halfdims));
 	pCuboid->SetColour(color);
 	pCuboid->SetBoundingRadius(halfdims.Length());
@@ -157,6 +167,7 @@ Object* CommonUtils::BuildCuboidObject(
 			pCuboid->Physics()->SetCollisionShape(pColshape);
 			pCuboid->Physics()->SetInverseInertia(pColshape->BuildInverseInertia(inverse_mass));
 		}
+		pCuboid->Physics()->setObjType(type);
 	}
 
 	return pCuboid;

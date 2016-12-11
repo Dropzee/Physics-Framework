@@ -113,11 +113,7 @@ public:
 
 	float GetDeltaTime()				{ return m_UpdateTimestep; }
 
-	void setSpace(bool b) { 
-		inSpace = b;
-		if (b) { m_DampingFactor = 1.0f; }
-		else { m_DampingFactor = 0.999f; }
-	}
+	void setDamping(float df)			{ m_DampingFactor = df; }
 
 protected:
 	PhysicsEngine();
@@ -153,6 +149,4 @@ protected:
 
 	std::vector<Constraint*>	m_vpConstraints;		// Misc constraints applying to one or more physics objects
 	std::vector<Manifold*>		m_vpManifolds;			// Contact constraints between pairs of objects
-
-	bool inSpace;
 };
