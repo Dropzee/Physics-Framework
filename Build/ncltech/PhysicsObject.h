@@ -40,7 +40,8 @@ typedef std::function<bool(PhysicsObject* this_obj, PhysicsObject* colliding_obj
 enum TYPE {
 	TEST,
 	ORBIT,
-	TARGET
+	TARGET,
+	PROJECTILE
 };
 
 class PhysicsObject

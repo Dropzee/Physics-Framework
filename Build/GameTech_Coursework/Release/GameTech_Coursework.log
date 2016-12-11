@@ -1,5 +1,8 @@
-﻿  Generating code
-  All 3197 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+﻿  SolarSystem.cpp
+  Generating code
+  1 of 3242 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    21 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   GameTech_Coursework.vcxproj -> C:\Users\jackc\Documents\Uni\Year 4\CSC8503 - Advanced Game Technologies\Physics-Framework\Build\Release\GameTech_Coursework.exe
   GameTech_Coursework.vcxproj -> C:\Users\jackc\Documents\Uni\Year 4\CSC8503 - Advanced Game Technologies\Physics-Framework\Build\Release\GameTech_Coursework.pdb (Full PDB)

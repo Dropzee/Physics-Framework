@@ -151,7 +151,7 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject* obj)
 			obj->m_LinearVelocity += m_Gravity * m_UpdateTimestep;
 		}
 	}
-	if (obj->getObjType() == ORBIT) {
+	if (obj->getObjType() == ORBIT || obj->getObjType() == PROJECTILE) {
 		Vector3 dist, nDist, force;
 		for each (PhysicsObject* obj2 in m_PhysicsObjects) {
 			if (obj != obj2) {
@@ -304,16 +304,24 @@ void PhysicsEngine::NarrowPhaseCollisions()
 
 				if (okA && okB)
 				{
-					//-- TUTORIAL 5 CODE --
-					// Build full collision manifold that will also handle the collision response between the two objects in the solver stage
-					Manifold* manifold = new Manifold();
-					manifold->Initiate(cp.pObjectA, cp.pObjectB);
+					if (cp.pObjectA->getObjType()  == PROJECTILE) {
+						//delete
+					}
+					else if (cp.pObjectB->getObjType() == PROJECTILE) {
+						//delete
+					}
+					else {
+						//-- TUTORIAL 5 CODE --
+						// Build full collision manifold that will also handle the collision response between the two objects in the solver stage
+						Manifold* manifold = new Manifold();
+						manifold->Initiate(cp.pObjectA, cp.pObjectB);
 
-					// Construct contact points that form the perimeter of the collision manifold
-					colDetect.GenContactPoints(manifold);
+						// Construct contact points that form the perimeter of the collision manifold
+						colDetect.GenContactPoints(manifold);
 
-					// Add to list of manifolds that need solving
-					m_vpManifolds.push_back(manifold);
+						// Add to list of manifolds that need solving
+						m_vpManifolds.push_back(manifold);
+					}
 				}
 			}
 		}
