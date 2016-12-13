@@ -12,7 +12,8 @@ SolarSystem::SolarSystem(const std::string& friendly_name)
 	: Scene(friendly_name)
 	, m_AccumTime(0.0f)
 	, shotCount(0)
-	, reloadTime(180)
+	, reloadTime(300)
+	, score(0)
 {
 }
 
@@ -70,12 +71,11 @@ void SolarSystem::OnInitializeScene()
 	}
 
 	//Target
-	Object* target = BuildCuboidObject("TARGET", Vector3(5.0f, 0.0f, 0.0f), Vector3(0.01f,2.5f,2.5f), true, 0.1f, true, false, Vector4(1, 1, 1, 1), 0, TARGET);
+	Object* target = BuildCuboidObject("TARGET", Vector3(5.0f, 0.0f, 0.0f), Vector3(0.01f,2.5f,2.5f), true, 1.0f, true, false, Vector4(1, 1, 1, 1), 11, TARGET);
 	this->AddGameObject(target);
 
 	//Reload Symbol
-	reload = BuildCuboidObject("RELOAD", Vector3(-1000.0f, -1000.0f, -1000.0f), Vector3(2.5f, 2.5f, 2.5f), true, 0.1f, false, false, Vector4(1, 1, 1, 1), 12, REST);
-	reload->Physics()->SetAngularVelocity(Vector3(0.0f, 0.0f, 1.f));
+	reload = BuildCuboidObject("RELOAD", Vector3(-1000.0f, -1000.0f, -1000.0f), Vector3(0.01f, 2.5f, 2.5f), true, 0.1f, false, false, Vector4(1, 1, 1, 1), 12, REST);
 	this->AddGameObject(reload);
 
 	//Rotate the target with the sun
@@ -94,10 +94,17 @@ void SolarSystem::OnUpdateScene(float dt)
 {
 	m_AccumTime += dt;
 
+	score += PhysicsEngine::Instance()->getScoreUpdate();
+	spin = (spin + 2) % 360; 
+
 	if (shotCount == 6) {
+		//Show reload symbol flat against camera
 		Matrix3 view = Matrix3(SceneManager::Instance()->GetCamera()->BuildViewMatrix());
 		Vector3 forward = Vector3(-view._13, -view._23, -view._33);
 		reload->Physics()->SetPosition(SceneManager::Instance()->GetCamera()->GetPosition() + forward * 20);
+		Matrix4 mat4view = Matrix4(view) * Matrix4::Rotation(spin, forward);
+		Quaternion q = Quaternion::FromMatrix(mat4view);
+		reload->Physics()->SetOrientation(q * Quaternion::AxisAngleToQuaterion(Vector3(0, 1, 0), -90.0f));
 		reloadTime--;
 		if (reloadTime == 0) {
 			reload->Physics()->SetPosition(Vector3(-1000, -1000, -1000));
@@ -107,13 +114,18 @@ void SolarSystem::OnUpdateScene(float dt)
 	}
 
 	// You can add status entries to the top left from anywhere in the program
-	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.2f, 0.2f, 1.0f), "Welcome to the Game Tech Framework!");
-	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.4f, 0.4f, 1.0f), "   \x01 You can move the black car with the arrow keys");
-
-	// You can print text using 'printf' formatting
-	bool donkeys = false;
-	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.4f, 0.4f, 1.0f), "   \x01 The %s in this scene are dragable", donkeys ? "donkeys" : "cubes");
-
+	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.2f, 0.2f, 1.0f), "Controls:");
+	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.4f, 0.4f, 1.0f), "   \x01 Movement - W/A/S/D");
+	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.4f, 0.4f, 1.0f), "   \x01 Camera Rotate - HOLD RMB");
+	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.4f, 0.4f, 1.0f), "   \x01 Fire Projectile - F");
+	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.4f, 0.4f, 1.0f), "   \x01 Quit - ECS");
+	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.2f, 0.2f, 1.0f), "Score: " + to_string(score));
+	if (shotCount != 6) {
+		NCLDebug::AddStatusEntry(Vector4(1.0f, 0.2f, 0.2f, 1.0f), "Ammo: " + to_string(6 - shotCount));
+	}
+	else {
+		NCLDebug::AddStatusEntry(Vector4(1.0f, 0.2f, 0.2f, 1.0f), "Ammo: RELOADING!!!");
+	}
 
 	// Lets sun a little bit...
 	Vector3 invLightDir = Matrix4::Rotation(15.f * dt, Vector3(0.0f, 1.0f, 0.0f)) * SceneManager::Instance()->GetInverseLightDirection();
@@ -135,13 +147,13 @@ void SolarSystem::OnUpdateScene(float dt)
 			Object* projectile = BuildSphereObject(
 					"",																	// Optional: Name
 					SceneManager::Instance()->GetCamera()->GetPosition(),				// Position
-					1.0f,																// Half-Dimensions
+					0.1f,																// Half-Dimensions
 					true,																// Physics Enabled?
 					0.1f,																// Physical Mass (must have physics enabled)
 					true,																// Physically Collidable (has collision shape)
 					false,																// Dragable by user?
 					Vector4(1, 1, 1, 1),												// Render colour
-					0,
+					10,
 					PROJECTILE);
 				projectiles[shotCount] = projectile;
 				this->AddGameObject(projectile);

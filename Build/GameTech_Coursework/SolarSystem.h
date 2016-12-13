@@ -18,6 +18,10 @@ protected:
 
 	Object* projectiles[6];
 	int shotCount;
+
 	int reloadTime;
 	Object* reload;
+	int spin;
+
+	int score;
 };

@@ -115,6 +115,10 @@ public:
 
 	void setDamping(float df)			{ m_DampingFactor = df; }
 
+	int getScoreUpdate()				{ int temp = score; 
+	score = 0; 
+	return temp; };
+
 protected:
 	PhysicsEngine();
 	~PhysicsEngine();
@@ -134,6 +138,8 @@ protected:
 	//Solves all physical constraints (constraints and manifolds)
 	void SolveConstraints();
 
+	
+
 protected:
 	bool		m_IsPaused;
 	float		m_UpdateTimestep, m_UpdateAccum;
@@ -149,4 +155,6 @@ protected:
 
 	std::vector<Constraint*>	m_vpConstraints;		// Misc constraints applying to one or more physics objects
 	std::vector<Manifold*>		m_vpManifolds;			// Contact constraints between pairs of objects
+
+	int	score;
 };

@@ -14,6 +14,7 @@ void PhysicsEngine::SetDefaults()
 	m_UpdateAccum = 0.0f;
 	m_Gravity = Vector3(0.0f, -9.81f, 0.0f);
 	m_DampingFactor =  0.999f;
+	score = 0;
 }
 
 PhysicsEngine::PhysicsEngine()
@@ -304,9 +305,17 @@ void PhysicsEngine::NarrowPhaseCollisions()
 				{
 					if (cp.pObjectA->getObjType()  == PROJECTILE) {
 						cp.pObjectA->SetPosition(Vector3(1000.f, 1000.f, 1000.f));
+						if (cp.pObjectB->getObjType() == TARGET) {
+							float dist = (cp.pObjectA->GetPosition() - cp.pObjectB->GetPosition()).Length();
+							score += 10 * (100 / (int)dist);
+						}
 					}
 					else if (cp.pObjectB->getObjType() == PROJECTILE) {
 						cp.pObjectB->SetPosition(Vector3(1000.f, 1000.f, 1000.f));
+						if (cp.pObjectA->getObjType() == TARGET) {
+							float dist = (cp.pObjectA->GetPosition() - cp.pObjectB->GetPosition()).Length();
+							score += 10 * (100 / (int)dist);
+						}
 					}
 					else {
 						//-- TUTORIAL 5 CODE --
