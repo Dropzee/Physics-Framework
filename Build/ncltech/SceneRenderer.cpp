@@ -257,10 +257,6 @@ void SceneRenderer::UpdateScene(float dt)
 	}		
 }
 
-
-
-
-
 void SceneRenderer::RenderShadowMaps()
 {
 	if (m_pScene != NULL)

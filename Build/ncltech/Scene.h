@@ -70,7 +70,6 @@ public:
 	//		OnRender and OnUpdate functions automatically
 	void AddGameObject(Object* game_object);
 
-
 	// Simple recursive search
 	//   - Searches all Objects in the tree and returns the first one with the name specified
 	//     or NULL if none can be found.

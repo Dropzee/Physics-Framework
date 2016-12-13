@@ -1,1 +1,9 @@
-﻿  nclgl.vcxproj -> C:\Users\jackc\Documents\Uni\Year 4\CSC8503 - Advanced Game Technologies\Physics-Framework\Build\Release\nclgl.lib
+﻿Build started 13/12/2016 10:28:12.
+     1>Project "D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\nclgl\nclgl.vcxproj" on node 2 (Build target(s)).
+     1>Lib:
+         nclgl.vcxproj -> D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\Release\nclgl.lib
+     1>Done Building Project "D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\nclgl\nclgl.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.18

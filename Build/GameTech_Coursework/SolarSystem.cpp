@@ -11,10 +11,9 @@ using namespace CommonUtils;
 SolarSystem::SolarSystem(const std::string& friendly_name)
 	: Scene(friendly_name)
 	, m_AccumTime(0.0f)
-	, m_pPlayer(NULL)
+	, shotCount(0)
+	, reloadTime(180)
 {
-	speed = 0.5f;
-	size = 0.5f;
 }
 
 SolarSystem::~SolarSystem()
@@ -74,6 +73,11 @@ void SolarSystem::OnInitializeScene()
 	Object* target = BuildCuboidObject("TARGET", Vector3(5.0f, 0.0f, 0.0f), Vector3(0.01f,2.5f,2.5f), true, 0.1f, true, false, Vector4(1, 1, 1, 1), 0, TARGET);
 	this->AddGameObject(target);
 
+	//Reload Symbol
+	reload = BuildCuboidObject("RELOAD", Vector3(-1000.0f, -1000.0f, -1000.0f), Vector3(2.5f, 2.5f, 2.5f), true, 0.1f, false, false, Vector4(1, 1, 1, 1), 0, REST);
+	reload->Physics()->SetAngularVelocity(Vector3(0.0f, 0.0f, 1.f));
+	this->AddGameObject(reload);
+
 	//Rotate the target with the sun
 	PhysicsEngine::Instance()->AddConstraint(new DistanceConstraint(sun->Physics(), target->Physics(), sun->Physics()->GetPosition(), target->Physics()->GetPosition()));	
 
@@ -90,6 +94,17 @@ void SolarSystem::OnUpdateScene(float dt)
 {
 	m_AccumTime += dt;
 
+	if (shotCount == 6) {
+		Matrix3 view = Matrix3(SceneManager::Instance()->GetCamera()->BuildViewMatrix());
+		Vector3 forward = Vector3(-view._13, -view._23, -view._33);
+		reload->Physics()->SetPosition(SceneManager::Instance()->GetCamera()->GetPosition() + forward * 20);
+		reloadTime--;
+		if (reloadTime == 0) {
+			reload->Physics()->SetPosition(Vector3(-1000, -1000, -1000));
+			reloadTime = 180;
+			shotCount = 0;
+		}
+	}
 
 	// You can add status entries to the top left from anywhere in the program
 	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.2f, 0.2f, 1.0f), "Welcome to the Game Tech Framework!");
@@ -111,25 +126,32 @@ void SolarSystem::OnUpdateScene(float dt)
 		const float rot_speed = 90.f * dt;			//Rotation: Degrees per second
 
 		//Projectile
-		if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_F)) {
-			Object* obj = BuildSphereObject(
-				"",																	// Optional: Name
-				SceneManager::Instance()->GetCamera()->GetPosition(),				// Position
-				1.0f * size,														// Half-Dimensions
-				true,																// Physics Enabled?
-				0.1f,																// Physical Mass (must have physics enabled)
-				true,																// Physically Collidable (has collision shape)
-				false,																// Dragable by user?
-				Vector4(1, 1, 1, 1),												// Render colour
-				0,
-				PROJECTILE);
-
+		if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_F) && shotCount != 6) {
+			
 			Matrix3 view = Matrix3(SceneManager::Instance()->GetCamera()->BuildViewMatrix());
 			Vector3 forward = Vector3(-view._13, -view._23, -view._33);
 
-			obj->Physics()->SetLinearVelocity(forward * 50.0f);
-			this->AddGameObject(obj);
+			if(projectiles[shotCount] == NULL){
+			Object* projectile = BuildSphereObject(
+					"",																	// Optional: Name
+					SceneManager::Instance()->GetCamera()->GetPosition(),				// Position
+					1.0f,																// Half-Dimensions
+					true,																// Physics Enabled?
+					0.1f,																// Physical Mass (must have physics enabled)
+					true,																// Physically Collidable (has collision shape)
+					false,																// Dragable by user?
+					Vector4(1, 1, 1, 1),												// Render colour
+					0,
+					PROJECTILE);
+				projectiles[shotCount] = projectile;
+				this->AddGameObject(projectile);
+			}
+			else {
+				projectiles[shotCount]->Physics()->SetPosition(SceneManager::Instance()->GetCamera()->GetPosition());
+			}
 
+			projectiles[shotCount]->Physics()->SetLinearVelocity(forward * 50.0f);
+			shotCount++;
 		}
 	}
 }

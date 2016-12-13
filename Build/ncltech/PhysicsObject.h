@@ -41,7 +41,8 @@ enum TYPE {
 	TEST,
 	ORBIT,
 	TARGET,
-	PROJECTILE
+	PROJECTILE,
+	REST
 };
 
 class PhysicsObject
@@ -137,5 +138,4 @@ protected:
 	PhysicsCollisionCallback	m_OnCollisionCallback;
 
 	TYPE objType;
-
 };

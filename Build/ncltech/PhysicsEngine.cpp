@@ -145,7 +145,8 @@ void PhysicsEngine::SolveConstraints()
 
 void PhysicsEngine::UpdatePhysicsObject(PhysicsObject* obj)
 {
-	/* TUTORIAL 2 */
+
+	//Gravity
 	if (obj->getObjType() == TEST) {
 		if (obj->m_InvMass > 0.0f) {
 			obj->m_LinearVelocity += m_Gravity * m_UpdateTimestep;
@@ -163,9 +164,6 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject* obj)
 			}
 		}
 	}
-
-		
-
 
 	//Semi-Implicit
 	obj->m_LinearVelocity += obj->m_Force * obj->m_InvMass * m_UpdateTimestep;
@@ -305,10 +303,10 @@ void PhysicsEngine::NarrowPhaseCollisions()
 				if (okA && okB)
 				{
 					if (cp.pObjectA->getObjType()  == PROJECTILE) {
-						//delete
+						cp.pObjectA->SetPosition(Vector3(1000.f, 1000.f, 1000.f));
 					}
 					else if (cp.pObjectB->getObjType() == PROJECTILE) {
-						//delete
+						cp.pObjectB->SetPosition(Vector3(1000.f, 1000.f, 1000.f));
 					}
 					else {
 						//-- TUTORIAL 5 CODE --
