@@ -1,27 +1,8 @@
-﻿Build started 13/12/2016 16:42:03.
-     1>Project "D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\ncltech\ncltech.vcxproj" on node 3 (Rebuild target(s)).
-     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppClean.targets(76,5): warning : The process cannot access the file 'd:\documents\csc8503 - advanced game technologies\framework (tutorials)\physics-framework\build\ncltech\release\scenerenderer.obj' because it is being used by another process.
+﻿Build started 13/12/2016 17:34:13.
+     1>Project "D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\ncltech\ncltech.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX /sdl /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /openmp /Fo"Release\\" /Fd"Release\ncltech.pdb" /Gd /TP /analyze- /errorReport:prompt CollisionDetectionSAT.cpp CommonMeshes.cpp CommonUtils.cpp CuboidCollisionShape.cpp NetworkBase.cpp ObjectMeshDragable.cpp NCLDebug.cpp Object.cpp Hull.cpp Manifold.cpp PhysicsEngine.cpp PhysicsObject.cpp RenderList.cpp SceneManager.cpp SceneRenderer.cpp Scene.cpp ScreenPicker.cpp ObjectMesh.cpp SphereCollisionShape.cpp
-         CollisionDetectionSAT.cpp
-         CommonMeshes.cpp
-         CommonUtils.cpp
-         CuboidCollisionShape.cpp
-         NetworkBase.cpp
-         ObjectMeshDragable.cpp
-         NCLDebug.cpp
-         Object.cpp
-         Hull.cpp
-         Manifold.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX /sdl /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /openmp /Fo"Release\\" /Fd"Release\ncltech.pdb" /Gd /TP /analyze- /errorReport:prompt PhysicsEngine.cpp
          PhysicsEngine.cpp
-         PhysicsObject.cpp
-         RenderList.cpp
-         SceneManager.cpp
-         SceneRenderer.cpp
-         Scene.cpp
-         ScreenPicker.cpp
-         ObjectMesh.cpp
-         SphereCollisionShape.cpp
        Lib:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\Lib.exe /OUT:"D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\Release\ncltech.lib" /NOLOGO /LTCG Release\CollisionDetectionSAT.obj
          Release\CommonMeshes.obj
@@ -43,8 +24,8 @@
          Release\ObjectMesh.obj
          Release\SphereCollisionShape.obj
          ncltech.vcxproj -> D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\Release\ncltech.lib
-     1>Done Building Project "D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\ncltech\ncltech.vcxproj" (Rebuild target(s)).
+     1>Done Building Project "D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\ncltech\ncltech.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:11.18
+Time Elapsed 00:00:01.26

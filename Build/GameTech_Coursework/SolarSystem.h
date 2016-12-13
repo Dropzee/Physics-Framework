@@ -26,4 +26,7 @@ protected:
 	int score;
 
 	Object* mccree;
+	bool ultimate;
+	bool autofire;
+	int firetime;
 };

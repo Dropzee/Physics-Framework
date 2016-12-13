@@ -14,6 +14,9 @@ SolarSystem::SolarSystem(const std::string& friendly_name)
 	, shotCount(0)
 	, reloadTime(300)
 	, score(0)
+	, ultimate(false)
+	, autofire(false)
+	, firetime(60)
 {
 }
 
@@ -100,6 +103,17 @@ void SolarSystem::OnUpdateScene(float dt)
 	score += PhysicsEngine::Instance()->getScoreUpdate();
 	spin = (spin + 2) % 360; 
 
+	if (ultimate) {
+		if (firetime % 10 == 0) {
+			autofire = true;
+		}
+		else {
+			autofire = false;
+		}
+		firetime--;
+	}
+	
+
 	if (shotCount == 6) {
 		//Show reload symbol flat against camera
 		Matrix3 view = Matrix3(SceneManager::Instance()->GetCamera()->BuildViewMatrix());
@@ -120,9 +134,13 @@ void SolarSystem::OnUpdateScene(float dt)
 		if (reloadTime == 0) {
 			reload->Physics()->SetPosition(Vector3(-1000, -1000, -1000));
 			mccree->Physics()->SetPosition(Vector3(-1000, 1000, -1000));
-			reloadTime = 180;
+			reloadTime = 300;
 			shotCount = 0;
+			ultimate = false;
+			autofire = false;
+			firetime = 60;
 		}
+		
 	}
 
 	// You can add status entries to the top left from anywhere in the program
@@ -149,8 +167,12 @@ void SolarSystem::OnUpdateScene(float dt)
 		const float mv_speed = 10.f * dt;			//Motion: Meters per second
 		const float rot_speed = 90.f * dt;			//Rotation: Degrees per second
 
+		if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_M) && shotCount != 6 && !ultimate) {
+			ultimate = true;
+		}
+
 		//Projectile
-		if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_F) && shotCount != 6) {
+		if ((Window::GetKeyboard()->KeyTriggered(KEYBOARD_F) && shotCount != 6) || (autofire && shotCount != 6)) {
 			
 			Matrix3 view = Matrix3(SceneManager::Instance()->GetCamera()->BuildViewMatrix());
 			Vector3 forward = Vector3(-view._13, -view._23, -view._33);
