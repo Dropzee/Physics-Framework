@@ -74,13 +74,16 @@ void SolarSystem::OnInitializeScene()
 	Object* target = BuildCuboidObject("TARGET", Vector3(5.0f, 0.0f, 0.0f), Vector3(0.01f,2.5f,2.5f), true, 1.0f, true, false, Vector4(1, 1, 1, 1), 11, TARGET);
 	this->AddGameObject(target);
 
-	//Reload Symbol
-	reload = BuildCuboidObject("RELOAD", Vector3(-1000.0f, -1000.0f, -1000.0f), Vector3(0.01f, 2.5f, 2.5f), true, 0.1f, false, false, Vector4(1, 1, 1, 1), 12, REST);
-	this->AddGameObject(reload);
-
 	//Rotate the target with the sun
 	PhysicsEngine::Instance()->AddConstraint(new DistanceConstraint(sun->Physics(), target->Physics(), sun->Physics()->GetPosition(), target->Physics()->GetPosition()));	
 
+	//Reload Symbol
+	reload = BuildCuboidObject("RELOAD", Vector3(-1000.0f, -1000.0f, -1000.0f), Vector3(0.01f, 0.2f, 0.2f), true, 0.1f, false, false, Vector4(1, 1, 1, 1), 12, REST);
+	this->AddGameObject(reload);
+
+	//...it's high noon...
+	mccree = BuildCuboidObject("McCree", Vector3(-1000.0f, 1000.0f, -1000.0f), Vector3(0.001f, 0.2f, 0.2f), true, 0.1f, false, false, Vector4(1, 1, 1, 1), 13, REST);
+	this->AddGameObject(mccree);
 }
 
 void SolarSystem::OnCleanupScene()
@@ -101,13 +104,22 @@ void SolarSystem::OnUpdateScene(float dt)
 		//Show reload symbol flat against camera
 		Matrix3 view = Matrix3(SceneManager::Instance()->GetCamera()->BuildViewMatrix());
 		Vector3 forward = Vector3(-view._13, -view._23, -view._33);
-		reload->Physics()->SetPosition(SceneManager::Instance()->GetCamera()->GetPosition() + forward * 20);
-		Matrix4 mat4view = Matrix4(view) * Matrix4::Rotation(spin, forward);
+
+		mccree->Physics()->SetPosition(SceneManager::Instance()->GetCamera()->GetPosition() + forward * 2 + Vector3(-view._13 - 2.0f, -view._23 - 1.2f, 0));
+		reload->Physics()->SetPosition(SceneManager::Instance()->GetCamera()->GetPosition() + forward * 2);
+
+		Matrix4 mat4view = Matrix4(view);
 		Quaternion q = Quaternion::FromMatrix(mat4view);
+		mccree->Physics()->SetOrientation(q * Quaternion::AxisAngleToQuaterion(Vector3(0, 1, 0), -90.0f));
+
+		mat4view = Matrix4(view) * Matrix4::Rotation(spin, forward);
+		q = Quaternion::FromMatrix(mat4view);
 		reload->Physics()->SetOrientation(q * Quaternion::AxisAngleToQuaterion(Vector3(0, 1, 0), -90.0f));
+		
 		reloadTime--;
 		if (reloadTime == 0) {
 			reload->Physics()->SetPosition(Vector3(-1000, -1000, -1000));
+			mccree->Physics()->SetPosition(Vector3(-1000, 1000, -1000));
 			reloadTime = 180;
 			shotCount = 0;
 		}

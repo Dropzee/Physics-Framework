@@ -24,4 +24,6 @@ protected:
 	int spin;
 
 	int score;
+
+	Object* mccree;
 };
