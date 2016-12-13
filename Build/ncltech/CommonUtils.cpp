@@ -76,6 +76,9 @@ Object* CommonUtils::BuildSphereObject(
 	case 9:
 		pSphere->SetTexture(CommonMeshes::VenusTex(), false);
 		break;
+	case 10:
+		pSphere->SetTexture(CommonMeshes::AstroidTex(), false);
+		break;
 	}
 
 	pSphere->SetLocalTransform(Matrix4::Scale(Vector3(radius, radius, radius)));
@@ -136,6 +139,15 @@ Object* CommonUtils::BuildCuboidObject(
 		break;
 	case 0:
 		pCuboid->SetTexture(CommonMeshes::CheckerboardTex(), false);
+		break;
+	case 11:
+		pCuboid->SetTexture(CommonMeshes::TargetTex(), false);
+		break;
+	case 12:
+		pCuboid->SetTexture(CommonMeshes::ReloadTex(), false);
+		break;
+	case 13:
+		pCuboid->SetTexture(CommonMeshes::MccreeTex(), false); //...it's high noon...
 		break;
 	}
 

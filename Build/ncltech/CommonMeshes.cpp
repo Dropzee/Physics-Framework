@@ -16,6 +16,10 @@ GLuint CommonMeshes::m_saturnTex = 6;
 GLuint CommonMeshes::m_sunTex = 7;
 GLuint CommonMeshes::m_uranusTex = 8;
 GLuint CommonMeshes::m_venusTex = 9;
+GLuint CommonMeshes::m_astroid = 10;
+GLuint CommonMeshes::m_target = 11;
+GLuint CommonMeshes::m_reload = 12;
+GLuint CommonMeshes::m_mccree = 13; //...it's high noon...
 
 void CommonMeshes::InitializeMeshes()
 {
@@ -31,6 +35,10 @@ void CommonMeshes::InitializeMeshes()
 		m_sunTex = SOIL_load_OGL_texture(TEXTUREDIR"Planets\\sun.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
 		m_uranusTex = SOIL_load_OGL_texture(TEXTUREDIR"Planets\\uranus.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
 		m_venusTex = SOIL_load_OGL_texture(TEXTUREDIR"Planets\\venus.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
+		m_astroid = SOIL_load_OGL_texture(TEXTUREDIR"astroid.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
+		m_target = SOIL_load_OGL_texture(TEXTUREDIR"target.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
+		m_reload = SOIL_load_OGL_texture(TEXTUREDIR"reload.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
+		m_mccree = SOIL_load_OGL_texture(TEXTUREDIR"mccree.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT); //...it's high noon...
 
 		glBindTexture(GL_TEXTURE_2D, m_CheckerboardTex);
 		glBindTexture(GL_TEXTURE_2D, m_earthTex);
@@ -42,6 +50,10 @@ void CommonMeshes::InitializeMeshes()
 		glBindTexture(GL_TEXTURE_2D, m_sunTex);
 		glBindTexture(GL_TEXTURE_2D, m_uranusTex);
 		glBindTexture(GL_TEXTURE_2D, m_venusTex);
+		glBindTexture(GL_TEXTURE_2D, m_astroid);
+		glBindTexture(GL_TEXTURE_2D, m_target);
+		glBindTexture(GL_TEXTURE_2D, m_reload);
+		glBindTexture(GL_TEXTURE_2D, m_mccree); //...it's high noon...
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -58,6 +70,10 @@ void CommonMeshes::InitializeMeshes()
 		glBindTexture(GL_TEXTURE_2D, 7);
 		glBindTexture(GL_TEXTURE_2D, 8);
 		glBindTexture(GL_TEXTURE_2D, 9);
+		glBindTexture(GL_TEXTURE_2D, 10);
+		glBindTexture(GL_TEXTURE_2D, 11);
+		glBindTexture(GL_TEXTURE_2D, 12);
+		glBindTexture(GL_TEXTURE_2D, 13); //...it's high noon...
 
 		m_pPlane = Mesh::GenerateQuadTexCoordCol(Vector2(1.f, 1.f), Vector2(0.0f, 1.0f), Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 		m_pCube = new OBJMesh(MESHDIR"cube.obj");

@@ -74,7 +74,7 @@ void SolarSystem::OnInitializeScene()
 	this->AddGameObject(target);
 
 	//Reload Symbol
-	reload = BuildCuboidObject("RELOAD", Vector3(-1000.0f, -1000.0f, -1000.0f), Vector3(2.5f, 2.5f, 2.5f), true, 0.1f, false, false, Vector4(1, 1, 1, 1), 0, REST);
+	reload = BuildCuboidObject("RELOAD", Vector3(-1000.0f, -1000.0f, -1000.0f), Vector3(2.5f, 2.5f, 2.5f), true, 0.1f, false, false, Vector4(1, 1, 1, 1), 12, REST);
 	reload->Physics()->SetAngularVelocity(Vector3(0.0f, 0.0f, 1.f));
 	this->AddGameObject(reload);
 

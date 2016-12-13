@@ -53,7 +53,10 @@ public:
 	static GLuint SunTex() { return m_sunTex; }
 	static GLuint UranusTex() { return m_uranusTex; }
 	static GLuint VenusTex() { return m_venusTex; }
-
+	static GLuint AstroidTex() { return m_astroid; }
+	static GLuint TargetTex() { return m_target; }
+	static GLuint ReloadTex() { return m_reload; }
+	static GLuint MccreeTex() { return m_mccree; } //...it's high noon...
 
 protected:
 	//Called by SceneRenderer
@@ -76,4 +79,8 @@ protected:
 	static GLuint m_sunTex;
 	static GLuint m_uranusTex;
 	static GLuint m_venusTex;
+	static GLuint m_astroid;
+	static GLuint m_target;
+	static GLuint m_reload;
+	static GLuint m_mccree; //...it's high noon...
 };

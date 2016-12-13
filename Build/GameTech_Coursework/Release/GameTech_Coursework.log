@@ -1,4 +1,4 @@
-﻿Build started 13/12/2016 12:35:26.
+﻿Build started 13/12/2016 13:48:47.
      1>Project "D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\GameTech_Coursework\GameTech_Coursework.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt SolarSystem.cpp
@@ -8,13 +8,13 @@
          Release\SolarSystem.obj
          Release\TestScene.obj
          Generating code
-         2 of 3365 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
-           0 functions were new in current compilation
-           1 functions had inline decision re-evaluated but remain unchanged
+         14 of 3369 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
+           4 functions were new in current compilation
+           4 functions had inline decision re-evaluated but remain unchanged
          Finished generating code
          GameTech_Coursework.vcxproj -> D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\Release\GameTech_Coursework.exe
      1>Done Building Project "D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\GameTech_Coursework\GameTech_Coursework.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:01.92
+Time Elapsed 00:00:02.42
