@@ -103,7 +103,16 @@ void SolarSystem::OnUpdateScene(float dt)
 	score += PhysicsEngine::Instance()->getScoreUpdate();
 	spin = (spin + 2) % 360; 
 
+	Matrix3 view = Matrix3(SceneManager::Instance()->GetCamera()->BuildViewMatrix());
+	Vector3 forward = Vector3(-view._13, -view._23, -view._33);
+
 	if (ultimate) {
+
+		mccree->Physics()->SetPosition(SceneManager::Instance()->GetCamera()->GetPosition() + forward * 2 + Vector3(-view._13 - 2.0f, -view._23 - 1.2f, 0));
+		Matrix4 mat4view = Matrix4(view);
+		Quaternion q = Quaternion::FromMatrix(mat4view);
+		mccree->Physics()->SetOrientation(q * Quaternion::AxisAngleToQuaterion(Vector3(0, 1, 0), -90.0f));
+
 		if (firetime % 10 == 0) {
 			autofire = true;
 		}
@@ -111,29 +120,22 @@ void SolarSystem::OnUpdateScene(float dt)
 			autofire = false;
 		}
 		firetime--;
+		if (firetime < 0) {
+			mccree->Physics()->SetPosition(Vector3(-1000, 1000, -1000));
+		}
 	}
 	
-
 	if (shotCount == 6) {
-		//Show reload symbol flat against camera
-		Matrix3 view = Matrix3(SceneManager::Instance()->GetCamera()->BuildViewMatrix());
-		Vector3 forward = Vector3(-view._13, -view._23, -view._33);
 
-		mccree->Physics()->SetPosition(SceneManager::Instance()->GetCamera()->GetPosition() + forward * 2 + Vector3(-view._13 - 2.0f, -view._23 - 1.2f, 0));
 		reload->Physics()->SetPosition(SceneManager::Instance()->GetCamera()->GetPosition() + forward * 2);
-
-		Matrix4 mat4view = Matrix4(view);
+		Matrix4 mat4view = Matrix4(view) * Matrix4::Rotation(spin, forward);
 		Quaternion q = Quaternion::FromMatrix(mat4view);
-		mccree->Physics()->SetOrientation(q * Quaternion::AxisAngleToQuaterion(Vector3(0, 1, 0), -90.0f));
-
-		mat4view = Matrix4(view) * Matrix4::Rotation(spin, forward);
-		q = Quaternion::FromMatrix(mat4view);
 		reload->Physics()->SetOrientation(q * Quaternion::AxisAngleToQuaterion(Vector3(0, 1, 0), -90.0f));
 		
 		reloadTime--;
+
 		if (reloadTime == 0) {
 			reload->Physics()->SetPosition(Vector3(-1000, -1000, -1000));
-			mccree->Physics()->SetPosition(Vector3(-1000, 1000, -1000));
 			reloadTime = 300;
 			shotCount = 0;
 			ultimate = false;
@@ -174,6 +176,10 @@ void SolarSystem::OnUpdateScene(float dt)
 		//Projectile
 		if ((Window::GetKeyboard()->KeyTriggered(KEYBOARD_F) && shotCount != 6) || (autofire && shotCount != 6)) {
 			
+			if(Window::GetKeyboard()->KeyTriggered(KEYBOARD_F)) {
+				firetime -= 10;
+			}
+
 			Matrix3 view = Matrix3(SceneManager::Instance()->GetCamera()->BuildViewMatrix());
 			Vector3 forward = Vector3(-view._13, -view._23, -view._33);
 
