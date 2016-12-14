@@ -4,6 +4,7 @@
 #include "NCLDebug.h"
 #include <nclgl\Window.h>
 #include <omp.h>
+#include <algorithm>
 
 
 void PhysicsEngine::SetDefaults()
@@ -188,6 +189,39 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject* obj)
 	obj->m_wsTransformInvalidated = true;
 }
 
+//Sort for sweep
+bool compareFunc(PhysicsObject * left, PhysicsObject * right) {
+
+	if (left->GetCollisionShape() != NULL && right->GetCollisionShape() != NULL) {
+		Vector3 *xMinL, *xMaxL, *xMinR, *xMaxR, *zMinL, *zMaxL, *zMinR, *zMaxR;
+		xMinL = &Vector3();
+		xMaxL = &Vector3();
+		xMinR = &Vector3();
+		xMaxR = &Vector3();
+		zMinL = &Vector3();
+		zMaxL = &Vector3();
+		zMinR = &Vector3();
+		zMaxR = &Vector3();
+
+		left->GetCollisionShape()->GetMinMaxVertexOnAxis(left, Vector3(1, 0, 0), xMinL, xMaxL);
+		left->setMinX(xMinL->x);
+		left->setMaxX(xMaxL->x);
+		right->GetCollisionShape()->GetMinMaxVertexOnAxis(right, Vector3(1, 0, 0), xMinR, xMaxR);
+		right->setMinX(xMinR->x);
+		right->setMaxX(xMaxR->x);
+
+		left->GetCollisionShape()->GetMinMaxVertexOnAxis(left, Vector3(0, 0, 1), zMinL, zMaxL);
+		left->setMinZ(zMinL->z);
+		left->setMaxZ(zMaxL->z);
+		right->GetCollisionShape()->GetMinMaxVertexOnAxis(right, Vector3(0, 0, 1), zMinR, zMaxR);
+		right->setMinZ(zMinR->z);
+		right->setMaxZ(zMaxR->z);
+
+		return zMinL->z < zMinR->z;
+	}
+	return true;
+	
+}
 
 void PhysicsEngine::BroadPhaseCollisions()
 {
@@ -220,21 +254,17 @@ void PhysicsEngine::BroadPhaseCollisions()
 		}
 	}
 
-	//	Brute force approach.
-	//  - For every object A, assume it could collide with every other object.. 
-	//    even if they are on the opposite sides of the world.
 	if (m_PhysicsObjects.size() > 0)
 	{
+		//Sort for sweep
+		std::sort(m_PhysicsObjects.begin(), m_PhysicsObjects.end(), compareFunc);
+
 		for (size_t i = 0; i < m_PhysicsObjects.size() - 1; ++i)
 		{
 			for (size_t j = i + 1; j < m_PhysicsObjects.size(); ++j)
 			{
 				m_pObj1 = m_PhysicsObjects[i];
 				m_pObj2 = m_PhysicsObjects[j];
-
-				if (!m_pObj1 || !m_pObj2) {
-					break;
-				}
 
 				if (m_pObj1->isAtRest() && m_pObj2->isAtRest()) {
 					continue;
@@ -244,23 +274,19 @@ void PhysicsEngine::BroadPhaseCollisions()
 				if (m_pObj1->GetCollisionShape() != NULL
 					&& m_pObj2->GetCollisionShape() != NULL)
 				{
-					Vector3 minP, maxP, v1, v2, vT1, vD1, vT2, vD2, vT3, vD3;
 
-					m_pObj1->GetCollisionShape()->GetMinMaxVertexOnAxis(m_pObj1, Vector3(1, 0, 0), &minP, &maxP);
-					v1 = maxP - minP;
-					m_pObj2->GetCollisionShape()->GetMinMaxVertexOnAxis(m_pObj1, Vector3(1, 0, 0), &minP, &maxP);
-					v2 = maxP - minP;
-					vT1 = v1 + v2;
-					vD1 = m_pObj1->GetPosition() - m_pObj2->GetPosition();
-
-					if (vT1.Length() < vD1.Length()) {
-						continue;
+					//Check based on sort
+					if (m_pObj1->getMaxZ() < m_pObj2->getMinZ()) {
+						break;
 					}
 
-					CollisionPair cp;
-					cp.pObjectA = m_pObj1;
-					cp.pObjectB = m_pObj2;
-					m_BroadphaseCollisionPairs.push_back(cp);
+					//Also check X axis
+					if (m_pObj1->getMaxX() > m_pObj2->getMinX()) {
+						CollisionPair cp;
+						cp.pObjectA = m_pObj1;
+						cp.pObjectB = m_pObj2;
+						m_BroadphaseCollisionPairs.push_back(cp);
+					}
 				}
 
 			}
@@ -402,3 +428,4 @@ float PhysicsEngine::updateAverage(float var, float val) {
 	var += val / 15.f;
 	return var;
 }
+

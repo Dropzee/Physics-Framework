@@ -83,4 +83,6 @@ protected:
 	static GLuint m_target;
 	static GLuint m_reload;
 	static GLuint m_mccree; //...it's high noon...
+
+	static GLuint m_skybox;
 };

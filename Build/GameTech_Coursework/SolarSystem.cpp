@@ -165,6 +165,7 @@ void SolarSystem::OnUpdateScene(float dt)
 	SceneManager::Instance()->SetInverseLightDirection(invLightDir);
 
 
+
 	//Or move our car around the scene..
 	{
 		const float mv_speed = 10.f * dt;			//Motion: Meters per second

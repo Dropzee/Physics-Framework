@@ -21,6 +21,8 @@ GLuint CommonMeshes::m_target = 11;
 GLuint CommonMeshes::m_reload = 12;
 GLuint CommonMeshes::m_mccree = 13; //...it's high noon...
 
+GLuint CommonMeshes::m_skybox = 14;
+
 void CommonMeshes::InitializeMeshes()
 {
 	if (m_pPlane == NULL)
@@ -39,6 +41,13 @@ void CommonMeshes::InitializeMeshes()
 		m_target = SOIL_load_OGL_texture(TEXTUREDIR"target.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
 		m_reload = SOIL_load_OGL_texture(TEXTUREDIR"reload.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
 		m_mccree = SOIL_load_OGL_texture(TEXTUREDIR"mccree.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT); //...it's high noon...
+
+		m_skybox = SOIL_load_OGL_cubemap(TEXTUREDIR"/Skybox/GalaxyTex_NegativeX.tga", TEXTUREDIR"/Skybox/GalaxyTex_PositiveX.tga",
+			TEXTUREDIR"/Skybox/GalaxyTex_NegativeY.tga", TEXTUREDIR"/Skybox/GalaxyTex_PositiveY.tga",
+			TEXTUREDIR"/Skybox/GalaxyTex_NegativeZ.tga", TEXTUREDIR"/Skybox/GalaxyTex_PositiveZ.tga",
+			SOIL_LOAD_RGB,
+			SOIL_CREATE_NEW_ID, 14
+			); 
 
 		glBindTexture(GL_TEXTURE_2D, m_CheckerboardTex);
 		glBindTexture(GL_TEXTURE_2D, m_earthTex);

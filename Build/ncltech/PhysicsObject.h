@@ -120,6 +120,16 @@ public:
 	void setAverageLinear(float f) { averageLinear = f; }
 	void setAverageAngular(float f) { averageAngular = f; }
 
+	float getMinX() { return minX; }
+	float getMaxX() { return maxX; }
+	void setMinX(float x) { minX = x; }
+	void setMaxX(float x) { maxX = x; }
+
+	float getMinZ() { return minZ; }
+	float getMaxZ() { return maxZ; }
+	void setMinZ(float z) { minZ = z; }
+	void setMaxZ(float z) { maxZ = z; }
+
 protected:
 	Object*				m_pParent;			//Optional: Attached GameObject or NULL if none set
 	bool				m_Enabled;
@@ -151,4 +161,9 @@ protected:
 
 	float averageLinear;
 	float averageAngular;
+
+	float minX;
+	float maxX;
+	float minZ;
+	float maxZ;
 };
