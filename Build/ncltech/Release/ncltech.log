@@ -1,28 +1,20 @@
-﻿Build started 14/12/2016 16:26:12.
-     1>Project "D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\ncltech\ncltech.vcxproj" on node 2 (Build target(s)).
-     1>Lib:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\Lib.exe /OUT:"D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\Release\ncltech.lib" /NOLOGO /LTCG Release\CollisionDetectionSAT.obj
-         Release\CommonMeshes.obj
-         Release\CommonUtils.obj
-         Release\CuboidCollisionShape.obj
-         Release\NetworkBase.obj
-         Release\ObjectMeshDragable.obj
-         Release\NCLDebug.obj
-         Release\Object.obj
-         Release\Hull.obj
-         Release\Manifold.obj
-         Release\PhysicsEngine.obj
-         Release\PhysicsObject.obj
-         Release\RenderList.obj
-         Release\SceneManager.obj
-         Release\SceneRenderer.obj
-         Release\Scene.obj
-         Release\ScreenPicker.obj
-         Release\ObjectMesh.obj
-         Release\SphereCollisionShape.obj
-         ncltech.vcxproj -> D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\Release\ncltech.lib
-     1>Done Building Project "D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\ncltech\ncltech.vcxproj" (Build target(s)).
-
-Build succeeded.
-
-Time Elapsed 00:00:00.66
+﻿  CollisionDetectionSAT.cpp
+  CommonMeshes.cpp
+  CommonUtils.cpp
+  CuboidCollisionShape.cpp
+  NetworkBase.cpp
+  ObjectMeshDragable.cpp
+  NCLDebug.cpp
+  Object.cpp
+  Hull.cpp
+  Manifold.cpp
+  PhysicsEngine.cpp
+  PhysicsObject.cpp
+  RenderList.cpp
+  SceneManager.cpp
+  SceneRenderer.cpp
+  Scene.cpp
+  ScreenPicker.cpp
+  ObjectMesh.cpp
+  SphereCollisionShape.cpp
+  ncltech.vcxproj -> C:\Users\jackc\Documents\Uni\Year 4\CSC8503 - Advanced Game Technologies\Physics-Framework\Build\Release\ncltech.lib
