@@ -146,14 +146,13 @@ void PhysicsEngine::SolveConstraints()
 
 void PhysicsEngine::UpdatePhysicsObject(PhysicsObject* obj)
 {
-
 	//Gravity
 	if (obj->getObjType() == TEST) {
 		if (obj->m_InvMass > 0.0f) {
 			obj->m_LinearVelocity += m_Gravity * m_UpdateTimestep;
 		}
 	}
-	if (obj->getObjType() == ORBIT || obj->getObjType() == PROJECTILE) {
+	if (obj->getObjType() == SUN) {
 		Vector3 dist, nDist, force;
 		for each (PhysicsObject* obj2 in m_PhysicsObjects) {
 			if (obj != obj2) {
@@ -199,6 +198,27 @@ void PhysicsEngine::BroadPhaseCollisions()
 	//	which then get accurately assesed in narrowphase. If this is too coarse then the system slows down with
 	//	the complexity of narrowphase collision checking, if this is too fine then collisions may be missed.
 
+	//Rest State
+	for each(PhysicsObject * po in m_PhysicsObjects) {
+		if (po->getObjType() != STATIC && po->getObjType() != SUN) {
+			po->setAverageAngular(updateAverage(po->getAverageAngular(), po->GetAngularVelocity().LengthSquared()));
+			po->setAverageLinear(updateAverage(po->getAverageLinear(), po->GetLinearVelocity().LengthSquared()));
+			if (po->getAverageLinear() < 0.001f && po->getAverageAngular() < 0.1f) {
+				po->SetLinearVelocity(Vector3());
+				po->SetAngularVelocity(Vector3());
+				po->setAtRest(true);
+				if (po->getObjType() == TEST) {
+					po->GetAssociatedObject()->SetColour(Vector4(0.2f, 0.2f, 0.2f, 1.f));
+				}
+			}
+			else {
+				po->setAtRest(false);
+				if (po->getObjType() == TEST) {
+					po->GetAssociatedObject()->SetColour(Vector4(0.8f, 0.2f, 0.f, 1.f));
+				}
+			}
+		}
+	}
 
 	//	Brute force approach.
 	//  - For every object A, assume it could collide with every other object.. 
@@ -216,11 +236,14 @@ void PhysicsEngine::BroadPhaseCollisions()
 					break;
 				}
 
+				if (m_pObj1->isAtRest() && m_pObj2->isAtRest()) {
+					continue;
+				}
+
 				//Check they both atleast have collision shapes
 				if (m_pObj1->GetCollisionShape() != NULL
 					&& m_pObj2->GetCollisionShape() != NULL)
 				{
-					/*---------------------BROADPHASE CHECK---------------------*/
 					Vector3 minP, maxP, v1, v2, vT1, vD1, vT2, vD2, vT3, vD3;
 
 					m_pObj1->GetCollisionShape()->GetMinMaxVertexOnAxis(m_pObj1, Vector3(1, 0, 0), &minP, &maxP);
@@ -230,24 +253,9 @@ void PhysicsEngine::BroadPhaseCollisions()
 					vT1 = v1 + v2;
 					vD1 = m_pObj1->GetPosition() - m_pObj2->GetPosition();
 
-					/*m_pObj1->GetCollisionShape()->GetMinMaxVertexOnAxis(m_pObj1, Vector3(0, 1, 0), &minP, &maxP);
-					v1 = maxP - minP;
-					m_pObj2->GetCollisionShape()->GetMinMaxVertexOnAxis(m_pObj1, Vector3(0, 1, 0), &minP, &maxP);
-					v2 = maxP - minP;
-					vT2 = v1 + v2;
-					vD2 = m_pObj1->GetPosition() - m_pObj2->GetPosition();
-
-					m_pObj1->GetCollisionShape()->GetMinMaxVertexOnAxis(m_pObj1, Vector3(0, 0, 1), &minP, &maxP);
-					v1 = maxP - minP;
-					m_pObj2->GetCollisionShape()->GetMinMaxVertexOnAxis(m_pObj1, Vector3(0, 0, 1), &minP, &maxP);
-					v2 = maxP - minP;
-					vT3 = v1 + v2;
-					vD3 = m_pObj1->GetPosition() - m_pObj2->GetPosition();*/
-
-					if (vT1.Length() < vD1.Length()/* || vT2.Length() < vD2.Length() || vT3.Length() < vD3.Length()*/) {
+					if (vT1.Length() < vD1.Length()) {
 						continue;
 					}
-					/*---------------------------------------------------------*/
 
 					CollisionPair cp;
 					cp.pObjectA = m_pObj1;
@@ -303,19 +311,25 @@ void PhysicsEngine::NarrowPhaseCollisions()
 
 				if (okA && okB)
 				{
+					if (cp.pObjectA->isAtRest()) {
+						cp.pObjectA->setAtRest(false);
+					}
+					if (cp.pObjectB->isAtRest()) {
+						cp.pObjectB->setAtRest(false);
+					}
 					if (cp.pObjectA->getObjType()  == PROJECTILE) {
-						cp.pObjectA->SetPosition(Vector3(1000.f, 1000.f, 1000.f));
 						if (cp.pObjectB->getObjType() == TARGET) {
 							float dist = (cp.pObjectA->GetPosition() - cp.pObjectB->GetPosition()).Length();
-							score += 10 * (100 / (int)dist);
+							score += 10 * (100 / (int)dist + 1);
 						}
+						cp.pObjectA->SetPosition(Vector3(1000.f, 1000.f, 1000.f));
 					}
 					else if (cp.pObjectB->getObjType() == PROJECTILE) {
-						cp.pObjectB->SetPosition(Vector3(1000.f, 1000.f, 1000.f));
 						if (cp.pObjectA->getObjType() == TARGET) {
 							float dist = (cp.pObjectA->GetPosition() - cp.pObjectB->GetPosition()).Length();
-							score += 10 * (100 / (int)dist);
+							score += 10 * (100 / (int)dist + 1);
 						}
+						cp.pObjectB->SetPosition(Vector3(1000.f, 1000.f, 1000.f));
 					}
 					else {
 						//-- TUTORIAL 5 CODE --
@@ -368,4 +382,23 @@ void PhysicsEngine::DebugRender()
 			}
 		}
 	}
+}
+
+void PhysicsEngine::notAtRest(){
+	for each (PhysicsObject* obj in m_PhysicsObjects) {
+		obj->setAtRest(false);
+	}
+}
+
+void PhysicsEngine::SetPaused(bool paused) { 
+	m_IsPaused = paused; 
+	if (!paused) { 
+		notAtRest(); 
+	} 
+}
+
+float PhysicsEngine::updateAverage(float var, float val) {
+	var -= var / 15.f;
+	var += val / 15.f;
+	return var;
 }

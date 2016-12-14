@@ -13,14 +13,14 @@ If you want
 The general runtime consists of:
 	- Update(float dt)
 	  - UpdatePhysics()
-	     - Broadphase Collision Detection
+		 - Broadphase Collision Detection
 		   Quickly identifies possible collisions in between objects, hopefully
 		   with world space partitioning systems like Octrees.. but currently just
 		   builds a list colliding all objects with all other objects. (Hopefully you
 		   can find some free time to fix this =] )
 
 		 - Narrowphase Collision Detection
-		   Takes the list provided by the broadphase collision detection and 
+		   Takes the list provided by the broadphase collision detection and
 		   accurately collides all objects, building a collision manifold as
 		   required. (Tutorial 4/5)
 
@@ -53,8 +53,8 @@ The general runtime consists of:
 #define SOLVER_ITERATIONS 50
 
 #ifndef FALSE
-	#define FALSE	0
-	#define TRUE	1
+#define FALSE	0
+#define TRUE	1
 #endif
 
 #define DEBUGDRAW_FLAGS_CONSTRAINT				0x1
@@ -73,7 +73,7 @@ struct CollisionPair	//Forms the output of the broadphase collision detection
 
 class PhysicsEngine : public TSingleton<PhysicsEngine>
 {
-	friend class TSingleton < PhysicsEngine > ;
+	friend class TSingleton < PhysicsEngine >;
 public:
 	//Reset Default Values like gravity/timestep - called when scene is switched out
 	void SetDefaults();
@@ -85,39 +85,43 @@ public:
 
 	//Add Constraints
 	void AddConstraint(Constraint* c) { m_vpConstraints.push_back(c); }
-	
+
 
 	//Update Physics Engine
 	void Update(float deltaTime);			//Remember DeltaTime is 'seconds' since last update not milliseconds
-	
+
 	//Debug draw all physics objects, manifolds and constraints
 	void DebugRender();
 
 
 
 	//Getters / Setters 
-	bool IsPaused()						{ return m_IsPaused; }
-	void SetPaused(bool paused)			{ m_IsPaused = paused; }
+	bool IsPaused() { return m_IsPaused; }
+	void SetPaused(bool paused);
 
-	uint GetDebugDrawFlags()			{ return m_DebugDrawFlags;  }
-	void SetDebugDrawFlags(uint flags)  { m_DebugDrawFlags = flags; }
-	
+	uint GetDebugDrawFlags() { return m_DebugDrawFlags; }
+	void SetDebugDrawFlags(uint flags) { m_DebugDrawFlags = flags; }
+
 	void SetUpdateTimestep(float updateTimestep) { m_UpdateTimestep = updateTimestep; }
-	float GetUpdateTimestep()			{ return m_UpdateTimestep; }
+	float GetUpdateTimestep() { return m_UpdateTimestep; }
 
-	const Vector3& GetGravity()			{ return m_Gravity; }
-	void SetGravity(const Vector3& g)	{ m_Gravity = g; }
+	const Vector3& GetGravity() { return m_Gravity; }
+	void SetGravity(const Vector3& g) { m_Gravity = g; }
 
-	float GetDampingFactor()			{ return m_DampingFactor; }
-	void  SetDampingFactor(float d)		{ m_DampingFactor = d; }
+	float GetDampingFactor() { return m_DampingFactor; }
+	void  SetDampingFactor(float d) { m_DampingFactor = d; }
 
-	float GetDeltaTime()				{ return m_UpdateTimestep; }
+	float GetDeltaTime() { return m_UpdateTimestep; }
 
-	void setDamping(float df)			{ m_DampingFactor = df; }
+	void setDamping(float df) { m_DampingFactor = df; }
 
-	int getScoreUpdate()				{ int temp = score; 
-	score = 0; 
-	return temp; };
+	int getScoreUpdate() {
+		int temp = score;
+		score = 0;
+		return temp;
+	};
+
+	void notAtRest();
 
 protected:
 	PhysicsEngine();
@@ -134,11 +138,11 @@ protected:
 
 	//Updates all physics objects position, orientation, velocity etc - Tutorial 2
 	void UpdatePhysicsObject(PhysicsObject* obj);
-	
+
 	//Solves all physical constraints (constraints and manifolds)
 	void SolveConstraints();
 
-	
+	float updateAverage(float val, float var);
 
 protected:
 	bool		m_IsPaused;

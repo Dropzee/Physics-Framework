@@ -6,7 +6,7 @@
 #include <ncltech\SceneManager.h>
 #include <ncltech\CommonUtils.h>
 
-
+#define col Vector4(0.8f, 0.2f, 0.f, 1.f)
 
 using namespace CommonUtils;
 
@@ -50,14 +50,16 @@ void TestScene::OnInitializeScene()
 	//this->AddGameObject(BuildCuboidObject("Ground", Vector3(0.0f, -1.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), true, 0.0f, true, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
 
 	//Create Environment
-	this->AddGameObject(BuildCuboidObject("Ground", Vector3(0.0f, -1.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), true, 0.0f, true, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
-	this->AddGameObject(BuildCuboidObject("Wall1", Vector3(-21.0f, 10.0f, 0.0f), Vector3(1.0f, 10.0f, 20.0f), true, 0.0f, true, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
-	this->AddGameObject(BuildCuboidObject("Wall2", Vector3(0.0f, 10.0f, 21.0f), Vector3(20.0f, 10.0f, 1.0f), true, 0.0f, true, false, Vector4(0.2f, 0.5f, 1.0f, 1.0f)));
+	this->AddGameObject(BuildCuboidObject("Ground", Vector3(0.0f, -1.0f, 0.0f), Vector3(20.0f, 1.0f, 20.0f), true, 0.0f, true, false, Vector4(0.2f, 0.2f, 0.5f, 1.f), 0, STATIC));
+	this->AddGameObject(BuildCuboidObject("Wall1", Vector3(-21.0f, 10.0f, 0.0f), Vector3(1.0f, 10.0f, 20.0f), true, 0.0f, true, false, Vector4(0.2f, 0.2f, 0.5f, 1.f), 0, STATIC));
+	this->AddGameObject(BuildCuboidObject("Wall2", Vector3(0.0f, 10.0f, 21.0f), Vector3(20.0f, 10.0f, 1.0f), true, 0.0f, true, false, Vector4(0.2f, 0.2f, 0.5f, 1.f), 0, STATIC));
+	this->AddGameObject(BuildCuboidObject("Wall3", Vector3(0.0f, 1.0f, -21.0f), Vector3(20.0f, 1.0f, 1.0f), true, 0.0f, true, false, Vector4(0.2f, 0.2f, 0.5f, 1.f), 0, STATIC));
+	this->AddGameObject(BuildCuboidObject("Wall4", Vector3(21.0f, 1.0f, 0.0f), Vector3(1.0f, 1.0f, 20.0f), true, 0.0f, true, false, Vector4(0.2f, 0.2f, 0.5f, 1.f), 0, STATIC));
+	this->AddGameObject(BuildCuboidObject("Wall5", Vector3(0.0f, 1.0f, -0.0f), Vector3(20.0f, 1.0f, 1.0f), true, 0.0f, true, false, Vector4(0.2f, 0.2f, 0.5f, 1.f), 0, STATIC));
 
 	//Create Bouncing Spheres
 	for (int i = 0; i < 3; ++i)
 	{
-		Vector4 colour = CommonUtils::GenColour(0.7f + i * 0.05f, 1.0f);
 		Object* obj = CommonUtils::BuildSphereObject(
 			"",
 			Vector3(5.0f + i * 5.0f, 5.0f, 15.0f),
@@ -66,7 +68,7 @@ void TestScene::OnInitializeScene()
 			0.1f,
 			true,
 			true,
-			colour);
+			col);
 		obj->Physics()->SetFriction(0.1f);
 		obj->Physics()->SetElasticity(i * 0.2f + 0.5f);
 		this->AddGameObject(obj);
@@ -75,7 +77,6 @@ void TestScene::OnInitializeScene()
 	//Create Bouncing Cubes
 	for (int i = 0; i < 3; ++i)
 	{
-		Vector4 colour = CommonUtils::GenColour(0.7f + i * 0.05f, 1.0f);
 		Object* obj = CommonUtils::BuildCuboidObject(
 			"",
 			Vector3(5.0f + i * 5.0f, 5.0f, 5.0f),
@@ -84,7 +85,7 @@ void TestScene::OnInitializeScene()
 			0.1f,
 			true,
 			true,
-			colour);
+			col);
 		obj->Physics()->SetFriction(0.1f);
 		obj->Physics()->SetElasticity(i * 0.2f + 0.5f);
 		this->AddGameObject(obj);
@@ -99,16 +100,31 @@ void TestScene::OnInitializeScene()
 		0.0f,
 		true,
 		false,
-		Vector4(1.0f, 0.7f, 1.0f, 1.0f));
+		Vector4(0.5f, 0.f, 0.5f, 1.f), 0, STATIC);
 	ramp->Physics()->SetOrientation(Quaternion::AxisAngleToQuaterion(Vector3(0.0f, 0.0f, 1.0f), -20.0f));
 	ramp->Physics()->SetFriction(1.0f);
 	this->AddGameObject(ramp);
 
+	//Balls on ramp
+	for (int i = 0; i < 3; ++i)
+	{
+		Object* obj = CommonUtils::BuildSphereObject(
+			"",
+			Vector3(-17.0f, 6.0f, -5.0f - i * 5.0f),
+			1.0f,
+			true,
+			0.01f,
+			true,
+			true,
+			col);
+		obj->Physics()->SetFriction(0.5f);
+		obj->Physics()->SetElasticity(0.2f);
+		this->AddGameObject(obj);
+	}
 
 	auto create_ball_cube = [&](const Vector3& offset, const Vector3& scale, float ballsize)
 	{
 		const int dims = 5;
-		const Vector4 col = Vector4(1.0f, 0.5f, 0.2f, 1.0f);
 
 		for (int x = 0; x < 1; ++x)
 		{
@@ -155,12 +171,6 @@ void TestScene::OnUpdateScene(float dt)
 	// You can print text using 'printf' formatting
 	bool donkeys = false;
 	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.4f, 0.4f, 1.0f), "   \x01 The %s in this scene are dragable", donkeys ? "donkeys" : "cubes");
-	
-
-	// Lets sun a little bit...
-	Vector3 invLightDir = Matrix4::Rotation(15.f * dt, Vector3(0.0f, 1.0f, 0.0f)) * SceneManager::Instance()->GetInverseLightDirection();
-	SceneManager::Instance()->SetInverseLightDirection(invLightDir);
-
 
 	//Or move our car around the scene..
 	{
@@ -190,10 +200,10 @@ void TestScene::OnUpdateScene(float dt)
 		if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_F)) {
 			Object* obj;
 			if (projectile == SPHERE) {
-				obj = BuildSphereObject("", SceneManager::Instance()->GetCamera()->GetPosition(), 1.0f * size, true, 0.05f, true, false, Vector4(1, 1, 1, 1));
+				obj = BuildSphereObject("", SceneManager::Instance()->GetCamera()->GetPosition(), 1.0f * size, true, 0.05f, true, false, col);
 			}
 			else{
-				obj = BuildCuboidObject("",	SceneManager::Instance()->GetCamera()->GetPosition(), Vector3(1.0f * size, 1.0f * size, 1.0f * size), true, 0.1f, true, false, Vector4(1, 1, 1, 1));
+				obj = BuildCuboidObject("",	SceneManager::Instance()->GetCamera()->GetPosition(), Vector3(1.0f * size, 1.0f * size, 1.0f * size), true, 0.1f, true, false, col);
 			}
 
 			Matrix3 view = Matrix3(SceneManager::Instance()->GetCamera()->BuildViewMatrix());

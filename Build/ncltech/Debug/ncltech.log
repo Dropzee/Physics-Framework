@@ -1,0 +1,31 @@
+﻿Build started 14/12/2016 11:24:23.
+     1>Project "D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\ncltech\ncltech.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /openmp /Fo"Debug\\" /Fd"Debug\ncltech.pdb" /Gd /TP /analyze- /errorReport:prompt PhysicsEngine.cpp
+         PhysicsEngine.cpp
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\Lib.exe /OUT:"D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\Debug\ncltech.lib" /NOLOGO Debug\CollisionDetectionSAT.obj
+         Debug\CommonMeshes.obj
+         Debug\CommonUtils.obj
+         Debug\CuboidCollisionShape.obj
+         Debug\NetworkBase.obj
+         Debug\ObjectMeshDragable.obj
+         Debug\NCLDebug.obj
+         Debug\Object.obj
+         Debug\Hull.obj
+         Debug\Manifold.obj
+         Debug\PhysicsEngine.obj
+         Debug\PhysicsObject.obj
+         Debug\RenderList.obj
+         Debug\SceneManager.obj
+         Debug\SceneRenderer.obj
+         Debug\Scene.obj
+         Debug\ScreenPicker.obj
+         Debug\ObjectMesh.obj
+         Debug\SphereCollisionShape.obj
+         ncltech.vcxproj -> D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\Debug\ncltech.lib
+     1>Done Building Project "D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\ncltech\ncltech.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.10

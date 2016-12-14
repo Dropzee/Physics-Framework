@@ -46,7 +46,7 @@ void SolarSystem::OnInitializeScene()
 	//<--- SCENE CREATION --->
 
 	//Sun
-	Object* sun = BuildSphereObject("SUN", Vector3(0.0f, 0.0f, 0.0f), 5.0f, true, 0.00001f, true, false, Vector4(1, 1, 1, 1), 7, ORBIT);
+	Object* sun = BuildSphereObject("SUN", Vector3(0.0f, 0.0f, 0.0f), 5.0f, true, 0.00001f, true, false, Vector4(1, 1, 1, 1), 7, SUN);
 	sun->Physics()->SetAngularVelocity(Vector3(0.0f, -0.5f, 0.0f));
 	this->AddGameObject(sun);
 	
@@ -81,11 +81,11 @@ void SolarSystem::OnInitializeScene()
 	PhysicsEngine::Instance()->AddConstraint(new DistanceConstraint(sun->Physics(), target->Physics(), sun->Physics()->GetPosition(), target->Physics()->GetPosition()));	
 
 	//Reload Symbol
-	reload = BuildCuboidObject("RELOAD", Vector3(-1000.0f, -1000.0f, -1000.0f), Vector3(0.01f, 0.2f, 0.2f), true, 0.1f, false, false, Vector4(1, 1, 1, 1), 12, REST);
+	reload = BuildCuboidObject("RELOAD", Vector3(-1000.0f, -1000.0f, -1000.0f), Vector3(0.01f, 0.2f, 0.2f), true, 0.1f, false, false, Vector4(1, 1, 1, 1), 12, STATIC);
 	this->AddGameObject(reload);
 
 	//...it's high noon...
-	mccree = BuildCuboidObject("McCree", Vector3(-1000.0f, 1000.0f, -1000.0f), Vector3(0.001f, 0.2f, 0.2f), true, 0.1f, false, false, Vector4(1, 1, 1, 1), 13, REST);
+	mccree = BuildCuboidObject("McCree", Vector3(-1000.0f, 1000.0f, -1000.0f), Vector3(0.001f, 0.2f, 0.2f), true, 0.1f, false, false, Vector4(1, 1, 1, 1), 13, STATIC);
 	this->AddGameObject(mccree);
 }
 
@@ -150,6 +150,7 @@ void SolarSystem::OnUpdateScene(float dt)
 	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.4f, 0.4f, 1.0f), "   \x01 Movement - W/A/S/D");
 	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.4f, 0.4f, 1.0f), "   \x01 Camera Rotate - HOLD RMB");
 	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.4f, 0.4f, 1.0f), "   \x01 Fire Projectile - F");
+	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.4f, 0.4f, 1.0f), "   \x01 Rapid Fire - M");
 	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.4f, 0.4f, 1.0f), "   \x01 Quit - ECS");
 	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.2f, 0.2f, 1.0f), "Score: " + to_string(score));
 	if (shotCount != 6) {
@@ -167,7 +168,7 @@ void SolarSystem::OnUpdateScene(float dt)
 	//Or move our car around the scene..
 	{
 		const float mv_speed = 10.f * dt;			//Motion: Meters per second
-		const float rot_speed = 90.f * dt;			//Rotation: Degrees per second
+		const float rot_speed = 150.f * dt;			//Rotation: Degrees per second
 
 		if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_M) && shotCount != 6 && !ultimate) {
 			ultimate = true;
@@ -194,7 +195,8 @@ void SolarSystem::OnUpdateScene(float dt)
 					false,																// Dragable by user?
 					Vector4(1, 1, 1, 1),												// Render colour
 					10,
-					PROJECTILE);
+					PROJECTILE,
+					false);
 				projectiles[shotCount] = projectile;
 				this->AddGameObject(projectile);
 			}

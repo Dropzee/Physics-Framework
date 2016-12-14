@@ -34,13 +34,16 @@ Object* CommonUtils::BuildSphereObject(
 	bool dragable,
 	const Vector4& color,
 	int texID,
-	TYPE type)
+	TYPE type,
+	bool b)
 {
 	ObjectMesh* pSphere = dragable
 		? new ObjectMeshDragable(name)
 		: new ObjectMesh(name);
 
 	pSphere->SetMesh(CommonMeshes::Sphere(), false);
+
+	
 
 	switch (texID) {
 	default:
@@ -110,6 +113,7 @@ Object* CommonUtils::BuildSphereObject(
 			pSphere->Physics()->SetInverseInertia(pColshape->BuildInverseInertia(inverse_mass));
 		}	
 		pSphere->Physics()->setObjType(type);
+		pSphere->Physics()->setAtRest(b);
 	}
 	
 	
@@ -127,11 +131,14 @@ Object* CommonUtils::BuildCuboidObject(
 	bool dragable,
 	const Vector4& color,
 	int texID,
-	TYPE type)
+	TYPE type,
+	bool b)
 {
 	ObjectMesh* pCuboid = dragable
 		? new ObjectMeshDragable(name)
 		: new ObjectMesh(name);
+
+	
 
 	switch (texID) {
 	default:
@@ -180,6 +187,7 @@ Object* CommonUtils::BuildCuboidObject(
 			pCuboid->Physics()->SetInverseInertia(pColshape->BuildInverseInertia(inverse_mass));
 		}
 		pCuboid->Physics()->setObjType(type);
+		pCuboid->Physics()->setAtRest(b);
 	}
 
 	return pCuboid;

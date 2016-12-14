@@ -42,7 +42,8 @@ enum TYPE {
 	ORBIT,
 	TARGET,
 	PROJECTILE,
-	REST
+	STATIC,
+	SUN
 };
 
 class PhysicsObject
@@ -111,6 +112,14 @@ public:
 	TYPE getObjType() { return objType; }
 	void setObjType(TYPE t) { objType = t; }
 
+	bool isAtRest() { return atRest; }
+	void setAtRest(bool b) { atRest = b; }
+
+	float getAverageLinear() { return averageLinear; }
+	float getAverageAngular() { return averageAngular; }
+	void setAverageLinear(float f) { averageLinear = f; }
+	void setAverageAngular(float f) { averageAngular = f; }
+
 protected:
 	Object*				m_pParent;			//Optional: Attached GameObject or NULL if none set
 	bool				m_Enabled;
@@ -138,4 +147,8 @@ protected:
 	PhysicsCollisionCallback	m_OnCollisionCallback;
 
 	TYPE objType;
+	bool atRest;
+
+	float averageLinear;
+	float averageAngular;
 };

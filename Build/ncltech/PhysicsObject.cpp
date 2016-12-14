@@ -17,6 +17,9 @@ PhysicsObject::PhysicsObject()
 	, m_Elasticity(0.9f)
 	, m_OnCollisionCallback(nullptr)
 	, objType(ORBIT)
+	, atRest(false)
+	, averageAngular(0.f)
+	, averageLinear(0.f)
 {
 }
 
