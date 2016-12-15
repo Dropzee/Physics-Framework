@@ -156,7 +156,7 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject* obj)
 	else if (obj->m_InvMass > 0.0f && obj->getObjType() !=  STATIC) {
 		Vector3 dist, nDist, force;
 		for each (PhysicsObject* obj2 in m_PhysicsObjects) {
-			if (obj != obj2 && obj2->getObjType() != TARGET) {
+			if (obj != obj2 && obj2->m_InvMass > 0.0f) {
 				dist = obj2->GetPosition() - obj->GetPosition();
 				nDist = dist;
 				nDist.Normalise();

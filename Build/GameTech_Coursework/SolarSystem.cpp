@@ -88,22 +88,20 @@ void SolarSystem::OnInitializeScene()
 	this->AddGameObject(target);
 
 	//Reload Symbol
-	reload = BuildCuboidObject("RELOAD", Vector3(-1000.0f, -1000.0f, -1000.0f), Vector3(0.01f, 0.2f, 0.2f), true, 1.0f, true, false, Vector4(1, 1, 1, 1), 12, STATIC);
+	reload = BuildCuboidObject("RELOAD", Vector3(-1000.0f, -1000.0f, -1000.0f), Vector3(0.01f, 0.2f, 0.2f), true, 0.0f, true, false, Vector4(1, 1, 1, 1), 12, STATIC);
 	this->AddGameObject(reload);
 
 	//...it's high noon...
-	mccree = BuildCuboidObject("McCree", Vector3(-1000.0f, 1000.0f, -1000.0f), Vector3(0.001f, 0.2f, 0.2f), true, 0.1f, true, false, Vector4(1, 1, 1, 1), 13, STATIC);
+	mccree = BuildCuboidObject("McCree", Vector3(-1000.0f, 1000.0f, -1000.0f), Vector3(0.001f, 0.2f, 0.2f), true, 0.0f, true, false, Vector4(1, 1, 1, 1), 13, STATIC);
 	this->AddGameObject(mccree);
 
 	//networking... joy
-	m_NetworkObj = BuildCuboidObject("NETWORK", Vector3(0.f, 7.f, 0.f), Vector3(1.0f, 1.f, 1.f), true, 0.0f, true, false, Vector4(1, 1, 1, 1), 10, ORBIT);
+	m_NetworkObj = BuildCuboidObject("NETWORK", Vector3(0.f, 7.f, 0.f), Vector3(1.0f, 1.f, 1.f), true, 0.0f, true, false, Vector4(1, 1, 1, 1), 10, STATIC);
 	this->AddGameObject(m_NetworkObj);
 }
 
 void SolarSystem::OnCleanupScene()
 {
-	//Just delete all created game objects 
-	//  - this is the default command on any Scene instance so we don't really need to override this function here.
 	Scene::OnCleanupScene();
 }
 

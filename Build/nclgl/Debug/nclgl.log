@@ -1,28 +1,27 @@
-﻿Build started 14/12/2016 11:20:25.
+﻿Build started 15/12/2016 17:58:08.
      1>Project "D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\nclgl\nclgl.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\nclgl.pdb" /Gd /TP /analyze- /errorReport:prompt Camera.cpp CubeRobot.cpp Frustum.cpp GameTimer.cpp Keyboard.cpp Matrix3.cpp Matrix4.cpp MD5Anim.cpp MD5FileData.cpp MD5Mesh.cpp MD5Node.cpp Mesh.cpp Mouse.cpp OBJMesh.cpp OGLRenderer.cpp Plane.cpp Quaternion.cpp SceneNode.cpp Shader.cpp Window.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\nclgl.pdb" /Gd /TP /analyze- /errorReport:prompt Camera.cpp CubeRobot.cpp Frustum.cpp MD5Anim.cpp MD5FileData.cpp MD5Mesh.cpp MD5Node.cpp Matrix3.cpp Matrix4.cpp Mesh.cpp OBJMesh.cpp OGLRenderer.cpp Quaternion.cpp SceneNode.cpp Shader.cpp Window.cpp
          Window.cpp
+         Mesh.cpp
+         Generating Code...
+         Compiling...
+         Camera.cpp
+         Generating Code...
+         Skipping... (no relevant changes detected)
          Shader.cpp
          SceneNode.cpp
          Quaternion.cpp
-         Plane.cpp
          OGLRenderer.cpp
          OBJMesh.cpp
-         Mouse.cpp
-         Mesh.cpp
+         Matrix4.cpp
+         Matrix3.cpp
          MD5Node.cpp
          MD5Mesh.cpp
          MD5FileData.cpp
          MD5Anim.cpp
-         Matrix4.cpp
-         Matrix3.cpp
-         Keyboard.cpp
-         GameTimer.cpp
          Frustum.cpp
          CubeRobot.cpp
-         Camera.cpp
-         Generating Code...
        Lib:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\Lib.exe /OUT:"D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\Debug\nclgl.lib" /NOLOGO Debug\Camera.obj
          Debug\CubeRobot.obj
@@ -49,4 +48,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:12.04
+Time Elapsed 00:00:02.52
