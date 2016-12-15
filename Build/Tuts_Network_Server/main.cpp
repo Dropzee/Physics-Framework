@@ -39,11 +39,15 @@ FOR MORE NETWORKING INFORMATION SEE "Tuts_Network_Client -> Net1_Client.h"
 #include <nclgl\Vector3.h>
 #include <nclgl\common.h>
 #include <ncltech\NetworkBase.h>
+#include <string>
+#include <iostream>
+#include <fstream>
 
 //Needed to get computer adapter IPv4 addresses via windows
 #include <iphlpapi.h>
 #pragma comment(lib, "IPHLPAPI.lib")
 
+using namespace std;
 
 #define SERVER_PORT 1234
 #define UPDATE_TIMESTEP (1.0f / 30.0f) //send 30 position updates per second
@@ -56,6 +60,27 @@ float rotation = 0.0f;
 
 void Win32_PrintAllAdapterIPAddresses();
 
+int readHighScore() {
+	string line;
+	ifstream myfile("HighScoreFile.txt");
+	if (myfile.is_open())
+	{
+		getline(myfile, line);
+		myfile.close();
+		return atoi(line.c_str());
+	}
+	return 0;
+}
+
+void writeHighScore(int i) {
+	ofstream myfile("HighScoreFile.txt");
+	if (myfile.is_open())
+	{
+		myfile << to_string(i);
+		myfile.close();
+	}
+}
+
 int onExit(int exitcode)
 {
 	server.Release();
@@ -65,8 +90,8 @@ int onExit(int exitcode)
 
 int main(int arcg, char** argv)
 {
-
 	Vector3 position = Vector3();
+	int highScore = readHighScore();
 
 	if (enet_initialize() != 0)
 	{
@@ -198,3 +223,4 @@ void Win32_PrintAllAdapterIPAddresses()
 	}
 	
 }
+
