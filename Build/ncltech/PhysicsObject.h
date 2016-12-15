@@ -166,6 +166,4 @@ protected:
 	float maxX;
 	float minZ;
 	float maxZ;
-
-	bool moveFlag;
 };

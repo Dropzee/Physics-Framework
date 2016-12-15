@@ -147,11 +147,6 @@ void PhysicsEngine::SolveConstraints()
 
 void PhysicsEngine::UpdatePhysicsObject(PhysicsObject* obj)
 {
-
-	if (obj->moveFlag) {
-		obj->SetPosition(Vector3(1000.f, 1000.f, 1000.f));
-	}
-
 	//Gravity
 	if (obj->getObjType() == TEST) {
 		if (obj->m_InvMass > 0.0f) {
@@ -246,13 +241,13 @@ void PhysicsEngine::BroadPhaseCollisions()
 				po->SetLinearVelocity(Vector3());
 				po->SetAngularVelocity(Vector3());
 				po->setAtRest(true);
-				if (po->getObjType() == TEST) { //Only change colour if in test scene
+				if (po->getObjType() == TEST) {
 					po->GetAssociatedObject()->SetColour(Vector4(0.2f, 0.2f, 0.2f, 1.f));
 				}
 			}
 			else {
 				po->setAtRest(false);
-				if (po->getObjType() == TEST) { //Only change colour if in test scene
+				if (po->getObjType() == TEST) {
 					po->GetAssociatedObject()->SetColour(Vector4(0.8f, 0.2f, 0.f, 1.f));
 				}
 			}
@@ -350,31 +345,17 @@ void PhysicsEngine::NarrowPhaseCollisions()
 					}
 					if (cp.pObjectA->getObjType()  == PROJECTILE) {
 						if (cp.pObjectB->getObjType() == TARGET) {
-							score += 100;
-							/*float dist = (cp.pObjectA->GetPosition() - cp.pObjectB->GetPosition()).Length();
-							if ((int)dist != 0) {
-							score += 10 * (100 / (int)dist);
-							}
-							else {
-							score += 1000;
-							}*/
+							float dist = (cp.pObjectA->GetPosition() - cp.pObjectB->GetPosition()).Length();
+							score += 10 * (100 / (int)dist + 1);
 						}
-						cp.pObjectA->moveFlag = true;
-						//cp.pObjectA->SetPosition(Vector3(1000.f, 1000.f, 1000.f));
+						cp.pObjectA->SetPosition(Vector3(1000.f, 1000.f, 1000.f));
 					}
 					else if (cp.pObjectB->getObjType() == PROJECTILE) {
 						if (cp.pObjectA->getObjType() == TARGET) {
-							score += 100;
-							/*float dist = (cp.pObjectA->GetPosition() - cp.pObjectB->GetPosition()).Length();
-							if ((int)dist != 0) {
-								score += 10 * (100 / (int)dist);
-							}
-							else {
-								score += 1000;
-							}*/
+							float dist = (cp.pObjectA->GetPosition() - cp.pObjectB->GetPosition()).Length();
+							score += 10 * (100 / (int)dist + 1);
 						}
-						cp.pObjectB->moveFlag = true;
-						//cp.pObjectB->SetPosition(Vector3(1000.f, 1000.f, 1000.f));
+						cp.pObjectB->SetPosition(Vector3(1000.f, 1000.f, 1000.f));
 					}
 					else {
 						//-- TUTORIAL 5 CODE --
