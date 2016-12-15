@@ -56,7 +56,7 @@ void SolarSystem::OnInitializeScene()
 	Object * planet;
 	for (int i = 0; i < 8; i++) {
 		planet = BuildSphereObject("PLANET",
-			Vector3((i+1) * 10.0f, 0.0f, 0.0f),
+			Vector3((i+1) * 10.0f + 5.f, 0.0f, 0.0f),
 			sizes[i],
 			true,
 			0.1f,
@@ -74,11 +74,8 @@ void SolarSystem::OnInitializeScene()
 	}
 
 	//Target
-	Object* target = BuildCuboidObject("TARGET", Vector3(5.1f, 0.0f, 0.0f), Vector3(0.2f,2.5f,2.5f), true, 0.1f, true, false, Vector4(1, 1, 1, 1), 11, TARGET);
+	Object* target = BuildCuboidObject("TARGET", Vector3(7.0f, 0.0f, 0.0f), Vector3(0.2f,2.5f,2.5f), true, 0.0f, true, false, Vector4(1, 1, 1, 1), 11, TARGET);
 	this->AddGameObject(target);
-
-	//Rotate the target with the sun
-	PhysicsEngine::Instance()->AddConstraint(new DistanceConstraint(sun->Physics(), target->Physics(), sun->Physics()->GetPosition(), target->Physics()->GetPosition()));	
 
 	//Reload Symbol
 	reload = BuildCuboidObject("RELOAD", Vector3(-1000.0f, -1000.0f, -1000.0f), Vector3(0.01f, 0.2f, 0.2f), true, 1.0f, true, false, Vector4(1, 1, 1, 1), 12, STATIC);

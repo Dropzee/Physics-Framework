@@ -153,10 +153,10 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject* obj)
 			obj->m_LinearVelocity += m_Gravity * m_UpdateTimestep;
 		}
 	}
-	if (obj->getObjType() == SUN) {
+	else if (obj->m_InvMass > 0.0f && obj->getObjType() !=  STATIC) {
 		Vector3 dist, nDist, force;
 		for each (PhysicsObject* obj2 in m_PhysicsObjects) {
-			if (obj != obj2) {
+			if (obj != obj2 && obj2->getObjType() != TARGET) {
 				dist = obj2->GetPosition() - obj->GetPosition();
 				nDist = dist;
 				nDist.Normalise();
