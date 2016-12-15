@@ -65,6 +65,9 @@ int onExit(int exitcode)
 
 int main(int arcg, char** argv)
 {
+
+	Vector3 position = Vector3();
+
 	if (enet_initialize() != 0)
 	{
 		fprintf(stderr, "An error occurred while initializing ENet.\n");
@@ -100,8 +103,10 @@ int main(int arcg, char** argv)
 				break;
 
 			case ENET_EVENT_TYPE_RECEIVE:
-				printf("\t Client %d says: %s\n", evnt.peer->incomingPeerID, evnt.packet->data);
-				enet_packet_destroy(evnt.packet);
+				if (evnt.packet->dataLength == sizeof(Vector3))
+				{
+					memcpy(&position, evnt.packet->data, sizeof(Vector3));
+				}
 				break;
 
 			case ENET_EVENT_TYPE_DISCONNECT:
@@ -120,9 +125,10 @@ int main(int arcg, char** argv)
 			//   you send takes up valuable network bandwidth so no sending every PhysicsObject struct each frame ;)
 			accum_time = 0.0f;
 			Vector3 pos = Vector3(
-				cos(rotation) * 2.0f,
-				8.f,
-				sin(rotation) * 2.0f);
+				cos(rotation) * 3.0f,
+				0.f,
+				sin(rotation) * 3.0f)
+				+ position;
 
 			//Create the packet and broadcast it (unreliable transport) to all clients
 			ENetPacket* position_update = enet_packet_create(&pos, sizeof(Vector3), 0);

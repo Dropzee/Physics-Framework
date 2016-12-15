@@ -39,4 +39,6 @@ protected:
 	Object*     m_NetworkObj;
 	NetworkBase m_Network;
 	ENetPeer*	m_pServerConnection;
+
+	Object* planets[8];
 };

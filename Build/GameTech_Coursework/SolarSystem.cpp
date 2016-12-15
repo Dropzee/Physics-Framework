@@ -63,9 +63,8 @@ void SolarSystem::OnInitializeScene()
 	//Planets!!!!!!!
 	float sizes[8] = {0.5f, 1.0f, 1.0f, 0.7f, 2.0f, 1.8f, 1.2f, 1.2f};
 	int texIDs[8] = {4, 9, 1, 3, 2, 6, 8, 5};
-	Object * planet;
 	for (int i = 0; i < 8; i++) {
-		planet = BuildSphereObject("PLANET",
+		planets[i] = BuildSphereObject("PLANET",
 			Vector3((i+1) * 10.0f + 5.f, 0.0f, 0.0f),
 			sizes[i],
 			true,
@@ -75,12 +74,12 @@ void SolarSystem::OnInitializeScene()
 			Vector4(1, 1, 1, 1),
 			texIDs[i],
 			ORBIT);
-		planet->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 20.0f));
-		planet->Physics()->SetAngularVelocity(Vector3(0.0f, -0.5f, 0.2f));
-		this->AddGameObject(planet);
+		planets[i]->Physics()->SetLinearVelocity(Vector3(0.0f, 0.0f, 20.0f));
+		planets[i]->Physics()->SetAngularVelocity(Vector3(0.0f, -0.5f, 0.2f));
+		this->AddGameObject(planets[i]);
 
 		//Fix Orbit Distance (Stops planets being absorbed by sun over long run times)
-		PhysicsEngine::Instance()->AddConstraint(new DistanceConstraint(sun->Physics(), planet->Physics(), sun->Physics()->GetPosition(), planet->Physics()->GetPosition()));
+		PhysicsEngine::Instance()->AddConstraint(new DistanceConstraint(sun->Physics(), planets[i]->Physics(), sun->Physics()->GetPosition(), planets[i]->Physics()->GetPosition()));
 	}
 
 	//Target
@@ -96,7 +95,7 @@ void SolarSystem::OnInitializeScene()
 	this->AddGameObject(mccree);
 
 	//networking... joy
-	m_NetworkObj = BuildCuboidObject("NETWORK", Vector3(0.f, 7.f, 0.f), Vector3(1.0f, 1.f, 1.f), true, 0.0f, true, false, Vector4(1, 1, 1, 1), 10, STATIC);
+	m_NetworkObj = BuildSphereObject("MOON", Vector3(0.f, 7.f, 0.f), 0.25f, true, 0.0f, true, false, Vector4(1, 1, 1, 1), 10, STATIC);
 	this->AddGameObject(m_NetworkObj);
 }
 
@@ -121,6 +120,9 @@ void SolarSystem::OnUpdateScene(float dt)
 	uint8_t ip2 = (m_pServerConnection->address.host >> 8) & 0xFF;
 	uint8_t ip3 = (m_pServerConnection->address.host >> 16) & 0xFF;
 	uint8_t ip4 = (m_pServerConnection->address.host >> 24) & 0xFF;
+
+	ENetPacket* packet = enet_packet_create(&planets[2]->Physics()->GetPosition(), sizeof(Vector3), 0);
+	enet_peer_send(m_pServerConnection, 0, packet);
 
 	NCLDebug::DrawTextWs(m_NetworkObj->Physics()->GetPosition() + Vector3(0.f, 0.5f, 0.f), 14.f, TEXTALIGN_CENTRE, Vector4(),
 		"Peer: %u.%u.%u.%u:%u", ip1, ip2, ip3, ip4, m_pServerConnection->address.port);
