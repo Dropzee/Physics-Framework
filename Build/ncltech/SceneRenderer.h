@@ -185,6 +185,8 @@ protected:
 	Shader*				m_pShaderCombineLighting;
 	Shader*				m_pShaderPresentToWindow;
 
+	Shader*				m_pShaderSkyBox;
+
 	//Camera + view frustum/renderlist
 	Camera*				m_pCamera;
 	Frustum				m_FrameFrustum;

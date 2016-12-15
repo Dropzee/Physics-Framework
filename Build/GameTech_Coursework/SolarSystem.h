@@ -1,5 +1,6 @@
 #pragma once
 
+#include <ncltech\NetworkBase.h>
 #include <nclgl\Mesh.h>
 #include <ncltech\Scene.h>
 
@@ -12,6 +13,8 @@ public:
 	virtual void OnInitializeScene()	 override;
 	virtual void OnCleanupScene()		 override;
 	virtual void OnUpdateScene(float dt) override;
+
+	void ProcessNetworkEvent(const ENetEvent& evnt);
 
 protected:
 	float m_AccumTime;
@@ -32,4 +35,8 @@ protected:
 
 	Object *sun;
 	Object *target;
+
+	Object*     m_NetworkObj;
+	NetworkBase m_Network;
+	ENetPeer*	m_pServerConnection;
 };

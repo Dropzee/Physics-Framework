@@ -42,12 +42,12 @@ void CommonMeshes::InitializeMeshes()
 		m_reload = SOIL_load_OGL_texture(TEXTUREDIR"reload.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
 		m_mccree = SOIL_load_OGL_texture(TEXTUREDIR"mccree.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT); //...it's high noon...
 
-	/*	m_skybox = SOIL_load_OGL_cubemap(TEXTUREDIR"/Skybox/GalaxyTex_NegativeX.tga", TEXTUREDIR"/Skybox/GalaxyTex_PositiveX.tga",
+		m_skybox = SOIL_load_OGL_cubemap(TEXTUREDIR"/Skybox/GalaxyTex_NegativeX.tga", TEXTUREDIR"/Skybox/GalaxyTex_PositiveX.tga",
 			TEXTUREDIR"/Skybox/GalaxyTex_NegativeY.tga", TEXTUREDIR"/Skybox/GalaxyTex_PositiveY.tga",
 			TEXTUREDIR"/Skybox/GalaxyTex_NegativeZ.tga", TEXTUREDIR"/Skybox/GalaxyTex_PositiveZ.tga",
 			SOIL_LOAD_RGB,
 			SOIL_CREATE_NEW_ID, 14
-			); */
+			); 
 
 		glBindTexture(GL_TEXTURE_2D, m_CheckerboardTex);
 		glBindTexture(GL_TEXTURE_2D, m_earthTex);
@@ -64,10 +64,14 @@ void CommonMeshes::InitializeMeshes()
 		glBindTexture(GL_TEXTURE_2D, m_reload);
 		glBindTexture(GL_TEXTURE_2D, m_mccree); //...it's high noon...
 
+		
+
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST); //No linear interpolation to get crisp checkerboard no matter the scalling
+
+		glBindTexture(GL_TEXTURE_CUBE_MAP, m_skybox);
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glBindTexture(GL_TEXTURE_2D, 1);
@@ -83,6 +87,8 @@ void CommonMeshes::InitializeMeshes()
 		glBindTexture(GL_TEXTURE_2D, 11);
 		glBindTexture(GL_TEXTURE_2D, 12);
 		glBindTexture(GL_TEXTURE_2D, 13); //...it's high noon...
+
+		glBindTexture(GL_TEXTURE_2D, 14);
 
 		m_pPlane = Mesh::GenerateQuadTexCoordCol(Vector2(1.f, 1.f), Vector2(0.0f, 1.0f), Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 		m_pCube = new OBJMesh(MESHDIR"cube.obj");

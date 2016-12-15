@@ -1,3 +1,6 @@
+
+#include <enet/enet.h>
+
 #include <nclgl\Window.h>
 #include <ncltech\PhysicsEngine.h>
 #include <ncltech\SceneManager.h>
@@ -24,6 +27,7 @@ void Quit(bool error = false, const string &reason = "") {
 	//Release Singletons
 	SceneManager::Release();
 	PhysicsEngine::Release();
+	enet_deinitialize();
 	Window::Destroy();
 
 	//Show console reason before exit
@@ -43,6 +47,11 @@ void Initialize()
 	//Initialise the Window
 	if (!Window::Initialise("Game Technologies", 1280, 800, false))
 		Quit(true, "Window failed to initialise!");
+
+	if (enet_initialize() != 0)
+	{
+		Quit(true, "ENET failed to initialize!");
+	}
 
 	//Initialise the PhysicsEngine
 	PhysicsEngine::Instance();

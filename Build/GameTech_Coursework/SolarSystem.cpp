@@ -37,6 +37,16 @@ void SolarSystem::OnInitializeScene()
 	SceneManager::Instance()->GetCamera()->SetYaw(140.f);
 	SceneManager::Instance()->GetCamera()->SetPitch(-5.f);
 
+	//Initialize Client Network
+	if (m_Network.Initialize(0))
+	{
+		NCLDebug::Log("Network: Initialized!");
+
+		//Attempt to connect to the server on localhost:1234
+		m_pServerConnection = m_Network.ConnectPeer(127, 0, 0, 1, 1234);
+		NCLDebug::Log("Network: Attempting to connect to server.");
+	}
+
 	m_AccumTime = 0.0f;
 
 	//Example usage of Log and LogE inside NCLDebug functionality
@@ -74,7 +84,7 @@ void SolarSystem::OnInitializeScene()
 	}
 
 	//Target
-	target = BuildCuboidObject("TARGET", Vector3(6.0f, 0.0f, 0.0f), Vector3(0.2f,2.5f,2.5f), true, 0.0f, true, false, Vector4(1, 1, 1, 1), 11, TARGET);
+	target = BuildCuboidObject("TARGET", Vector3(6.0f, 0.0f, 0.0f), Vector3(0.5f,2.5f,2.5f), true, 0.0f, true, false, Vector4(1, 1, 1, 1), 11, TARGET);
 	this->AddGameObject(target);
 
 	//Reload Symbol
@@ -84,6 +94,10 @@ void SolarSystem::OnInitializeScene()
 	//...it's high noon...
 	mccree = BuildCuboidObject("McCree", Vector3(-1000.0f, 1000.0f, -1000.0f), Vector3(0.001f, 0.2f, 0.2f), true, 0.1f, true, false, Vector4(1, 1, 1, 1), 13, STATIC);
 	this->AddGameObject(mccree);
+
+	//networking... joy
+	m_NetworkObj = BuildCuboidObject("NETWORK", Vector3(0.f, 7.f, 0.f), Vector3(1.0f, 1.f, 1.f), true, 0.0f, true, false, Vector4(1, 1, 1, 1), 10, ORBIT);
+	this->AddGameObject(m_NetworkObj);
 }
 
 void SolarSystem::OnCleanupScene()
@@ -96,6 +110,27 @@ void SolarSystem::OnCleanupScene()
 void SolarSystem::OnUpdateScene(float dt)
 {
 	m_AccumTime += dt;
+
+	//Update Network
+	auto callback = std::bind(
+		&SolarSystem::ProcessNetworkEvent,	// Function to call
+		this,								// Associated class instance
+		std::placeholders::_1);				// Where to place the first parameter
+	m_Network.ServiceNetwork(dt, callback);
+	
+	//Add Debug Information to screen
+	uint8_t ip1 = m_pServerConnection->address.host & 0xFF;
+	uint8_t ip2 = (m_pServerConnection->address.host >> 8) & 0xFF;
+	uint8_t ip3 = (m_pServerConnection->address.host >> 16) & 0xFF;
+	uint8_t ip4 = (m_pServerConnection->address.host >> 24) & 0xFF;
+
+	NCLDebug::DrawTextWs(m_NetworkObj->Physics()->GetPosition() + Vector3(0.f, 0.5f, 0.f), 14.f, TEXTALIGN_CENTRE, Vector4(),
+		"Peer: %u.%u.%u.%u:%u", ip1, ip2, ip3, ip4, m_pServerConnection->address.port);
+
+	Vector4 status_color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+	NCLDebug::AddStatusEntry(status_color, "Network Traffic");
+	NCLDebug::AddStatusEntry(status_color, "    Incoming: %5.2fKbps", m_Network.m_IncomingKb);
+	NCLDebug::AddStatusEntry(status_color, "    Outgoing: %5.2fKbps", m_Network.m_OutgoingKb);
 
 	//Rotate Target with Planet
 	Vector3 radius = Vector3(6.f, 0.f, 0.f);
@@ -213,5 +248,52 @@ void SolarSystem::OnUpdateScene(float dt)
 			projectiles[shotCount]->Physics()->SetLinearVelocity(forward * 50.0f);
 			shotCount++;
 		}
+	}
+}
+
+void SolarSystem::ProcessNetworkEvent(const ENetEvent& evnt)
+{
+	switch (evnt.type)
+	{
+		//New connection request or an existing peer accepted our connection request
+	case ENET_EVENT_TYPE_CONNECT:
+	{
+		if (evnt.peer == m_pServerConnection)
+		{
+			NCLDebug::Log("Network: Successfully connected to server!");
+
+			//Send a 'hello' packet
+			char* text_data = "Hellooo!";
+			ENetPacket* packet = enet_packet_create(text_data, strlen(text_data) + 1, 0);
+			enet_peer_send(m_pServerConnection, 0, packet);
+		}
+	}
+	break;
+
+
+	//Server has sent us a new packet
+	case ENET_EVENT_TYPE_RECEIVE:
+	{
+		if (evnt.packet->dataLength == sizeof(Vector3))
+		{
+			Vector3 pos;
+			memcpy(&pos, evnt.packet->data, sizeof(Vector3));
+			m_NetworkObj->Physics()->SetPosition(pos);
+		}
+		else
+		{
+			NCLERROR("Recieved Invalid Network Packet!");
+		}
+
+	}
+	break;
+
+
+	//Server has disconnected
+	case ENET_EVENT_TYPE_DISCONNECT:
+	{
+		NCLDebug::Log("Network: Server has disconnected!");
+	}
+	break;
 	}
 }

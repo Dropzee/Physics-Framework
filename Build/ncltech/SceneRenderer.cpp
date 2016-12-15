@@ -495,6 +495,14 @@ bool SceneRenderer::ShadersLoad()
 		return false;
 	}
 
+	m_pShaderSkyBox = new Shader(
+		SHADERDIR"skyboxVertex.glsl",
+		SHADERDIR"skyboxFragment.glsl");
+	if (!m_pShaderSkyBox->LinkProgram()) {
+		SHADERERROR("Skybox Shader?");
+		return false;
+	}
+
 	return true;
 }
 

@@ -361,15 +361,25 @@ void PhysicsEngine::NarrowPhaseCollisionsCompute(std::vector<CollisionPair> & ob
 					}
 					if (cp.pObjectA->getObjType()  == PROJECTILE) {
 						if (cp.pObjectB->getObjType() == TARGET) {
-							//float dist = (cp.pObjectA->GetPosition() - cp.pObjectB->GetPosition()).Length();
-							score += 100;// *(100 / (int)dist + 1);
+							float dist = (cp.pObjectA->GetPosition() - cp.pObjectB->GetPosition()).Length();
+							if (dist != 0) {
+								score += 10 * (100 / dist);
+							}
+							else {
+								score += 1000;
+							}
 						}
 						cp.pObjectA->SetPosition(Vector3(1000.f, 1000.f, 1000.f));
 					}
 					else if (cp.pObjectB->getObjType() == PROJECTILE) {
 						if (cp.pObjectA->getObjType() == TARGET) {
-							//float dist = (cp.pObjectA->GetPosition() - cp.pObjectB->GetPosition()).Length();
-							score += 100;// * (100 / (int)dist + 1);
+							float dist = (cp.pObjectA->GetPosition() - cp.pObjectB->GetPosition()).Length();
+							if (dist != 0) {
+								score += 10 * (100 / dist);
+							}
+							else {
+								score += 1000;
+							}
 						}
 						cp.pObjectB->SetPosition(Vector3(1000.f, 1000.f, 1000.f));
 					}
