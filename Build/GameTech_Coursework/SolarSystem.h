@@ -41,4 +41,6 @@ protected:
 	ENetPeer*	m_pServerConnection;
 
 	Object* planets[8];
+
+	bool peerText;
 };

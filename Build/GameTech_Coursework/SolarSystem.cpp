@@ -17,6 +17,7 @@ SolarSystem::SolarSystem(const std::string& friendly_name)
 	, ultimate(false)
 	, autofire(false)
 	, firetime(60)
+	, peerText(false)
 {
 }
 
@@ -124,13 +125,16 @@ void SolarSystem::OnUpdateScene(float dt)
 	ENetPacket* packet = enet_packet_create(&planets[2]->Physics()->GetPosition(), sizeof(Vector3), 0);
 	enet_peer_send(m_pServerConnection, 0, packet);
 
-	NCLDebug::DrawTextWs(m_NetworkObj->Physics()->GetPosition() + Vector3(0.f, 0.5f, 0.f), 14.f, TEXTALIGN_CENTRE, Vector4(),
-		"Peer: %u.%u.%u.%u:%u", ip1, ip2, ip3, ip4, m_pServerConnection->address.port);
+	if (peerText) {
+		NCLDebug::DrawTextWs(m_NetworkObj->Physics()->GetPosition() + Vector3(0.f, 0.5f, 0.f), 14.f, TEXTALIGN_CENTRE, Vector4(),
+			"Peer: %u.%u.%u.%u:%u", ip1, ip2, ip3, ip4, m_pServerConnection->address.port);
+	}
 
 	Vector4 status_color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	NCLDebug::AddStatusEntry(status_color, "Network Traffic");
 	NCLDebug::AddStatusEntry(status_color, "    Incoming: %5.2fKbps", m_Network.m_IncomingKb);
 	NCLDebug::AddStatusEntry(status_color, "    Outgoing: %5.2fKbps", m_Network.m_OutgoingKb);
+	NCLDebug::AddStatusEntry(status_color, "    Toggle Text - T");
 
 	//Rotate Target with Planet
 	Vector3 radius = Vector3(6.f, 0.f, 0.f);
@@ -213,6 +217,10 @@ void SolarSystem::OnUpdateScene(float dt)
 
 		if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_M) && shotCount != 6 && !ultimate) {
 			ultimate = true;
+		}
+
+		if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_T)) {
+			peerText = !peerText;
 		}
 
 		//Projectile
