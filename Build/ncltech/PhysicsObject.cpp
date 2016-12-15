@@ -20,6 +20,7 @@ PhysicsObject::PhysicsObject()
 	, atRest(false)
 	, averageAngular(0.f)
 	, averageLinear(0.f)
+	, moveFlag(false)
 {
 }
 
