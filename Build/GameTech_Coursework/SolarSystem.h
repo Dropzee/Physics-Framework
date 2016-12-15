@@ -29,4 +29,7 @@ protected:
 	bool ultimate;
 	bool autofire;
 	int firetime;
+
+	Object *sun;
+	Object *target;
 };

@@ -46,7 +46,7 @@ void SolarSystem::OnInitializeScene()
 	//<--- SCENE CREATION --->
 
 	//Sun
-	Object* sun = BuildSphereObject("SUN", Vector3(0.0f, 0.0f, 0.0f), 5.0f, true, 0.00001f, true, false, Vector4(1, 1, 1, 1), 7, SUN);
+	sun = BuildSphereObject("SUN", Vector3(0.0f, 0.0f, 0.0f), 5.0f, true, 0.00001f, true, false, Vector4(1, 1, 1, 1), 7, SUN);
 	sun->Physics()->SetAngularVelocity(Vector3(0.0f, -0.5f, 0.0f));
 	this->AddGameObject(sun);
 	
@@ -74,7 +74,7 @@ void SolarSystem::OnInitializeScene()
 	}
 
 	//Target
-	Object* target = BuildCuboidObject("TARGET", Vector3(7.0f, 0.0f, 0.0f), Vector3(0.2f,2.5f,2.5f), true, 0.0f, true, false, Vector4(1, 1, 1, 1), 11, TARGET);
+	target = BuildCuboidObject("TARGET", Vector3(6.0f, 0.0f, 0.0f), Vector3(0.2f,2.5f,2.5f), true, 0.0f, true, false, Vector4(1, 1, 1, 1), 11, TARGET);
 	this->AddGameObject(target);
 
 	//Reload Symbol
@@ -96,6 +96,14 @@ void SolarSystem::OnCleanupScene()
 void SolarSystem::OnUpdateScene(float dt)
 {
 	m_AccumTime += dt;
+
+	//Rotate Target with Planet
+	Vector3 radius = Vector3(6.f, 0.f, 0.f);
+	Matrix3 rot = sun->Physics()->GetOrientation().ToMatrix3();
+	target->Physics()->SetOrientation(sun->Physics()->GetOrientation());
+	target->Physics()->SetPosition(rot * radius);
+
+	sun->Physics()->SetPosition(Vector3(0.f, 0.f, 0.f));
 
 	score += PhysicsEngine::Instance()->getScoreUpdate();
 	spin = (spin + 2) % 360; 
