@@ -27,6 +27,7 @@ protected:
 	int spin;
 
 	int score;
+	int highScore;
 
 	Object* mccree;
 	bool ultimate;

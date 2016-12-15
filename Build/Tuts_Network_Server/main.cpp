@@ -57,6 +57,8 @@ GameTimer timer;
 float accum_time = 0.0f;
 float rotation = 0.0f;
 
+Vector3 position;
+int highScore;
 
 void Win32_PrintAllAdapterIPAddresses();
 
@@ -90,8 +92,9 @@ int onExit(int exitcode)
 
 int main(int arcg, char** argv)
 {
-	Vector3 position = Vector3();
-	int highScore = readHighScore();
+
+	highScore = readHighScore();
+	position = Vector3();
 
 	if (enet_initialize() != 0)
 	{
@@ -132,6 +135,10 @@ int main(int arcg, char** argv)
 				{
 					memcpy(&position, evnt.packet->data, sizeof(Vector3));
 				}
+				else if (evnt.packet->dataLength == sizeof(int)) {
+					memcpy(&highScore, evnt.packet->data, sizeof(int));
+					writeHighScore(highScore);
+				}
 				break;
 
 			case ENET_EVENT_TYPE_DISCONNECT:
@@ -158,6 +165,10 @@ int main(int arcg, char** argv)
 			//Create the packet and broadcast it (unreliable transport) to all clients
 			ENetPacket* position_update = enet_packet_create(&pos, sizeof(Vector3), 0);
 			enet_host_broadcast(server.m_pNetwork, 0, position_update);
+
+			//High Score
+			ENetPacket* score_update = enet_packet_create(&highScore, sizeof(int), 0);
+			enet_host_broadcast(server.m_pNetwork, 0, score_update);
 		}
 
 		Sleep(0);

@@ -95,9 +95,12 @@ void SolarSystem::OnInitializeScene()
 	mccree = BuildCuboidObject("McCree", Vector3(-1000.0f, 1000.0f, -1000.0f), Vector3(0.001f, 0.2f, 0.2f), true, 0.0f, true, false, Vector4(1, 1, 1, 1), 13, STATIC);
 	this->AddGameObject(mccree);
 
-	//networking... joy
+	//networking... joy (moon)
 	m_NetworkObj = BuildSphereObject("MOON", Vector3(0.f, 7.f, 0.f), 0.25f, true, 0.0f, true, false, Vector4(1, 1, 1, 1), 10, STATIC);
 	this->AddGameObject(m_NetworkObj);
+
+	highScore = 0;
+
 }
 
 void SolarSystem::OnCleanupScene()
@@ -122,8 +125,13 @@ void SolarSystem::OnUpdateScene(float dt)
 	uint8_t ip3 = (m_pServerConnection->address.host >> 16) & 0xFF;
 	uint8_t ip4 = (m_pServerConnection->address.host >> 24) & 0xFF;
 
-	ENetPacket* packet = enet_packet_create(&planets[2]->Physics()->GetPosition(), sizeof(Vector3), 0);
-	enet_peer_send(m_pServerConnection, 0, packet);
+	ENetPacket* positionPacket = enet_packet_create(&planets[2]->Physics()->GetPosition(), sizeof(Vector3), 0);
+	enet_peer_send(m_pServerConnection, 0, positionPacket);
+
+	if (score > highScore) {
+		ENetPacket* scorePacket = enet_packet_create(&score, sizeof(int), 0);
+		enet_peer_send(m_pServerConnection, 0, scorePacket);
+	}
 
 	if (peerText) {
 		NCLDebug::DrawTextWs(m_NetworkObj->Physics()->GetPosition() + Vector3(0.f, 0.5f, 0.f), 14.f, TEXTALIGN_CENTRE, Vector4(),
@@ -185,6 +193,7 @@ void SolarSystem::OnUpdateScene(float dt)
 			ultimate = false;
 			autofire = false;
 			firetime = 60;
+			score = 0;
 		}
 		
 	}
@@ -196,7 +205,8 @@ void SolarSystem::OnUpdateScene(float dt)
 	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.4f, 0.4f, 1.0f), "   \x01 Fire Projectile - F");
 	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.4f, 0.4f, 1.0f), "   \x01 Rapid Fire - M");
 	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.4f, 0.4f, 1.0f), "   \x01 Quit - ECS");
-	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.2f, 0.2f, 1.0f), "Score: " + to_string(score));
+	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.2f, 0.2f, 1.0f), "High Score: " + to_string(highScore));
+	NCLDebug::AddStatusEntry(Vector4(1.0f, 0.2f, 0.2f, 1.0f), "Current Score: " + to_string(score));
 	if (shotCount != 6) {
 		NCLDebug::AddStatusEntry(Vector4(1.0f, 0.2f, 0.2f, 1.0f), "Ammo: " + to_string(6 - shotCount));
 	}
@@ -287,6 +297,10 @@ void SolarSystem::ProcessNetworkEvent(const ENetEvent& evnt)
 			Vector3 pos;
 			memcpy(&pos, evnt.packet->data, sizeof(Vector3));
 			m_NetworkObj->Physics()->SetPosition(pos);
+		}
+		else if (evnt.packet->dataLength == sizeof(int))
+		{
+			memcpy(&highScore, evnt.packet->data, sizeof(int));
 		}
 		else
 		{
