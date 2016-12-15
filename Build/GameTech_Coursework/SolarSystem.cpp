@@ -74,14 +74,14 @@ void SolarSystem::OnInitializeScene()
 	}
 
 	//Target
-	Object* target = BuildCuboidObject("TARGET", Vector3(5.0f, 0.0f, 0.0f), Vector3(0.01f,2.5f,2.5f), true, 1.0f, true, false, Vector4(1, 1, 1, 1), 11, TARGET);
+	Object* target = BuildCuboidObject("TARGET", Vector3(5.1f, 0.0f, 0.0f), Vector3(0.2f,2.5f,2.5f), true, 0.1f, true, false, Vector4(1, 1, 1, 1), 11, TARGET);
 	this->AddGameObject(target);
 
 	//Rotate the target with the sun
 	PhysicsEngine::Instance()->AddConstraint(new DistanceConstraint(sun->Physics(), target->Physics(), sun->Physics()->GetPosition(), target->Physics()->GetPosition()));	
 
 	//Reload Symbol
-	reload = BuildCuboidObject("RELOAD", Vector3(-1000.0f, -1000.0f, -1000.0f), Vector3(0.01f, 0.2f, 0.2f), true, 0.1f, true, false, Vector4(1, 1, 1, 1), 12, STATIC);
+	reload = BuildCuboidObject("RELOAD", Vector3(-1000.0f, -1000.0f, -1000.0f), Vector3(0.01f, 0.2f, 0.2f), true, 1.0f, true, false, Vector4(1, 1, 1, 1), 12, STATIC);
 	this->AddGameObject(reload);
 
 	//...it's high noon...

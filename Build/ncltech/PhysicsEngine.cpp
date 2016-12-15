@@ -307,11 +307,11 @@ void PhysicsEngine::NarrowPhaseCollisions() {
 			other.push_back(cp);
 		}
 	}
-	NarrowPhaseCollisionsHandle(targetProjecticle);
-	NarrowPhaseCollisionsHandle(other);
+	NarrowPhaseCollisionsCompute(targetProjecticle);
+	NarrowPhaseCollisionsCompute(other);
 }
 
-void PhysicsEngine::NarrowPhaseCollisionsHandle(std::vector<CollisionPair> & objs)
+void PhysicsEngine::NarrowPhaseCollisionsCompute(std::vector<CollisionPair> & objs)
 {
 	if (objs.size() > 0)
 	{
