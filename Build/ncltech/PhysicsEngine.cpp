@@ -257,7 +257,7 @@ void PhysicsEngine::BroadPhaseCollisions()
 	if (m_PhysicsObjects.size() > 0)
 	{
 		//Sort for sweep
-		std::sort(m_PhysicsObjects.begin(), m_PhysicsObjects.end(), compareFunc);
+		sort(m_PhysicsObjects.begin(), m_PhysicsObjects.end(), compareFunc);
 
 		for (size_t i = 0; i < m_PhysicsObjects.size() - 1; ++i)
 		{
@@ -294,10 +294,26 @@ void PhysicsEngine::BroadPhaseCollisions()
 	}
 }
 
+//Handle Projectile and target collsions first, then do all others
+void PhysicsEngine::NarrowPhaseCollisions() {
+	vector<CollisionPair> targetProjecticle;
+	vector<CollisionPair> other;
+	for each(CollisionPair cp in m_BroadphaseCollisionPairs) {
+		if ((cp.pObjectA->getObjType() == TARGET && cp.pObjectB->getObjType() == PROJECTILE) ||
+			cp.pObjectA->getObjType() == PROJECTILE && cp.pObjectB->getObjType() == TARGET) {
+			targetProjecticle.push_back(cp);
+		}
+		else {
+			other.push_back(cp);
+		}
+	}
+	NarrowPhaseCollisionsHandle(targetProjecticle);
+	NarrowPhaseCollisionsHandle(other);
+}
 
-void PhysicsEngine::NarrowPhaseCollisions()
+void PhysicsEngine::NarrowPhaseCollisionsHandle(std::vector<CollisionPair> & objs)
 {
-	if (m_BroadphaseCollisionPairs.size() > 0)
+	if (objs.size() > 0)
 	{
 		//Collision data to pass between detection and manifold generation stages.
 		CollisionData colData;				
@@ -306,9 +322,9 @@ void PhysicsEngine::NarrowPhaseCollisions()
 		CollisionDetectionSAT colDetect;	
 
 		// Iterate over all possible collision pairs and perform accurate collision detection
-		for (size_t i = 0; i < m_BroadphaseCollisionPairs.size(); ++i)
+		for (size_t i = 0; i < objs.size(); ++i)
 		{
-			CollisionPair& cp = m_BroadphaseCollisionPairs[i];
+			CollisionPair& cp = objs[i];
 
 			CollisionShape *shapeA = cp.pObjectA->GetCollisionShape();
 			CollisionShape *shapeB = cp.pObjectB->GetCollisionShape();
@@ -345,15 +361,15 @@ void PhysicsEngine::NarrowPhaseCollisions()
 					}
 					if (cp.pObjectA->getObjType()  == PROJECTILE) {
 						if (cp.pObjectB->getObjType() == TARGET) {
-							float dist = (cp.pObjectA->GetPosition() - cp.pObjectB->GetPosition()).Length();
-							score += 10 * (100 / (int)dist + 1);
+							//float dist = (cp.pObjectA->GetPosition() - cp.pObjectB->GetPosition()).Length();
+							score += 100;// *(100 / (int)dist + 1);
 						}
 						cp.pObjectA->SetPosition(Vector3(1000.f, 1000.f, 1000.f));
 					}
 					else if (cp.pObjectB->getObjType() == PROJECTILE) {
 						if (cp.pObjectA->getObjType() == TARGET) {
-							float dist = (cp.pObjectA->GetPosition() - cp.pObjectB->GetPosition()).Length();
-							score += 10 * (100 / (int)dist + 1);
+							//float dist = (cp.pObjectA->GetPosition() - cp.pObjectB->GetPosition()).Length();
+							score += 100;// * (100 / (int)dist + 1);
 						}
 						cp.pObjectB->SetPosition(Vector3(1000.f, 1000.f, 1000.f));
 					}

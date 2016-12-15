@@ -134,6 +134,9 @@ protected:
 	void BroadPhaseCollisions();
 
 	//Handles narrowphase collision detection
+	void NarrowPhaseCollisionsHandle(std::vector<CollisionPair> & objs);
+
+	//Handles narrowphase collision detection
 	void NarrowPhaseCollisions();
 
 	//Updates all physics objects position, orientation, velocity etc - Tutorial 2

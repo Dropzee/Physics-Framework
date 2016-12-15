@@ -81,11 +81,11 @@ void SolarSystem::OnInitializeScene()
 	PhysicsEngine::Instance()->AddConstraint(new DistanceConstraint(sun->Physics(), target->Physics(), sun->Physics()->GetPosition(), target->Physics()->GetPosition()));	
 
 	//Reload Symbol
-	reload = BuildCuboidObject("RELOAD", Vector3(-1000.0f, -1000.0f, -1000.0f), Vector3(0.01f, 0.2f, 0.2f), true, 0.1f, false, false, Vector4(1, 1, 1, 1), 12, STATIC);
+	reload = BuildCuboidObject("RELOAD", Vector3(-1000.0f, -1000.0f, -1000.0f), Vector3(0.01f, 0.2f, 0.2f), true, 0.1f, true, false, Vector4(1, 1, 1, 1), 12, STATIC);
 	this->AddGameObject(reload);
 
 	//...it's high noon...
-	mccree = BuildCuboidObject("McCree", Vector3(-1000.0f, 1000.0f, -1000.0f), Vector3(0.001f, 0.2f, 0.2f), true, 0.1f, false, false, Vector4(1, 1, 1, 1), 13, STATIC);
+	mccree = BuildCuboidObject("McCree", Vector3(-1000.0f, 1000.0f, -1000.0f), Vector3(0.001f, 0.2f, 0.2f), true, 0.1f, true, false, Vector4(1, 1, 1, 1), 13, STATIC);
 	this->AddGameObject(mccree);
 }
 

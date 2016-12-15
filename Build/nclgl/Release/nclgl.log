@@ -1,21 +1,9 @@
-﻿  Camera.cpp
-  CubeRobot.cpp
-  Frustum.cpp
-  GameTimer.cpp
-  Keyboard.cpp
-  Matrix3.cpp
-  Matrix4.cpp
-  MD5Anim.cpp
-  MD5FileData.cpp
-  MD5Mesh.cpp
-  MD5Node.cpp
-  Mesh.cpp
-  Mouse.cpp
-  OBJMesh.cpp
-  OGLRenderer.cpp
-  Plane.cpp
-  Quaternion.cpp
-  SceneNode.cpp
-  Shader.cpp
-  Window.cpp
-  nclgl.vcxproj -> C:\Users\jackc\Documents\Uni\Year 4\CSC8503 - Advanced Game Technologies\Physics-Framework\Build\Release\nclgl.lib
+﻿Build started 15/12/2016 11:15:58.
+     1>Project "D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\nclgl\nclgl.vcxproj" on node 2 (Build target(s)).
+     1>Lib:
+         nclgl.vcxproj -> D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\Release\nclgl.lib
+     1>Done Building Project "D:\Documents\CSC8503 - Advanced Game Technologies\Framework (Tutorials)\Physics-Framework\Build\nclgl\nclgl.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.04
