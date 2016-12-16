@@ -125,19 +125,23 @@ void SolarSystem::OnUpdateScene(float dt)
 	uint8_t ip3 = (m_pServerConnection->address.host >> 16) & 0xFF;
 	uint8_t ip4 = (m_pServerConnection->address.host >> 24) & 0xFF;
 
+	//Broadcast earths position to server
 	ENetPacket* positionPacket = enet_packet_create(&planets[2]->Physics()->GetPosition(), sizeof(Vector3), 0);
 	enet_peer_send(m_pServerConnection, 0, positionPacket);
 
+	//High score update check
 	if (score > highScore) {
 		ENetPacket* scorePacket = enet_packet_create(&score, sizeof(int), 0);
 		enet_peer_send(m_pServerConnection, 0, scorePacket);
 	}
 
+	//Toggle for server object text
 	if (peerText) {
 		NCLDebug::DrawTextWs(m_NetworkObj->Physics()->GetPosition() + Vector3(0.f, 0.5f, 0.f), 14.f, TEXTALIGN_CENTRE, Vector4(),
 			"Peer: %u.%u.%u.%u:%u", ip1, ip2, ip3, ip4, m_pServerConnection->address.port);
 	}
 
+	//Display Network Info
 	Vector4 status_color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	NCLDebug::AddStatusEntry(status_color, "Network Traffic");
 	NCLDebug::AddStatusEntry(status_color, "    Incoming: %5.2fKbps", m_Network.m_IncomingKb);
@@ -150,21 +154,26 @@ void SolarSystem::OnUpdateScene(float dt)
 	target->Physics()->SetOrientation(sun->Physics()->GetOrientation());
 	target->Physics()->SetPosition(rot * radius);
 
+	//Stablise system drift due to floating point error
 	sun->Physics()->SetPosition(Vector3(0.f, 0.f, 0.f));
 
+	//Update score
 	score += PhysicsEngine::Instance()->getScoreUpdate();
-	spin = (spin + 2) % 360; 
 
+	//Forward direction relative to camera
 	Matrix3 view = Matrix3(SceneManager::Instance()->GetCamera()->BuildViewMatrix());
 	Vector3 forward = Vector3(-view._13, -view._23, -view._33);
 
+	//Super McCree rapid fire mode ON
 	if (ultimate) {
 
+		//Display McCree in front of, and flat to, camera
 		mccree->Physics()->SetPosition(SceneManager::Instance()->GetCamera()->GetPosition() + forward * 2 + Vector3(-view._13 - 2.0f, -view._23 - 1.2f, 0));
 		Matrix4 mat4view = Matrix4(view);
 		Quaternion q = Quaternion::FromMatrix(mat4view);
 		mccree->Physics()->SetOrientation(q * Quaternion::AxisAngleToQuaterion(Vector3(0, 1, 0), -90.0f));
 
+		//Flag projectile to be launched every 10 frames
 		if (firetime % 10 == 0) {
 			autofire = true;
 		}
@@ -172,13 +181,20 @@ void SolarSystem::OnUpdateScene(float dt)
 			autofire = false;
 		}
 		firetime--;
+
+		//If over, "delete" McCree by hiding him in the void...
 		if (firetime < 0) {
 			mccree->Physics()->SetPosition(Vector3(-1000, 1000, -1000));
 		}
 	}
-	
+
+	//Reload rotaion var
+	spin = (spin + 2) % 360; 
+
+	//All bullets used
 	if (shotCount == 6) {
 
+		//Display in front of, and flat to, camera
 		reload->Physics()->SetPosition(SceneManager::Instance()->GetCamera()->GetPosition() + forward * 2);
 		Matrix4 mat4view = Matrix4(view) * Matrix4::Rotation(spin, forward);
 		Quaternion q = Quaternion::FromMatrix(mat4view);
@@ -186,6 +202,7 @@ void SolarSystem::OnUpdateScene(float dt)
 		
 		reloadTime--;
 
+		//Reloaded, reset vars for next time
 		if (reloadTime == 0) {
 			reload->Physics()->SetPosition(Vector3(-1000, -1000, -1000));
 			reloadTime = 300;
@@ -225,24 +242,25 @@ void SolarSystem::OnUpdateScene(float dt)
 		const float mv_speed = 10.f * dt;			//Motion: Meters per second
 		const float rot_speed = 150.f * dt;			//Rotation: Degrees per second
 
+		//Activate McCree! (rapid fire mode)
 		if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_M) && shotCount != 6 && !ultimate) {
 			ultimate = true;
 		}
 
+		//Toggle on/off network object text
 		if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_T)) {
 			peerText = !peerText;
 		}
 
-		//Projectile
+		//Launch Projectile on key press or if autofire, given bullets left
 		if ((Window::GetKeyboard()->KeyTriggered(KEYBOARD_F) && shotCount != 6) || (autofire && shotCount != 6)) {
 			
+			//If triggered via key press, reduce shots that would be fired by McCree by 1
 			if(Window::GetKeyboard()->KeyTriggered(KEYBOARD_F)) {
 				firetime -= 10;
 			}
 
-			Matrix3 view = Matrix3(SceneManager::Instance()->GetCamera()->BuildViewMatrix());
-			Vector3 forward = Vector3(-view._13, -view._23, -view._33);
-
+			//Creat new bullet if 6 dont already exist, else reuse one
 			if(projectiles[shotCount] == NULL){
 			Object* projectile = BuildSphereObject(
 					"",																	// Optional: Name
@@ -261,19 +279,20 @@ void SolarSystem::OnUpdateScene(float dt)
 			}
 			else {
 				projectiles[shotCount]->Physics()->SetPosition(SceneManager::Instance()->GetCamera()->GetPosition());
+				projectiles[shotCount]->Physics()->setAtRest(false);
 			}
-
 			projectiles[shotCount]->Physics()->SetLinearVelocity(forward * 50.0f);
 			shotCount++;
 		}
 	}
 }
 
+//Networking
 void SolarSystem::ProcessNetworkEvent(const ENetEvent& evnt)
 {
 	switch (evnt.type)
 	{
-		//New connection request or an existing peer accepted our connection request
+
 	case ENET_EVENT_TYPE_CONNECT:
 	{
 		if (evnt.peer == m_pServerConnection)
@@ -292,12 +311,14 @@ void SolarSystem::ProcessNetworkEvent(const ENetEvent& evnt)
 	//Server has sent us a new packet
 	case ENET_EVENT_TYPE_RECEIVE:
 	{
+		//Recieve moon position
 		if (evnt.packet->dataLength == sizeof(Vector3))
 		{
 			Vector3 pos;
 			memcpy(&pos, evnt.packet->data, sizeof(Vector3));
 			m_NetworkObj->Physics()->SetPosition(pos);
 		}
+		//Recieve high score
 		else if (evnt.packet->dataLength == sizeof(int))
 		{
 			memcpy(&highScore, evnt.packet->data, sizeof(int));

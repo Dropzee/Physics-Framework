@@ -266,6 +266,7 @@ void PhysicsEngine::BroadPhaseCollisions()
 				m_pObj1 = m_PhysicsObjects[i];
 				m_pObj2 = m_PhysicsObjects[j];
 
+				//Cull resting objects
 				if (m_pObj1->isAtRest() && m_pObj2->isAtRest()) {
 					continue;
 				}
@@ -274,12 +275,11 @@ void PhysicsEngine::BroadPhaseCollisions()
 				if (m_pObj1->GetCollisionShape() != NULL
 					&& m_pObj2->GetCollisionShape() != NULL)
 				{
-
+					//Sweep
 					//Check based on sort
 					if (m_pObj1->getMaxZ() < m_pObj2->getMinZ()) {
 						break;
 					}
-
 					//Also check X axis
 					if (m_pObj1->getMaxX() > m_pObj2->getMinX()) {
 						CollisionPair cp;
@@ -353,14 +353,18 @@ void PhysicsEngine::NarrowPhaseCollisionsCompute(std::vector<CollisionPair> & ob
 
 				if (okA && okB)
 				{
+					//Wake up from rest on collision
 					if (cp.pObjectA->isAtRest()) {
 						cp.pObjectA->setAtRest(false);
 					}
 					if (cp.pObjectB->isAtRest()) {
 						cp.pObjectB->setAtRest(false);
 					}
+
+					//Player has hit the target
 					if (cp.pObjectA->getObjType()  == PROJECTILE) {
 						if (cp.pObjectB->getObjType() == TARGET) {
+							//More score the closer to the center
 							float dist = (cp.pObjectA->GetPosition() - cp.pObjectB->GetPosition()).Length();
 							if (dist != 0) {
 								score += 10 * (100 / dist);
@@ -370,6 +374,7 @@ void PhysicsEngine::NarrowPhaseCollisionsCompute(std::vector<CollisionPair> & ob
 							}
 						}
 						cp.pObjectA->SetPosition(Vector3(1000.f, 1000.f, 1000.f));
+						cp.pObjectA->setAtRest(true);
 					}
 					else if (cp.pObjectB->getObjType() == PROJECTILE) {
 						if (cp.pObjectA->getObjType() == TARGET) {
@@ -382,6 +387,7 @@ void PhysicsEngine::NarrowPhaseCollisionsCompute(std::vector<CollisionPair> & ob
 							}
 						}
 						cp.pObjectB->SetPosition(Vector3(1000.f, 1000.f, 1000.f));
+						cp.pObjectB->setAtRest(true);
 					}
 					else {
 						//-- TUTORIAL 5 CODE --
